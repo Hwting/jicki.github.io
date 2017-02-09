@@ -1,0 +1,122 @@
+# ---------------- #
+#   Main Configs   #
+# ---------------- #
+baseurl:
+url: https://jicki.me
+date_format: "ordinal"
+title: 小炒肉
+subtitle: "Your future depends on your dreams"
+description: "梦想"
+keywords: 小炒肉
+favicon: /favicon.ico
+timezone: Asia/Shanghai
+encoding: "utf-8"
+source_code: https://github.com/jicki/jicki.github.io
+side_bar_repo_limit: 5
+
+# ---------------- #
+#      Author      #
+# ---------------- #
+author: 小炒肉
+organization: Gozap, Inc.
+organization_url: https://www.Moxian.com
+location: ShenZhen, China
+email: jicki520@gmail.com
+
+# ---------------- #
+#    Navigation    #
+# ---------------- #
+navs:
+  -
+    href: /
+    label: 首页
+
+  -
+    href: /categories/
+    label: 分类
+
+  -
+    href: /wiki/
+    label: 维基
+
+  -
+    href: /open-source/
+    label: 开源
+
+  -
+    href: /links/
+    label: 链接
+
+  -
+    href: /about/
+    label: 关于
+
+# ---------------- #
+#       RSS        #
+# ---------------- #
+subscribe_rss: /feed.xml
+
+# ---------------- #
+#      Jekyll      #
+# ---------------- #
+markdown: kramdown
+kramdown:
+    input: GFM
+highlighter: rouge
+paginate: 8
+lsi: false
+quiet: false
+excerpt_separator: "\n\n"
+permalink: /:year/:month/:day/:title/
+gems:
+    - rouge
+#    - jekyll-html-pipeline
+    - jekyll-paginate
+    - jekyll-feed
+    - jemoji
+#     - jekyll-mentions
+    - jekyll-github-metadata
+collections:
+    wiki:
+        output: true
+        permalink: /wiki/:path/
+
+# ---------------- #
+#      Socials     #
+# ---------------- #
+github_username: jicki
+#douban_username: jicki
+facebook_username: jicki
+#weibo_username: jicki234
+#zhihu_username: jicki
+twitter_username: jicki
+
+# ---------------- #
+#      Comments    #
+# ---------------- #
+# support provider: disqus, duoshuo
+comments_provider: disqus
+# !!!重要!!! 请修改下面两个用户名为你自己申请的
+# !!!Important!!! Please modify usernames below to yours
+duoshuo_username: jicki
+disqus_username: jicki
+# 在使用 disqus 的时候可点击显示多说评论框
+lazy_load_duoshuo: true
+
+# ---------------- #
+#    Analytics     #
+# ---------------- #
+google:
+    analytics_id: UA-85602329-1
+
+# ---------------- #
+#      Datas       #
+# ---------------- #
+skill_software_keywords: [Linux, shell, Docker,Python]
+skill_mobile_app_keywords: [Linux]
+#skill_windows_keywords: []
+
+# ---------------- #
+# Github metadata  #
+# ---------------- #
+repository: jicki/jicki.github.io
