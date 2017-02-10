@@ -500,11 +500,11 @@ status 查看迁移状态
 [root@swarm-manager ~]#gluster volume models stop
 ```
 
-  [1]: http://www.xf80.com/images/posts/glusterfs/1.png
-  [2]: http://www.xf80.com/images/posts/glusterfs/2.png
-  [3]: http://www.xf80.com/images/posts/glusterfs/3.png
-  [4]: http://www.xf80.com/images/posts/glusterfs/4.png
-  [5]: http://www.xf80.com/images/posts/glusterfs/5.png
-  [6]: http://www.xf80.com/images/posts/glusterfs/6.png
-  [7]: http://www.xf80.com/images/posts/glusterfs/7.png
-  [8]: http://www.xf80.com/images/posts/glusterfs/8.png
+  [1]: http://jicki.me/images/posts/glusterfs/1.png
+  [2]: http://jicki.me/images/posts/glusterfs/2.png
+  [3]: http://jicki.me/images/posts/glusterfs/3.png
+  [4]: http://jicki.me/images/posts/glusterfs/4.png
+  [5]: http://jicki.me/images/posts/glusterfs/5.png
+  [6]: http://jicki.me/images/posts/glusterfs/6.png
+  [7]: http://jicki.me/images/posts/glusterfs/7.png
+  [8]: http://jicki.me/images/posts/glusterfs/8.png

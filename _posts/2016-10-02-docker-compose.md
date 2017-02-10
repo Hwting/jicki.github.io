@@ -120,4 +120,4 @@ availability:az==2
 
 
 
-  [1]: http://www.xf80.com/images/posts/docker-compose/1.png
+  [1]: http://jicki.me/images/posts/docker-compose/1.png

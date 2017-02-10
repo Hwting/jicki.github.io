@@ -368,12 +368,12 @@ docker-compose up --build -d
 
 
   [1]: https://github.com/vmware/harbor
-  [2]: http://www.xf80.com/images/posts/harbor/1.png
-  [3]: http://www.xf80.com/images/posts/harbor/2.png
-  [4]: http://www.xf80.com/images/posts/harbor/3.png
-  [5]: http://www.xf80.com/images/posts/harbor/4.png
-  [6]: http://www.xf80.com/images/posts/harbor/5.png
-  [7]: http://www.xf80.com/images/posts/harbor/6.png
-  [8]: http://www.xf80.com/images/posts/harbor/7.png
-  [9]: http://www.xf80.com/images/posts/harbor/8.png
-  [10]: http://www.xf80.com/images/posts/harbor/9.png
+  [2]: http://jicki.me/images/posts/harbor/1.png
+  [3]: http://jicki.me/images/posts/harbor/2.png
+  [4]: http://jicki.me/images/posts/harbor/3.png
+  [5]: http://jicki.me/images/posts/harbor/4.png
+  [6]: http://jicki.me/images/posts/harbor/5.png
+  [7]: http://jicki.me/images/posts/harbor/6.png
+  [8]: http://jicki.me/images/posts/harbor/7.png
+  [9]: http://jicki.me/images/posts/harbor/8.png
+  [10]: http://jicki.me/images/posts/harbor/9.png

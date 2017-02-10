@@ -491,5 +491,5 @@ log_format main
  
 
 
-  [1]: http://www.xf80.com/images/posts/elk/1.png
-  [2]: http://www.xf80.com/images/posts/elk/2.png
+  [1]: http://jicki.me/images/posts/elk/1.png
+  [2]: http://jicki.me/images/posts/elk/2.png

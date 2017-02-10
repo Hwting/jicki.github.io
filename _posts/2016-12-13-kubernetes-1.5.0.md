@@ -939,7 +939,7 @@ kubeadm init
 ```
 
 
-  [1]: http://www.xf80.com/images/posts/kubernetes/1.png
+  [1]: http://jicki.me/images/posts/kubernetes/1.png
 
 
 

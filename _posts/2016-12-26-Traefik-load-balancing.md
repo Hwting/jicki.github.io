@@ -190,7 +190,7 @@ metadata:
   name: traefik-ingress
 spec:
   rules:
-  - host: traefik.test.xf80.com
+  - host: traefik.test.jicki.me
     http:
       paths:
       - path: /
@@ -207,7 +207,7 @@ spec:
 
 [root@k8s-node-1 ~]#kubectl get ing
 NAME              HOSTS                   ADDRESS   PORTS     AGE
-traefik-ingress   traefik.test.xf80.com             80        32m	
+traefik-ingress   traefik.test.jicki.me             80        32m	
 	
 ```
 
@@ -228,7 +228,7 @@ curl -O https://raw.githubusercontent.com/containous/traefik/master/examples/k8s
 
 
 ```
-[root@k8s-node-1 ~]#curl -I traefik.test.xf80.com
+[root@k8s-node-1 ~]#curl -I traefik.test.jicki.me
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Content-Length: 612

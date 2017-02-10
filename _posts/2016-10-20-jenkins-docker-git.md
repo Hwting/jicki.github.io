@@ -232,13 +232,13 @@ Recipient List 添加 收件邮箱 多个邮件以空格 隔开
 ![此处输入图片的描述][10]
 
 
-  [1]: http://www.xf80.com/images/posts/jenkins/4.png
-  [2]: http://www.xf80.com/images/posts/jenkins/1.png
-  [3]: http://www.xf80.com/images/posts/jenkins/2.png
-  [4]: http://www.xf80.com/images/posts/jenkins/3.png
-  [5]: http://www.xf80.com/images/posts/jenkins/5.png
-  [6]: http://www.xf80.com/images/posts/jenkins/6.png
-  [7]: http://www.xf80.com/images/posts/jenkins/7.png
-  [8]: http://www.xf80.com/images/posts/jenkins/8.png
-  [9]: http://www.xf80.com/images/posts/jenkins/9.png
-  [10]: http://www.xf80.com/images/posts/jenkins/10.png
+  [1]: http://jicki.me/images/posts/jenkins/4.png
+  [2]: http://jicki.me/images/posts/jenkins/1.png
+  [3]: http://jicki.me/images/posts/jenkins/2.png
+  [4]: http://jicki.me/images/posts/jenkins/3.png
+  [5]: http://jicki.me/images/posts/jenkins/5.png
+  [6]: http://jicki.me/images/posts/jenkins/6.png
+  [7]: http://jicki.me/images/posts/jenkins/7.png
+  [8]: http://jicki.me/images/posts/jenkins/8.png
+  [9]: http://jicki.me/images/posts/jenkins/9.png
+  [10]: http://jicki.me/images/posts/jenkins/10.png
