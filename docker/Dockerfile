@@ -1,4 +1,4 @@
-FROM ruby:2.3.1-alpine
+FROM ruby:2.3-alpine
 
 MAINTAINER jicki
 
@@ -19,6 +19,10 @@ ADD cron/15min/* /etc/periodic/15min
 
 ADD entrypoint.sh /root/entrypoint.sh
 
+RUN chmod +x /root/entrypoint.sh
+
+RUN chmod +x /etc/periodic/15min/*
+
 WORKDIR /root
 
-CMD ["/root/entrypoint.sh"]
+ENTRYPOINT ["/root/entrypoint.sh"]
