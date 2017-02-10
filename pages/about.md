@@ -22,7 +22,7 @@ permalink: /about/
 
 > **Linux、Docker、Kubernetes、Swarm**
 >
-> **mysql、Redis、Mongodb**
+> **Mysql、Redis、Mongodb**
 >
 > **Nginx、Tomcat、LVS、Keepalived**
 >
