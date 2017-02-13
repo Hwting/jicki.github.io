@@ -188,13 +188,13 @@ kubeadm join --token=c53ef2.d257d49589d634f0 10.6.0.140
 ```
 # 建议先下载镜像，否则容易下载不到
 
-docker pull quay.io/coreos/flannel-git:v0.6.1-28-g5dde68d-amd64
+docker pull quay.io/coreos/flannel:v0.7.0-amd64
 
 # 或者这样
 
-docker pull jicki/flannel-git:v0.6.1-28-g5dde68d-amd64
-docker tag jicki/flannel-git:v0.6.1-28-g5dde68d-amd64 quay.io/coreos/flannel-git:v0.6.1-28-g5dde68d-amd64
-docker rmi jicki/flannel-git:v0.6.1-28-g5dde68d-amd64
+docker pull jicki/flannel:v0.7.0-amd64
+docker tag jicki/flannel:v0.7.0-amd64 quay.io/coreos/flannel:v0.7.0-amd64
+docker rmi jicki/flannel:v0.7.0-amd64
 
 
 ```
