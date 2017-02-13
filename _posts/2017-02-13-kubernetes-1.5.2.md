@@ -95,60 +95,7 @@ systemctl start docker
 ```
 
 
-## 2.3 安装 etcd 集群
-
-```
-yum -y install etcd
-
-# 创建etcd data 目录
-
-mkdir -p /opt/etcd/data
-
-chown -R etcd:etcd /opt/etcd/
-
-
-# 修改配置文件，/etc/etcd/etcd.conf 需要修改如下参数：
-
-
-ETCD_NAME=etcd1
-ETCD_DATA_DIR="/opt/etcd/data/etcd1.etcd"
-ETCD_LISTEN_PEER_URLS="http://10.6.0.140:2380"
-ETCD_LISTEN_CLIENT_URLS="http://10.6.0.140:2379,http://127.0.0.1:2379"
-ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.6.0.140:2380"
-ETCD_INITIAL_CLUSTER="etcd1=http://10.6.0.140:2380,etcd2=http://10.6.0.187:2380,etcd3=http://10.6.0.188:2380"
-ETCD_INITIAL_CLUSTER_STATE="new"
-ETCD_INITIAL_CLUSTER_TOKEN="k8s-etcd-cluster"
-ETCD_ADVERTISE_CLIENT_URLS="http://10.6.0.140:2379"
-
-```
-
-
-```
-# 修改 etcd 启动文件
-
-sed -i 's/\\\"${ETCD_LISTEN_CLIENT_URLS}\\\"/\\\"${ETCD_LISTEN_CLIENT_URLS}\\\" --listen-client-urls=\\\"${ETCD_LISTEN_CLIENT_URLS}\\\" --advertise-client-urls=\\\"${ETCD_ADVERTISE_CLIENT_URLS}\\\" --initial-cluster-token=\\\"${ETCD_INITIAL_CLUSTER_TOKEN}\\\" --initial-cluster=\\\"${ETCD_INITIAL_CLUSTER}\\\" --initial-cluster-state=\\\"${ETCD_INITIAL_CLUSTER_STATE}\\\"/g' /usr/lib/systemd/system/etcd.service
-
-```
-
-```
-# 启动 etcd
-
-systemctl enable etcd
-
-systemctl start etcd
-
-systemctl status etcd
-
-
-# 查看集群状态
-
-etcdctl cluster-health
-
-```
-
-
-
-## 2.4 下载镜像
+## 2.3 下载镜像
 
 ```
 images=(kube-proxy-amd64:v1.5.2 kube-discovery-amd64:1.0 kubedns-amd64:1.9 kube-scheduler-amd64:v1.5.2 kube-controller-manager-amd64:v1.5.2 kube-apiserver-amd64:v1.5.2 etcd-amd64:3.0.14-kubeadm kube-dnsmasq-amd64:1.4 exechealthz-amd64:1.2 pause-amd64:3.0 kubernetes-dashboard-amd64:v1.5.0 dnsmasq-metrics-amd64:1.0)
@@ -168,11 +115,7 @@ docker 启动文件 增加 --registry-mirror="http://b438f72b.m.daocloud.io"
 ```
 
 
-
-
-
-
-## 2.5 启动 kubernetes
+## 2.4 启动 kubernetes
 
 ```
 systemctl enable kubelet
@@ -181,18 +124,16 @@ systemctl start kubelet
 
 
 
-## 2.6 创建集群
+## 2.5 创建集群
 
 ```
 kubeadm init --api-advertise-addresses=10.6.0.140 \
---external-etcd-endpoints=http://10.6.0.140:2379,http://10.6.0.187:2379,http://10.6.0.188:2379 \
 --use-kubernetes-version v1.5.2 \
 --pod-network-cidr 10.244.0.0/16
 
 ```
 
 ```
-Flag --external-etcd-endpoints has been deprecated, this flag will be removed when componentconfig exists
 [kubeadm] WARNING: kubeadm is in alpha, please do not use it for production clusters.
 [preflight] Running pre-flight checks
 [preflight] Starting the kubelet service
@@ -230,7 +171,7 @@ kubeadm join --token=c53ef2.d257d49589d634f0 10.6.0.140
 
 
 
-## 2.7 记录 token
+## 2.6 记录 token
 ```
 
 You can now join any number of machines by running the following on each node:
@@ -241,7 +182,7 @@ kubeadm join --token=c53ef2.d257d49589d634f0 10.6.0.140
 
 
 
-## 2.8 配置网络
+## 2.7 配置网络
 
 
 ```
@@ -270,7 +211,7 @@ kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Docume
 
 
 
-## 2.9 检查 kubelet 状态
+## 2.8 检查 kubelet 状态
 
 ```
 systemctl status kubelet
