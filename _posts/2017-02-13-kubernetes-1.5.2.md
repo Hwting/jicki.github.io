@@ -186,7 +186,7 @@ systemctl start kubelet
 ```
 kubeadm init --api-advertise-addresses=10.6.0.140 \
 --external-etcd-endpoints=http://10.6.0.140:2379,http://10.6.0.187:2379,http://10.6.0.188:2379 \
---use-kubernetes-version v1.5.1 \
+--use-kubernetes-version v1.5.2 \
 --pod-network-cidr 10.244.0.0/16
 
 ```
@@ -196,7 +196,7 @@ Flag --external-etcd-endpoints has been deprecated, this flag will be removed wh
 [kubeadm] WARNING: kubeadm is in alpha, please do not use it for production clusters.
 [preflight] Running pre-flight checks
 [preflight] Starting the kubelet service
-[init] Using Kubernetes version: v1.5.1
+[init] Using Kubernetes version: v1.5.2
 [tokens] Generated token: "c53ef2.d257d49589d634f0"
 [certificates] Generated Certificate Authority key and certificate.
 [certificates] Generated API Server key and certificate
