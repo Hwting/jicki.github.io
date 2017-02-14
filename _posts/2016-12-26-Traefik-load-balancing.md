@@ -212,7 +212,7 @@ traefik-ingress   traefik.test.jicki.me             80        32m
 ```
 
 
-## 1.4 创建 traefik web ui 
+## 1.5 创建 traefik web ui 
 
 ```
 # 下载 web ui yaml 文件
@@ -224,7 +224,7 @@ curl -O https://raw.githubusercontent.com/containous/traefik/master/examples/k8s
 ```
 
 
-## 1.5 访问 nginx 应用
+## 1.6 访问 nginx 应用
 
 
 ```
@@ -242,7 +242,7 @@ Server: nginx/1.11.7
 
 
 
-## 1.6 访问 traefik web ui
+## 1.7 访问 traefik web ui
 
 ```
 http://10.6.0.187:8888
@@ -251,5 +251,5 @@ http://10.6.0.188:8888
 
 
 
-## 1.7 心跳检测
+## 1.8 心跳检测
 
