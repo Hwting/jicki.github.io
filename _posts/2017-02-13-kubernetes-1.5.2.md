@@ -6,13 +6,7 @@ description: kubernetes 1.5.2
 keywords: docker
 ---
 
-
-> IMPORTANT: On Linux distributions where devicemapper was the default storage driver,
-> the overlay2, or overlay is now used by default (if the kernel supports it).
-> To use devicemapper, you can manually configure the storage driver to use through
-> the --storage-driver daemon option, or by setting "storage-driver" in the daemon.json
-> configuration file.
-
+> Kubernetes update 1.5.2 and docker 1.13.1 update default driver the overlay2
 
 # 1 初始化环境
 
