@@ -100,6 +100,14 @@ Installing full chain to:/etc/nginx/ssl/jicki.me.cer
 ```
 # 修改 nginx.conf 配置 增加 ssl
 
+server {
+    listen 80;
+    listen [::]:80;
+    server_name jicki.me;
+
+    # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+    return 301 https://$host$request_uri;
+}
 
 server
 {
