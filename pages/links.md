@@ -11,4 +11,4 @@ permalink: /links/
 > 一些朋友,一些往事...... 
 
  * [小炒肉](https://jicki.me/)
- 
+ * [漠然](https://mritd.me/) 
