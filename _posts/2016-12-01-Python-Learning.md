@@ -706,11 +706,11 @@ if __name__ == "__main__":
 	
 ``` 
 
-
+# Queue 队列
 
 ## 多进程间通讯 Queues
 
-```
+```python
 # 不同进程间内存是不共享的,要想实现进程间数据交换，可使用 Queues
 
 
@@ -719,7 +719,7 @@ from multiprocessing import Process,Queue
 def f(q):
     q.put([1,None, 'hello'])
     q.put([2,None, 'word'])
-	
+
 if __name__ == '__main__':
     q = Queue()
     p = Process(target=f, args=(q,))
@@ -735,7 +735,129 @@ if __name__ == '__main__':
 ```
 
 
-## 
+## 生产者消费者模型
+
+```python
+import queue,threading,time
+
+q = queue.Queue()
+def consumer(n):
+    while True:
+        print("消费者-[ %s ]， 消费了 [ %s ]" % (n,q.get()))
+        time.sleep(1)
+        q.task_done()
+
+def profucer(n):
+    count = 1
+    while True:
+        print("生产者-[ %s ]  生产了 [ %s ] 个" %(n,count))
+        q.put(count)
+        q.join()
+        print("已经全部消费完毕")
+
+
+c1 = threading.Thread(target=consumer,args=["消费者1",])
+c2 = threading.Thread(target=consumer,args=["消费者2",])
+c3 = threading.Thread(target=consumer,args=["消费者3",])
+
+p1 = threading.Thread(target=profucer,args=["生产者1",])
+p2 = threading.Thread(target=profucer,args=["生产者2",])
+p3 = threading.Thread(target=profucer,args=["生产者3",])
+
+
+c1.start()
+c2.start()
+c3.start()
+p1.start()
+p2.start()
+p3.start()
+```
+
+
+## 协程
+
+```python
+# gevent 模块
+
+import gevent
+
+def foo():
+    print("运行foo")
+    gevent.sleep(1)
+    print("再次运行foo")
+
+def b1():
+    print("运行b1")
+    gevent.sleep(1)
+    print("再次运行b1")
+
+def c1():
+    print("运行c1")
+    gevent.sleep(1)
+    print("再次运行c1")
+
+gevent.joinall([
+    gevent.spawn(foo),
+    gevent.spawn(b1),
+    gevent.spawn(c1)
+])
+```
+
+## 异步IO模型
+
+> * select 
+> * poll
+> * Epoll
+
+## Python - Mysql
+
+> python 操作 mysql
+
+```python
+# MySQLdb 模块 只能在 Python 2.7 中使用 Python3 以后不支持
+# python 3.x 请使用 pymysql 模块
+
+import pymysql
+
+conn = pymysql.connect(host='127.0.0.1', user='jicki', passwd='123456',db='jicki')
+cur = conn.cursor()
+cur.execute("INSERT INTO user (username,password,encrypt,valid) VALUES  ('raid','123456','1','2')")
+cur.execute("SELECT * FROM user")
+# fetchone() 取一条数据
+# fetchamany(3) 取指定条数数据
+# fetchall() 取所有数据
+for r in cur.fetchall():
+           print(r)
+           cur.close()
+# conn.rollback()     # 回滚
+conn.commit()         # 写入数据库
+conn.close()
+
+```
+
+
+```python
+# 利用列表 与 executemany 批量插入数据
+
+import pymysql
+
+li = [
+    ('jicki', '1234', '2', '3'),
+    ('xiao', '3333','4','5'),
+    ('dada', '4444', '6', '7'),
+]
+conn = pymysql.connect(host='127.0.0.1', user='jicki', passwd='123456',db='jicki')
+cur = conn.cursor()
+cur.executemany("INSERT INTO user(username,password,encrypt,valid) VALUES(%s,%s,%s,%s)", li)
+cur.execute("SELECT * FROM user")
+for r in cur.fetchall():
+           print(r)
+           cur.close()
+conn.commit()
+conn.close()
+```
+
+
 
 
 
