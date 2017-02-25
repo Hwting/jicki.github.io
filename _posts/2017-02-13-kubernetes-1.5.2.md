@@ -104,7 +104,7 @@ done
 ```
 # 如果速度很慢，可配置一下加速
 
-docker 启动文件 增加 --registry-mirror="http://b438f72b.m.daocloud.io"
+docker 启动文件 增加 --registry-mirror=http://b438f72b.m.daocloud.io
 
 ```
 
