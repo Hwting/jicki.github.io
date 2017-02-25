@@ -34,4 +34,27 @@ do
   wget $curl/$1/$i
 done
 fi
+
+
+
+
+
+
+
+######### $1 ###############
+
+<html>
+<head><title>Index of /wars_beta/201702241/</title></head>
+<body bgcolor="white">
+<h1>Index of /wars_beta/201702241/</h1><hr><pre><a href="../">../</a>
+<a href="mo_agent.war">mo_agent.war</a>                                       24-Feb-2017 07:35            97110689
+<a href="mo_agent_core.war">mo_agent_core.war</a>                                  24-Feb-2017 07:35            85160737
+<a href="mo_boss.war">mo_boss.war</a>                                        24-Feb-2017 09:07           111437764
+<a href="mo_page.war">mo_page.war</a>                                        24-Feb-2017 07:45            87313275
+<a href="mo_payment.war">mo_payment.war</a>                                     24-Feb-2017 07:45            93228435
+<a href="mo_settle.war">mo_settle.war</a>                                      24-Feb-2017 07:35            90557505
+</pre><hr></body>
+</html>
+
+
 ```
