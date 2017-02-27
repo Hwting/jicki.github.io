@@ -858,8 +858,63 @@ conn.close()
 ```
 
 
+## 事件驱动
+> 事件驱动 分为二部分，注册事件 与 触发事件
 
 
+## Python Redis
+> 使用 redis 模块 pip install redis
+
+```python
+# 简单的操作
+
+import redis
+r = redis.Redis(host='127.0.0.1',port=6379)
+r.set("name", "jicki")
+print(r.get("name"))
+```
+
+```python
+# 连接池 的方式连接
+
+import redis
+
+pool = redis.ConnectionPool(host="127.0.0.1",port=6379)
+r = redis.Redis(connection_pool=pool)
+r.set("name", "jicki")
+print(r.get("name"))
+```
+
+
+```python
+# set 操作的参数
+    ex  过期时间 (秒)
+    px  过期时间 (毫秒)
+    nx  为 True 时 只有 键值 不存在时 才可 set
+    xx  为 True 时 只有 键值 存在时 才可 set
+    
+# 例:
+    r.set("name", "jicki", ex=3)
+    r.set("name", "jicki", px=100)
+    r.set("name", "jicki", nx=True)
+    r.set("name", "jicki", xx=True)
+```
+
+```python
+# Hash 操作
+
+import redis
+
+pool = redis.ConnectionPool(host="10.6.0.188",port=6379)
+r = redis.Redis(connection_pool=pool)
+
+r.hmset("info", {'fo1':'o1','fo2':'o2', 'fo3':'o3'})
+
+print(r.hget("info",'fo1'))
+
+print(r.hgetall("info"))
+
+```
 
 
 
