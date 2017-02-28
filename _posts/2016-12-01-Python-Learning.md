@@ -905,7 +905,7 @@ print(r.get("name"))
 
 import redis
 
-pool = redis.ConnectionPool(host="10.6.0.188",port=6379)
+pool = redis.ConnectionPool(host="127.0.0.1",port=6379)
 r = redis.Redis(connection_pool=pool)
 
 r.hmset("info", {'fo1':'o1','fo2':'o2', 'fo3':'o3'})
@@ -915,6 +915,67 @@ print(r.hget("info",'fo1'))
 print(r.hgetall("info"))
 
 ```
+
+
+## redis 订阅 与 发布
+
+```python
+# 创建一个类
+
+import redis
+
+redis_pool = redis.ConnectionPool(host="10.6.0.188", port=6379)  # 创建一个连接池
+
+class RedisHelper(object):
+    def __init__(self):
+        self.__conn = redis.Redis(connection_pool=redis_pool)   # 配置连接池
+        self.chan_sub = 'fm109'  # 订阅频道号
+        self.chan_pub = 'fm109'  # 发布频道号
+
+    def public(self,msg):     # 定义了一个发布的函数
+        self.__conn.publish(self.chan_pub,msg)    # 发布消息
+        return True
+
+    def subscribe(self):              # 定义一个 订阅 的函数
+        pub = self.__conn.pubsub()    # 生成一个 订阅的实例
+        pub.subscribe(self.chan_sub)  # 选择订阅频道
+        pub.parse_response()          # 接收发布的消息
+        return pub
+
+```
+
+```python
+# 订阅端
+
+from redis_helper import RedisHelper
+
+obj = RedisHelper()   # 实例化
+
+redis_sub = obj.subscribe()   # 订阅者调用 subscribe 这个函数
+
+while True:          # 循环接收 发布者 发送的消息
+    msg = redis_sub.parse_response()      # 收听 订阅频道
+    print(msg)                            # 打印消息
+
+
+```
+
+
+```python
+# 发布端
+
+from redis_helper import RedisHelper
+
+obj = RedisHelper()   # 实例化
+
+while True:
+    msg = input("请输入发布的信息: ").strip()
+    if len(msg) == 0:
+        continue
+    else:
+        redis_pub = obj.public(msg)
+```
+
 
 
 
