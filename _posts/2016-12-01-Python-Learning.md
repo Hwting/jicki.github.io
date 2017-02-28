@@ -924,7 +924,7 @@ print(r.hgetall("info"))
 
 import redis
 
-redis_pool = redis.ConnectionPool(host="10.6.0.188", port=6379)  # 创建一个连接池
+redis_pool = redis.ConnectionPool(host="127.0.0.1", port=6379)  # 创建一个连接池
 
 class RedisHelper(object):
     def __init__(self):
