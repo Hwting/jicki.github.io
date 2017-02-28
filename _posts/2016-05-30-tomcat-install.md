@@ -176,4 +176,15 @@ e=false -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.
 
 # -Djava.rmi.server.hostname=  在 docker 下必须填写 宿主机IP 否则连接不上
 
+
+配置完毕 重启 tomcat
+
+
+Windows 下安装 jdk 
+
+在 java_home/bin/ 下面 找到 jconsole.exe 
+
+选择远程连接， 输入 IP 与 端口 既可连接
+
+
 ```
