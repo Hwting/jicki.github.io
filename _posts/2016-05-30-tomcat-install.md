@@ -159,3 +159,21 @@ chmod 777 *.sh
 http://ip:8080 
 
 ```
+
+
+## 配置JMX
+
+```
+vi catalina.sh   
+
+# 在 CATALINA_OPTS 里面添加如下配置
+
+CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticat
+e=false -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Djava.rmi.server.hostname=172.16.1.47 -Dcom.sun.management.jmxremote.ssl=false"
+
+
+# 特别注意 -Djava.rmi.server.hostname=172.16.1.47
+
+# -Djava.rmi.server.hostname=  在 docker 下必须填写 宿主机IP 否则连接不上
+
+```
