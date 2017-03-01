@@ -977,7 +977,66 @@ while True:
 ```
 
 
+## Python - RabbitMQ
 
+```python
+# Python 使用pika 模块操作 RabbitMQ
+# RabbitMQ 发送端 (生产者)
+
+import pika
+
+#  创建认证
+credentials = pika.PlainCredentials('jicki', '123456')
+
+#  定义 rabbitmq 的连接
+conn = pika.BlockingConnection(pika.ConnectionParameters('127.0.0.1',5672, '/', credentials))
+
+# 生成一个管道
+channel = conn.channel()
+
+# 创建一个队列 名 (durable=True 设置为持久化队列)
+channel.queue_declare(queue='hello', durable=True)
+
+# 发送消息
+channel.basic_publish(exchange='', routing_key='hello', body='hello jicki ')
+
+print(" 消息  发送成功" )
+
+# 关闭连接
+conn.close()
+```
+
+
+```python
+# RabbitMQ 接收端 (消费者)
+
+import pika
+
+#  创建认证
+credentials = pika.PlainCredentials('jicki', '123456')
+
+#  定义 rabbitmq 的连接
+conn = pika.BlockingConnection(pika.ConnectionParameters('127.0.0.1',5672, '/', credentials))
+
+# 生成一个管道
+channel = conn.channel()
+
+# 创建一个队列 名 (durable=True 设置为持久化队列)
+channel.queue_declare(queue='hello', durable=True)
+
+
+def callback(ch, method, properties, body):
+    print("返回信息 %r" %body)
+
+# 声明队列信息
+channel.basic_consume(callback, queue='hello', no_ack=False)
+
+print('等待队列消息')
+
+# 开始接收任务
+channel.start_consuming()
+
+```
 
 
 
