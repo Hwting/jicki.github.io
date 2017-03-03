@@ -1028,6 +1028,10 @@ channel.queue_declare(queue='hello', durable=True)
 def callback(ch, method, properties, body):
     print("返回信息 %r" %body)
 
+
+# 设置同时只处理一个任务(负载均衡, 如果不设置，会轮询)
+channel.basic_qos(prefetch_count=1)
+
 # 声明队列信息
 channel.basic_consume(callback, queue='hello', no_ack=False)
 
@@ -1039,6 +1043,147 @@ channel.start_consuming()
 ```
 
 
+## RabbitMQ 发布与订阅
+
+> 发布端代码
+```python
+import pika
+
+#  创建认证
+credentials = pika.PlainCredentials('jicki', '123456')
+
+#  定义 rabbitmq 的连接
+conn = pika.BlockingConnection(pika.ConnectionParameters('10.6.0.188',5672, '/', credentials))
+
+# 生成一个管道
+channel = conn.channel()
+
+# 创建一个 exchange
+channel.exchange_declare(exchange='logs',type='fanout')
+
+# 发布的消息
+message = ''.join(sys.argv[1:]) or 'Hello jicki'
+
+# 往 exchange 发送消息
+channel.basic_publish(exchange='logs', routing_key='', body=message)
+
+print('消息 [ %r ] 发送成功' %message)
+
+conn.close()
+
+```
+
+> 订阅端代码
+
+```python
+import pika
+
+
+#  创建认证
+credentials = pika.PlainCredentials('jicki', '123456')
+
+#  定义 rabbitmq 的连接
+conn = pika.BlockingConnection(pika.ConnectionParameters('10.6.0.188',5672, '/', credentials))
+
+# 生成一个管道
+channel = conn.channel()
+
+# 声明这个 exchange
+channel.exchange_declare(exchange='logs', type='fanout')
+
+# 声明一个 queue, 不需要指定 queue 名
+# rabbitmq 会随机生成一个 queue , 当消费者断开后，queue 会自动删除
+result = channel.queue_declare(exclusive=True)
+
+queue_name = result.method.queue
+
+# 将这个 queue 与 exchange 绑定
+channel.queue_bind(exchange='logs', queue=queue_name)
+
+print("等待消息.....")
+
+
+def callbak(ch, method, properties, body):
+    print(" [ %r ]" %body)
+
+# 声明队列信息
+channel.basic_consume(callbak, queue=queue_name, no_ack=True)
+
+# 开始接受消息
+channel.start_consuming()
+
+```
+
+## RabbitMQ 带过滤的订阅与发布
+> topic pub 端
+
+```python
+
+import pika
+import sys
+
+#  创建认证
+credentials = pika.PlainCredentials('jicki', '123456')
+
+#  定义 rabbitmq 的连接
+conn = pika.BlockingConnection(pika.ConnectionParameters('10.6.0.188',5672, '/', credentials))
+
+# 生成一个管道
+channel = conn.channel()
+
+channel.exchange_declare(exchange='topic_logs', type='topic')
+
+routing_key = sys.argv[1] if len(sys.argv) > 1 else 'anonymous.info'
+
+message = ''.join(sys.argv[2:]) or 'hello jicki'
+
+channel.basic_publish(exchange= 'topic_logs', routing_key=routing_key, body=message)
+
+print('发送 [ %r:%r ]' %(routing_key, message))
+
+conn.close()
+```
+
+
+> topic sub 端
+
+```python
+import pika
+import sys
+
+#  创建认证
+credentials = pika.PlainCredentials('jicki', '123456')
+
+#  定义 rabbitmq 的连接
+conn = pika.BlockingConnection(pika.ConnectionParameters('10.6.0.188',5672, '/', credentials))
+
+# 生成一个管道
+channel = conn.channel()
+
+channel.exchange_declare(exchange='topic_logs', type='topic')
+
+result = channel.queue_declare(exclusive=True)
+
+queue_name = result.method.queue
+
+binding_keys = sys.argv[1:]
+if not binding_keys:
+    sys.stderr.write("%s [binding_keys] \n" % sys.argv[0])
+    sys.exit(1)
+
+for binding_keys in binding_keys:
+    channel.queue_bind(exchange='topic_logs', queue=queue_name, routing_key=binding_keys)
+
+print('等待消息.......')
+
+def callback(ch, method, properties, body):
+    print('消息 [ %r:%r ] 发送成功' % (method.routing_key, body))
+
+channel.basic_consume(callback, queue=queue_name, no_ack=True)
+
+channel.start_consuming()
+
+```
 
 
 

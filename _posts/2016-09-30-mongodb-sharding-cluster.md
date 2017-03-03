@@ -124,16 +124,15 @@ mkdir -p /opt/local/mongodb/data/config
 ```
 chown -R mongodb:mongodb /opt/local/mongodb
 ```
- 
 
- 
 
-7. 配置relica sets
 
-配置shard1所用到的replica sets:
-
+7.  创建配置文件
 
 ```
+vi mongodb.conf
+
+
 port=27017                                                  #端口号
 
 fork=true                                                   #以守护进程的方式运行，创建服务器进程
@@ -152,8 +151,9 @@ replSet=shard1                                              #设置副本集名�
 
 oplogSize=5000                                              #设置oplog的大小(MB)
 
-```
 
+```
+ 
 
 ## 启动 mongodb 27017
 
