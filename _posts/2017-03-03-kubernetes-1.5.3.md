@@ -335,15 +335,6 @@ curl -O https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-das
 
 #编辑 yaml 文件
 
-vi kubernetes-dashboard.yaml
-
-image: gcr.io/google_containers/kubernetes-dashboard-amd64:v1.4.0
-
-修改为
-
-image: gcr.io/google_containers/kubernetes-dashboard-amd64:v1.5.0
-
-
 imagePullPolicy: Always
 
 修改为
