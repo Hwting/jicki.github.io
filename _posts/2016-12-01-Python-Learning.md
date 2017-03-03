@@ -1046,7 +1046,9 @@ channel.start_consuming()
 ## RabbitMQ 发布与订阅
 
 > 发布端代码
+
 ```python
+
 import pika
 
 #  创建认证
@@ -1076,6 +1078,7 @@ conn.close()
 > 订阅端代码
 
 ```python
+
 import pika
 
 
@@ -1115,6 +1118,7 @@ channel.start_consuming()
 ```
 
 ## RabbitMQ 带过滤的订阅与发布
+
 > topic pub 端
 
 ```python
@@ -1148,6 +1152,7 @@ conn.close()
 > topic sub 端
 
 ```python
+
 import pika
 import sys
 
