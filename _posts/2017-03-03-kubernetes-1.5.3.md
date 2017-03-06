@@ -172,7 +172,13 @@ You can now join any number of machines by running the following on each node:
 
 kubeadm join --token=c53ef2.d257d49589d634f0 10.6.0.140
 
+
+# 如果忘记了 token 使用如下 命令可获取
+
+kubectl -n kube-system get secret clusterinfo -o yaml | grep token-map | awk '{print $2}' | base64 --decode | sed "s|{||g;s|}||g;s|:|.|g;s/\"//g;" | xargs echo
+
 ```
+
 
 
 
