@@ -83,21 +83,21 @@ bin_dir: /usr/local/bin
 
 # Kubernetes 配置文件存放目录以及命名空间
 kube_config_dir: /etc/kubernetes
-kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
-kube_manifest_dir: "{{ kube_config_dir }}/manifests"
+kube_script_dir: "{ { bin_dir } }/kubernetes-scripts"
+kube_manifest_dir: "{ { kube_config_dir } }/manifests"
 system_namespace: kube-system
 
 # 日志存放位置
 kube_log_dir: "/var/log/kubernetes"
 
 # kubernetes 证书存放位置
-kube_cert_dir: "{{ kube_config_dir }}/ssl"
+kube_cert_dir: "{ { kube_config_dir } }/ssl"
 
 # token存放位置
-kube_token_dir: "{{ kube_config_dir }}/tokens"
+kube_token_dir: "{ { kube_config_dir } }/tokens"
 
 # basic auth 认证文件存放位置
-kube_users_dir: "{{ kube_config_dir }}/users"
+kube_users_dir: "{ { kube_config_dir } }/users"
 
 # 关闭匿名授权
 kube_api_anonymous_auth: false
@@ -121,10 +121,10 @@ kube_log_level: 2
 kube_api_pwd: "test123"
 kube_users:
   kube:
-    pass: "{{kube_api_pwd}}"
+    pass: "{ {kube_api_pwd} }"
     role: admin
   root:
-    pass: "{{kube_api_pwd}}"
+    pass: "{ {kube_api_pwd} }"
     role: admin
 
 # 网络 CNI 组件 (calico, weave or flannel)
@@ -140,7 +140,7 @@ kube_pods_subnet: 10.233.64.0/18
 kube_network_node_prefix: 24
 
 # api server 监听地址及端口
-kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
+kube_apiserver_ip: "{ { kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') } }"
 kube_apiserver_port: 6443 # (https)
 kube_apiserver_insecure_port: 8080 # (http)
 
@@ -160,16 +160,16 @@ resolvconf_mode: docker_dns
 deploy_netchecker: true 
 
 # skydns service IP 配置
-skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
-dns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(2)|ipaddr('address') }}"
-dns_domain: "{{ cluster_name }}"
+skydns_server: "{ { kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') } }"
+dns_server: "{ { kube_service_addresses|ipaddr('net')|ipaddr(2)|ipaddr('address') } }"
+dns_domain: "{ { cluster_name } }"
 
 # docker 存储目录
 docker_daemon_graph: "/var/lib/docker"
 
 # docker 的额外配置参数，默认会在 /etc/systemd/system/docker.service.d/ 创建相关配置，如果节点已经安装了 docker，并且做了自己的配置，比如启用的 device mapper ，那么要删除/更改这里，防止冲突导致 docker 无法启动
 
-docker_options: "--insecure-registry={{ kube_service_addresses }} --graph={{ docker_daemon_graph }} --iptables=false"
+docker_options: "--insecure-registry={ { kube_service_addresses } } --graph={ { docker_daemon_graph } } --iptables=false"
 docker_bin_dir: "/usr/bin"
 
 # 组件部署方式
@@ -293,7 +293,7 @@ flannel_version: v0.6.2
 pod_infra_version: 3.0
 
 # Download URL's
-etcd_download_url: "https://storage.googleapis.com/kargo/{{etcd_version}}_etcd"
+etcd_download_url: "https://storage.googleapis.com/kargo/{ {etcd_version} }_etcd"
 
 # Checksums
 etcd_checksum: "385afd518f93e3005510b7aaa04d38ee4a39f06f5152cd33bb86d4f0c94c7485"
@@ -302,202 +302,202 @@ etcd_checksum: "385afd518f93e3005510b7aaa04d38ee4a39f06f5152cd33bb86d4f0c94c7485
 # Possible values: host, docker
 etcd_deployment_type: "docker"
 etcd_image_repo: "quay.io/coreos/etcd"
-etcd_image_tag: "{{ etcd_version }}"
+etcd_image_tag: "{ { etcd_version } }"
 flannel_image_repo: "quay.io/coreos/flannel"
-flannel_image_tag: "{{ flannel_version }}"
+flannel_image_tag: "{ { flannel_version } }"
 calicoctl_image_repo: "calico/ctl"
-calicoctl_image_tag: "{{ calico_version }}"
+calicoctl_image_tag: "{ { calico_version } }"
 calico_node_image_repo: "calico/node"
-calico_node_image_tag: "{{ calico_version }}"
+calico_node_image_tag: "{ { calico_version } }"
 calico_cni_image_repo: "calico/cni"
-calico_cni_image_tag: "{{ calico_cni_version }}"
+calico_cni_image_tag: "{ { calico_cni_version } }"
 calico_policy_image_repo: "calico/kube-policy-controller"
-calico_policy_image_tag: "{{ calico_policy_version }}"
+calico_policy_image_tag: "{ { calico_policy_version } }"
 # TODO(adidenko): switch to "calico/routereflector" when
 # https://github.com/projectcalico/calico-bird/pull/27 is merged
 calico_rr_image_repo: "quay.io/l23network/routereflector"
 calico_rr_image_tag: "v0.1"
 exechealthz_version: 1.2
 exechealthz_image_repo: "gcr.io/google_containers/exechealthz-amd64"
-exechealthz_image_tag: "{{ exechealthz_version }}"
+exechealthz_image_tag: "{ { exechealthz_version } }"
 hyperkube_image_repo: "quay.io/coreos/hyperkube"
-hyperkube_image_tag: "{{ kube_version }}_coreos.0"
+hyperkube_image_tag: "{ { kube_version } }_coreos.0"
 pod_infra_image_repo: "gcr.io/google_containers/pause-amd64"
-pod_infra_image_tag: "{{ pod_infra_version }}"
+pod_infra_image_tag: "{ { pod_infra_version } }"
 netcheck_tag: "v1.0"
 netcheck_agent_img_repo: "quay.io/l23network/k8s-netchecker-agent"
 netcheck_server_img_repo: "quay.io/l23network/k8s-netchecker-server"
 weave_kube_image_repo: "weaveworks/weave-kube"
-weave_kube_image_tag: "{{ weave_version }}"
+weave_kube_image_tag: "{ { weave_version } }"
 weave_npc_image_repo: "weaveworks/weave-npc"
-weave_npc_image_tag: "{{ weave_version }}"
+weave_npc_image_tag: "{ { weave_version } }"
 
 nginx_image_repo: nginx
 nginx_image_tag: 1.11.4-alpine
 dnsmasq_version: 2.72
 dnsmasq_image_repo: "andyshinn/dnsmasq"
-dnsmasq_image_tag: "{{ dnsmasq_version }}"
+dnsmasq_image_tag: "{ { dnsmasq_version } }"
 kubednsmasq_version: 1.4
 kubednsmasq_image_repo: "gcr.io/google_containers/kube-dnsmasq-amd64"
-kubednsmasq_image_tag: "{{ kubednsmasq_version }}"
+kubednsmasq_image_tag: "{ { kubednsmasq_version } }"
 kubedns_version: 1.9
 kubedns_image_repo: "gcr.io/google_containers/kubedns-amd64"
-kubedns_image_tag: "{{ kubedns_version }}"
+kubedns_image_tag: "{ { kubedns_version } }"
 test_image_repo: busybox
 test_image_tag: latest
 elasticsearch_version: "v2.4.1"
 elasticsearch_image_repo: "gcr.io/google_containers/elasticsearch"
-elasticsearch_image_tag: "{{ elasticsearch_version }}"
+elasticsearch_image_tag: "{ { elasticsearch_version } }"
 fluentd_version: "1.22"
 fluentd_image_repo: "gcr.io/google_containers/fluentd-elasticsearch"
-fluentd_image_tag: "{{ fluentd_version }}"
+fluentd_image_tag: "{ { fluentd_version } }"
 kibana_version: "v4.6.1"
 kibana_image_repo: "gcr.io/google_containers/kibana"
-kibana_image_tag: "{{ kibana_version }}"
+kibana_image_tag: "{ { kibana_version } }"
 
 downloads:
   netcheck_server:
     container: true
-    repo: "{{ netcheck_server_img_repo }}"
-    tag: "{{ netcheck_tag }}"
-    sha256: "{{ netcheck_server_digest_checksum|default(None) }}"
-    enabled: "{{ deploy_netchecker|bool }}"
+    repo: "{ { netcheck_server_img_repo } }"
+    tag: "{ { netcheck_tag } }"
+    sha256: "{ { netcheck_server_digest_checksum|default(None) } }"
+    enabled: "{ { deploy_netchecker|bool } }"
   netcheck_agent:
     container: true
-    repo: "{{ netcheck_agent_img_repo }}"
-    tag: "{{ netcheck_tag }}"
-    sha256: "{{ netcheck_agent_digest_checksum|default(None) }}"
-    enabled: "{{ deploy_netchecker|bool }}"
+    repo: "{ { netcheck_agent_img_repo } }"
+    tag: "{ { netcheck_tag } }"
+    sha256: "{ { netcheck_agent_digest_checksum|default(None) } }"
+    enabled: "{ { deploy_netchecker|bool } }"
   etcd:
-    version: "{{etcd_version}}"
-    dest: "etcd/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+    version: "{ {etcd_version} }"
+    dest: "etcd/etcd-{ { etcd_version } }-linux-amd64.tar.gz"
     sha256: >-
-      {%- if etcd_deployment_type in [ 'docker', 'rkt' ] -%}{{etcd_digest_checksum|default(None)}}{%- else -%}{{etcd_checksum}}{%- endif -%}
-    source_url: "{{ etcd_download_url }}"
-    url: "{{ etcd_download_url }}"
+      {%- if etcd_deployment_type in [ 'docker', 'rkt' ] -%}{ {etcd_digest_checksum|default(None)} }{%- else -%}{ {etcd_checksum} }{%- endif -%}
+    source_url: "{ { etcd_download_url } }"
+    url: "{ { etcd_download_url } }"
     unarchive: true
     owner: "etcd"
     mode: "0755"
-    container: "{{ etcd_deployment_type in [ 'docker', 'rkt' ] }}"
-    repo: "{{ etcd_image_repo }}"
-    tag: "{{ etcd_image_tag }}"
+    container: "{ { etcd_deployment_type in [ 'docker', 'rkt' ] } }"
+    repo: "{ { etcd_image_repo } }"
+    tag: "{ { etcd_image_tag } }"
   hyperkube:
     container: true
-    repo: "{{ hyperkube_image_repo }}"
-    tag: "{{ hyperkube_image_tag }}"
-    sha256: "{{ hyperkube_digest_checksum|default(None) }}"
+    repo: "{ { hyperkube_image_repo } }"
+    tag: "{ { hyperkube_image_tag } }"
+    sha256: "{ { hyperkube_digest_checksum|default(None) } }"
   flannel:
     container: true
-    repo: "{{ flannel_image_repo }}"
-    tag: "{{ flannel_image_tag }}"
-    sha256: "{{ flannel_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'flannel' or kube_network_plugin == 'canal' }}"
+    repo: "{ { flannel_image_repo } }"
+    tag: "{ { flannel_image_tag } }"
+    sha256: "{ { flannel_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'flannel' or kube_network_plugin == 'canal' } }"
   calicoctl:
     container: true
-    repo: "{{ calicoctl_image_repo }}"
-    tag: "{{ calicoctl_image_tag }}"
-    sha256: "{{ calicoctl_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'calico' or kube_network_plugin == 'canal' }}"
+    repo: "{ { calicoctl_image_repo } }"
+    tag: "{ { calicoctl_image_tag } }"
+    sha256: "{ { calicoctl_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'calico' or kube_network_plugin == 'canal' } }"
   calico_node:
     container: true
-    repo: "{{ calico_node_image_repo }}"
-    tag: "{{ calico_node_image_tag }}"
-    sha256: "{{ calico_node_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'calico' or kube_network_plugin == 'canal' }}"
+    repo: "{ { calico_node_image_repo } }"
+    tag: "{ { calico_node_image_tag } }"
+    sha256: "{ { calico_node_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'calico' or kube_network_plugin == 'canal' } }"
   calico_cni:
     container: true
-    repo: "{{ calico_cni_image_repo }}"
-    tag: "{{ calico_cni_image_tag }}"
-    sha256: "{{ calico_cni_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'calico' or kube_network_plugin == 'canal' }}"
+    repo: "{ { calico_cni_image_repo } }"
+    tag: "{ { calico_cni_image_tag } }"
+    sha256: "{ { calico_cni_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'calico' or kube_network_plugin == 'canal' } }"
   calico_policy:
     container: true
-    repo: "{{ calico_policy_image_repo }}"
-    tag: "{{ calico_policy_image_tag }}"
-    sha256: "{{ calico_policy_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'canal' }}"
+    repo: "{ { calico_policy_image_repo } }"
+    tag: "{ { calico_policy_image_tag } }"
+    sha256: "{ { calico_policy_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'canal' } }"
   calico_rr:
     container: true
-    repo: "{{ calico_rr_image_repo }}"
-    tag: "{{ calico_rr_image_tag }}"
-    sha256: "{{ calico_rr_digest_checksum|default(None) }}"
-    enabled: "{{ peer_with_calico_rr is defined and peer_with_calico_rr}} and kube_network_plugin == 'calico'"
+    repo: "{ { calico_rr_image_repo } }"
+    tag: "{ { calico_rr_image_tag } }"
+    sha256: "{ { calico_rr_digest_checksum|default(None) } }"
+    enabled: "{ { peer_with_calico_rr is defined and peer_with_calico_rr} } and kube_network_plugin == 'calico'"
   weave_kube:
     container: true
-    repo: "{{ weave_kube_image_repo }}"
-    tag: "{{ weave_kube_image_tag }}"
-    sha256: "{{ weave_kube_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'weave' }}"
+    repo: "{ { weave_kube_image_repo } }"
+    tag: "{ { weave_kube_image_tag } }"
+    sha256: "{ { weave_kube_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'weave' } }"
   weave_npc:
     container: true
-    repo: "{{ weave_npc_image_repo }}"
-    tag: "{{ weave_npc_image_tag }}"
-    sha256: "{{ weave_npc_digest_checksum|default(None) }}"
-    enabled: "{{ kube_network_plugin == 'weave' }}"
+    repo: "{ { weave_npc_image_repo } }"
+    tag: "{ { weave_npc_image_tag } }"
+    sha256: "{ { weave_npc_digest_checksum|default(None) } }"
+    enabled: "{ { kube_network_plugin == 'weave' } }"
   pod_infra:
     container: true
-    repo: "{{ pod_infra_image_repo }}"
-    tag: "{{ pod_infra_image_tag }}"
-    sha256: "{{ pod_infra_digest_checksum|default(None) }}"
+    repo: "{ { pod_infra_image_repo } }"
+    tag: "{ { pod_infra_image_tag } }"
+    sha256: "{ { pod_infra_digest_checksum|default(None) } }"
   nginx:
     container: true
-    repo: "{{ nginx_image_repo }}"
-    tag: "{{ nginx_image_tag }}"
-    sha256: "{{ nginx_digest_checksum|default(None) }}"
+    repo: "{ { nginx_image_repo } }"
+    tag: "{ { nginx_image_tag } }"
+    sha256: "{ { nginx_digest_checksum|default(None) } }"
   dnsmasq:
     container: true
-    repo: "{{ dnsmasq_image_repo }}"
-    tag: "{{ dnsmasq_image_tag }}"
-    sha256: "{{ dnsmasq_digest_checksum|default(None) }}"
+    repo: "{ { dnsmasq_image_repo } }"
+    tag: "{ { dnsmasq_image_tag } }"
+    sha256: "{ { dnsmasq_digest_checksum|default(None) } }"
   kubednsmasq:
     container: true
-    repo: "{{ kubednsmasq_image_repo }}"
-    tag: "{{ kubednsmasq_image_tag }}"
-    sha256: "{{ kubednsmasq_digest_checksum|default(None) }}"
+    repo: "{ { kubednsmasq_image_repo } }"
+    tag: "{ { kubednsmasq_image_tag } }"
+    sha256: "{ { kubednsmasq_digest_checksum|default(None) } }"
   kubedns:
     container: true
-    repo: "{{ kubedns_image_repo }}"
-    tag: "{{ kubedns_image_tag }}"
-    sha256: "{{ kubedns_digest_checksum|default(None) }}"
+    repo: "{ { kubedns_image_repo } }"
+    tag: "{ { kubedns_image_tag } }"
+    sha256: "{ { kubedns_digest_checksum|default(None) } }"
   testbox:
     container: true
-    repo: "{{ test_image_repo }}"
-    tag: "{{ test_image_tag }}"
-    sha256: "{{ testbox_digest_checksum|default(None) }}"
+    repo: "{ { test_image_repo } }"
+    tag: "{ { test_image_tag } }"
+    sha256: "{ { testbox_digest_checksum|default(None) } }"
   exechealthz:
     container: true
-    repo: "{{ exechealthz_image_repo }}"
-    tag: "{{ exechealthz_image_tag }}"
-    sha256: "{{ exechealthz_digest_checksum|default(None) }}"
+    repo: "{ { exechealthz_image_repo } }"
+    tag: "{ { exechealthz_image_tag } }"
+    sha256: "{ { exechealthz_digest_checksum|default(None) } }"
   elasticsearch:
     container: true
-    repo: "{{ elasticsearch_image_repo }}"
-    tag: "{{ elasticsearch_image_tag }}"
-    sha256: "{{ elasticsearch_digest_checksum|default(None) }}"
+    repo: "{ { elasticsearch_image_repo } }"
+    tag: "{ { elasticsearch_image_tag } }"
+    sha256: "{ { elasticsearch_digest_checksum|default(None) } }"
   fluentd:
     container: true
-    repo: "{{ fluentd_image_repo }}"
-    tag: "{{ fluentd_image_tag }}"
-    sha256: "{{ fluentd_digest_checksum|default(None) }}"
+    repo: "{ { fluentd_image_repo } }"
+    tag: "{ { fluentd_image_tag } }"
+    sha256: "{ { fluentd_digest_checksum|default(None) } }"
   kibana:
     container: true
-    repo: "{{ kibana_image_repo }}"
-    tag: "{{ kibana_image_tag }}"
-    sha256: "{{ kibana_digest_checksum|default(None) }}"
+    repo: "{ { kibana_image_repo } }"
+    tag: "{ { kibana_image_tag } }"
+    sha256: "{ { kibana_digest_checksum|default(None) } }"
 
 download:
-  container: "{{ file.container|default('false') }}"
-  repo: "{{ file.repo|default(None) }}"
-  tag: "{{ file.tag|default(None) }}"
-  enabled: "{{ file.enabled|default('true') }}"
-  dest: "{{ file.dest|default(None) }}"
-  version: "{{ file.version|default(None) }}"
-  sha256: "{{ file.sha256|default(None) }}"
-  source_url: "{{ file.source_url|default(None) }}"
-  url: "{{ file.url|default(None) }}"
-  unarchive: "{{ file.unarchive|default('false') }}"
-  owner: "{{ file.owner|default('kube') }}"
-  mode: "{{ file.mode|default(None) }}"
+  container: "{ { file.container|default('false') } }"
+  repo: "{ { file.repo|default(None) } }"
+  tag: "{ { file.tag|default(None) } }"
+  enabled: "{ { file.enabled|default('true') } }"
+  dest: "{ { file.dest|default(None) } }"
+  version: "{ { file.version|default(None) } }"
+  sha256: "{ { file.sha256|default(None) } }"
+  source_url: "{ { file.source_url|default(None) } }"
+  url: "{ { file.url|default(None) } }"
+  unarchive: "{ { file.unarchive|default('false') } }"
+  owner: "{ { file.owner|default('kube') } }"
+  mode: "{ { file.mode|default(None) } }"
 
 ```
 
@@ -605,9 +605,8 @@ spec:
           ports: 
             - containerPort: 80
 
-```
+---
 
-```
 apiVersion: v1 
 kind: Service
 metadata: 
@@ -748,9 +747,8 @@ spec:
           ports:
           - containerPort: 2181
 
-```
+---
 
-```
 apiVersion: extensions/v1beta1 
 kind: Deployment
 metadata:
@@ -774,10 +772,9 @@ spec:
           ports:
           - containerPort: 2181
 
-```
 
+---
 
-```
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -800,9 +797,9 @@ spec:
             value: "zookeeper-1,zookeeper-2,0.0.0.0"
           ports:
           - containerPort: 2181
-```
 
-```
+---
+
 apiVersion: v1 
 kind: Service 
 metadata: 
@@ -823,9 +820,8 @@ spec:
   selector: 
     name: zookeeper-1
 
-```
 
-```
+---
 
 apiVersion: v1 
 kind: Service 
@@ -847,9 +843,7 @@ spec:
   selector: 
     name: zookeeper-2
 
-```
-
-```
+---
 
 apiVersion: v1 
 kind: Service 
@@ -898,6 +892,4 @@ zookeeper-3          10.233.50.206   <none>        2181/TCP,2888/TCP,3888/TCP   
 ```
 # 等待更新ing.......
 ```
-
-
 
