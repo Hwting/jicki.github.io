@@ -6,7 +6,6 @@ description: kargo kubernetes 1.5.4
 keywords: docker
 ---
 
-
 # 1、初始化环境
 
 ## 1.1、环境：
@@ -38,6 +37,7 @@ ssh-copy-id -i /root/.ssh/id_rsa.pub 10.6.0.56
 
 
 # 2、获取 Kargo
+
 > Kargo 官方github
 > https://github.com/kubernetes-incubator/kargo
 
