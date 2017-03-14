@@ -1,8 +1,8 @@
 ---
 layout: post
-title: kargo kubernetes 1.4.5
+title: kargo kubernetes 1.5.4
 categories: docker
-description: kargo kubernetes 1.4.5
+description: kargo kubernetes 1.5.4
 keywords: docker
 ---
 
@@ -261,7 +261,7 @@ cd kargo
 vi roles/download/defaults/main.yml
 
 
----
+
 local_release_dir: /tmp
 
 # if this is set to true will only download files once. Doesn't work
@@ -605,7 +605,9 @@ spec:
           ports: 
             - containerPort: 80
 
----
+```
+
+```
 apiVersion: v1 
 kind: Service
 metadata: 
@@ -617,9 +619,10 @@ spec:
       protocol: TCP 
   selector: 
     name: nginx
+```
 
 
-
+```
 # 导入 yaml 文件
 
 
@@ -660,8 +663,12 @@ spec:
     - sh
     - -c
     - while true; do sleep 1; done
-    
-    
+
+```    
+
+```    
+# 导入 yaml 文件
+
 [root@k8s-node-1 ~]# kubectl apply -f curl.yaml 
 pod "curl" created
 
@@ -671,6 +678,9 @@ NAME                             READY     STATUS    RESTARTS   AGE       IP    
 curl                             1/1       Running   0          2m        10.233.75.22    k8s-node-4
 
 
+```
+
+```
 # 测试 curl --> nginx-svc
 
 
@@ -703,6 +713,7 @@ Commercial support is available at
 </body>
 </html>
 
+```
 
 
 
@@ -710,7 +721,7 @@ Commercial support is available at
 
 
 
-
+```
 # 创建一个 zk  集群 zk-deplyment  和 service
 
 
@@ -737,8 +748,9 @@ spec:
           ports:
           - containerPort: 2181
 
----
+```
 
+```
 apiVersion: extensions/v1beta1 
 kind: Deployment
 metadata:
@@ -762,8 +774,10 @@ spec:
           ports:
           - containerPort: 2181
 
----
+```
 
+
+```
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -786,8 +800,9 @@ spec:
             value: "zookeeper-1,zookeeper-2,0.0.0.0"
           ports:
           - containerPort: 2181
----
+```
 
+```
 apiVersion: v1 
 kind: Service 
 metadata: 
@@ -808,7 +823,9 @@ spec:
   selector: 
     name: zookeeper-1
 
----
+```
+
+```
 
 apiVersion: v1 
 kind: Service 
@@ -830,7 +847,9 @@ spec:
   selector: 
     name: zookeeper-2
 
----
+```
+
+```
 
 apiVersion: v1 
 kind: Service 
@@ -852,7 +871,9 @@ spec:
   selector: 
     name: zookeeper-3
 
+```
 
+```
 # 查看状态  pods 与 service
 
 [root@k8s-node-1 ~]# kubectl get pods -o wide
