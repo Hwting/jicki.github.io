@@ -70,7 +70,12 @@ cd kargo
 
 vim inventory/group_vars/k8s-cluster.yml
 
+
 # 配置文件如下:
+# 其中{ { 与 } } 实际为 {{ }} 因为博客 jellky 的原因 他会解析{{ }} 并自动去掉，所以我在里面加了空格。
+# 请自行使用 sed 替换
+
+
 
 # 启动集群的基础系统
 bootstrap_os: centos
@@ -83,21 +88,21 @@ bin_dir: /usr/local/bin
 
 # Kubernetes 配置文件存放目录以及命名空间
 kube_config_dir: /etc/kubernetes
-kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
-kube_manifest_dir: "{{ kube_config_dir }}/manifests"
+kube_script_dir: "{ { bin_dir } }/kubernetes-scripts"
+kube_manifest_dir: "{ { kube_config_dir } }/manifests"
 system_namespace: kube-system
 
 # 日志存放位置
 kube_log_dir: "/var/log/kubernetes"
 
 # kubernetes 证书存放位置
-kube_cert_dir: "{{ kube_config_dir }}/ssl"
+kube_cert_dir: "{ { kube_config_dir } }/ssl"
 
 # token存放位置
-kube_token_dir: "{{ kube_config_dir }}/tokens"
+kube_token_dir: "{ { kube_config_dir } }/tokens"
 
 # basic auth 认证文件存放位置
-kube_users_dir: "{{ kube_config_dir }}/users"
+kube_users_dir: "{ { kube_config_dir } }/users"
 
 # 关闭匿名授权
 kube_api_anonymous_auth: false
@@ -121,10 +126,10 @@ kube_log_level: 2
 kube_api_pwd: "test123"
 kube_users:
   kube:
-    pass: "{{kube_api_pwd}}"
+    pass: "{ { kube_api_pwd } }"
     role: admin
   root:
-    pass: "{{kube_api_pwd}}"
+    pass: "{ { kube_api_pwd } }"
     role: admin
 
 # 网络 CNI 组件 (calico, weave or flannel)
@@ -140,7 +145,7 @@ kube_pods_subnet: 10.233.64.0/18
 kube_network_node_prefix: 24
 
 # api server 监听地址及端口
-kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
+kube_apiserver_ip: "{ { kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') } }"
 kube_apiserver_port: 6443 # (https)
 kube_apiserver_insecure_port: 8080 # (http)
 
@@ -160,16 +165,16 @@ resolvconf_mode: docker_dns
 deploy_netchecker: true 
 
 # skydns service IP 配置
-skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
-dns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(2)|ipaddr('address') }}"
-dns_domain: "{{ cluster_name }}"
+skydns_server: "{ { kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') } }"
+dns_server: "{ { kube_service_addresses|ipaddr('net')|ipaddr(2)|ipaddr('address') } }"
+dns_domain: "{ { cluster_name } }"
 
 # docker 存储目录
 docker_daemon_graph: "/var/lib/docker"
 
 # docker 的额外配置参数，默认会在 /etc/systemd/system/docker.service.d/ 创建相关配置，如果节点已经安装了 docker，并且做了自己的配置，比如启用的 device mapper ，那么要删除/更改这里，防止冲突导致 docker 无法启动
 
-docker_options: "--insecure-registry={{ kube_service_addresses }} --graph={{ docker_daemon_graph }} --iptables=false"
+docker_options: "--insecure-registry={ { kube_service_addresses } } --graph={ { docker_daemon_graph } } --iptables=false"
 docker_bin_dir: "/usr/bin"
 
 # 组件部署方式
