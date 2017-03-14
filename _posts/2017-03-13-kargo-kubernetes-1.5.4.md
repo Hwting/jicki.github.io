@@ -1,12 +1,13 @@
 ---
 layout: post
-title: kargo 部署kubernetes集群
+title: kargo kubernetes 1.4.5
 categories: docker
-description: kargo 部署kubernetes集群
+description: kargo kubernetes 1.4.5
 keywords: docker
 ---
 
-#1、初始化环境
+
+# 1、初始化环境
 
 ## 1.1、环境：
 
@@ -36,12 +37,12 @@ ssh-copy-id -i /root/.ssh/id_rsa.pub 10.6.0.56
 
 
 
-#2、获取 Kargo
+# 2、获取 Kargo
 > Kargo 官方github
 > https://github.com/kubernetes-incubator/kargo
 
 
-##2.1、安装基础软件
+## 2.1、安装基础软件
 
 > Kargo 是基于 ansible 统一部署，所以必须安装 ansible
 
@@ -56,13 +57,13 @@ yum install -y python-pip python34 python-netaddr python34-pip ansible
 pip install --upgrade Jinja2
 ```
 
-##2.2、获取源码
+## 2.2、获取源码
 
 ```
 git clone https://github.com/kubernetes-incubator/kargo
 ```
 
-##2.3、编辑配置文件
+## 2.3、编辑配置文件
 
 ```
 cd kargo
@@ -186,7 +187,7 @@ efk_enabled: true
 
 ```
 
-##2.4、生成集群配置文件
+## 2.4、生成集群配置文件
 
 ```
 cd kargo
@@ -876,4 +877,6 @@ zookeeper-3          10.233.50.206   <none>        2181/TCP,2888/TCP,3888/TCP   
 ```
 # 等待更新ing.......
 ```
+
+
 
