@@ -637,13 +637,180 @@ zookeeper-3          10.233.50.206   <none>        2181/TCP,2888/TCP,3888/TCP   
 
 ```
 
+## 2.7、部署一个 Nginx Ingress
 
-## 2.7、后续..
+> Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress；
+> 什么是 Ingress ?  Ingress 就是利用 nginx haproxy 等负载均衡工具来暴露 Kubernetes 服务。
 
 ```
-# 等待更新ing.......
+# 首先 部署一个 http-backend, 用于统一转发 没有的域名 到指定页面。
+# 官方 nginx  ingress 库 https://github.com/kubernetes/ingress/tree/master/examples/deployment/nginx
+```
+
+```
+# 下载 docker images
+
+docker pull jicki/defaultbackend:1.0
+docker tag jicki/defaultbackend:1.0 gcr.io/google_containers/defaultbackend:1.0
+docker rmi jicki/defaultbackend:1.0
+```
+
+
+```
+# 下载官方的 nginx  backend 文件
+
+curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/deployment/nginx/default-backend.yaml
+
+
+# 直接导入既可
+[root@k8s-node-1 ~]# kubectl apply -f default-backend.yaml 
+deployment "default-http-backend" created
+service "default-http-backend" created
+
+# 查看 deployment 与 service
+
+[root@k8s-node-1 ~]# kubectl get deployment --namespace=kube-system
+NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+default-http-backend   1         1         1            1           33m
+
+
+[root@k8s-node-1 ~]# kubectl get svc --namespace=kube-system       
+NAME                    CLUSTER-IP      EXTERNAL-IP   PORT(S)         AGE
+default-http-backend    10.233.20.232   <none>        80/TCP          33m
+
+```
+
+
+```
+# 部署 Ingress Controller 组件
+```
+
+
+```
+# 下载 docker 镜像
+
+docker pull jicki/nginx-ingress-controller:0.9.0-beta.3
+docker tag jicki/nginx-ingress-controller:0.9.0-beta.3 gcr.io/google_containers/nginx-ingress-controller:0.9.0-beta.3
+docker rmi jicki/nginx-ingress-controller:0.9.0-beta.3
+
+```
+
+```
+# 下载 官方 nginx-ingress-controller 的yaml文件
+
+curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/deployment/nginx/nginx-ingress-controller.yaml
+
+# 编辑 yaml 文件，打开 hostNetwork: true , 将端口绑定到宿主机中
+# 这里面deployment 默认只启动了一个pods, 这里可以修改 kind: Deployment 为 kind: DaemonSet  并注释掉 replicas
+# 或者 修改 replicas: 1  为 N 
+
+
+vi nginx-ingress-controller.yaml
+
+将 hostNetwork: true  前面的注释去掉
+
+
+
+# 导入 yaml 文件
+
+[root@k8s-node-1 ~]# kubectl apply -f nginx-ingress-controller.yaml 
+deployment "nginx-ingress-controller" created
+
+
+# 查看 deployment  或者  daemonsets
+[root@k8s-node-1 yaml]# kubectl get deployment --namespace=kube-system
+NAME                       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-ingress-controller   1         1         1            1           31s
+
+
+[root@k8s-node-1 yaml]# kubectl get daemonsets --namespace=kube-system
+NAME                       DESIRED   CURRENT   READY     NODE-SELECTOR   AGE
+nginx-ingress-controller   4         4         4         <none>          1m
+
+
+```
+
+
+```
+# 最后开始 部署 Ingress
+# 这里请先看看官方 ingress 的 yaml 写法
+# https://kubernetes.io/docs/user-guide/ingress/
+
+
+# 我们使用 之前创建的 nginx-dm  service，我们来写一个 ingress
+# 首先查看一下 svc 
+
+[root@k8s-node-1 yaml]# kubectl get svc
+NAME                 CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+kubernetes           10.233.0.1      <none>        443/TCP                      1d
+netchecker-service   10.233.0.126    <nodes>       8081:31081/TCP               1d
+nginx-dm             10.233.56.138   <none>        80/TCP                       1d
+zookeeper-1          10.233.25.46    <none>        2181/TCP,2888/TCP,3888/TCP   1d
+zookeeper-2          10.233.49.4     <none>        2181/TCP,2888/TCP,3888/TCP   1d
+zookeeper-3          10.233.50.206   <none>        2181/TCP,2888/TCP,3888/TCP   1d
+
+
+
+# 创建 yaml 文件， 这里特别注意，如果 svc 在 kube-system 下
+# 必须在 metadata: 下面添加 namespace: kube-system 指定命名空间
+
+vim nginx-ingress.yaml
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  rules:
+  - host: nginx.jicki.me
+    http:
+      paths:
+      - backend:
+          serviceName: nginx-dm
+          servicePort: 80
+
+
+# 导入 yaml 文件
+
+[root@k8s-node-1 ~]# kubectl apply -f nginx-ingress.yaml 
+ingress "nginx-ingress" created
+
+
+# 查看一下 创建的 ingress
+
+[root@k8s-node-1 ~]# kubectl get ingresses
+NAME            HOSTS            ADDRESS   PORTS     AGE
+nginx-ingress   nginx.jicki.me             80        17s
+
+# 这里显示 ADDRESS 为 空 实际上 所有 master 与 nodes 都绑定了
+# 将域名解析到 任何一个 IP 上都可以。
+
+
+
+
+
+
+# 下面访问 http://nginx.jicki.me/
+
+# 这里注意，Ingresses 只做简单的端口转发。
+
+
+![nginx][1]
 ```
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+  [1]: https://jicki.me/images/posts/kagro/1.png
