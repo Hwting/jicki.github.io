@@ -795,22 +795,12 @@ nginx-ingress   nginx.jicki.me             80        17s
 # 这里注意，Ingresses 只做简单的端口转发。
 
 
-![nginx][1]
 ```
 
+![nginx][1]
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-  [1]: https://jicki.me/images/posts/kagro/1.png
+  [1]: http://jicki.me/images/posts/kargo/1.png
