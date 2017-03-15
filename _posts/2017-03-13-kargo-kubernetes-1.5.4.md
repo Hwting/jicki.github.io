@@ -6,6 +6,8 @@ description: kargo kubernetes 1.5.4
 keywords: docker
 ---
 
+> 基于Kargo 快速部署多master 的 kubernetes 集群
+
 # 1、初始化环境
 
 ## 1.1、环境：
@@ -55,6 +57,13 @@ yum install -y python-pip python34 python-netaddr python34-pip ansible
 
 # 升级 Jinja2 否则报错 no test named 'equalto'
 pip install --upgrade Jinja2
+
+
+# k8s 1.4.5镜像, 可提前下载，安装docker 以后导入
+# 百度网盘地址
+
+http://pan.baidu.com/s/1jH5105S
+
 ```
 
 ## 2.2、获取源码
@@ -72,7 +81,7 @@ vim inventory/group_vars/k8s-cluster.yml
 
 
 # 配置文件如下:
-# 其中{ { 与 } } 实际为 {{ }} 因为博客 jellky 的原因 他会解析{{ }} 并自动去掉，所以我在里面加了空格。
+# 其中{ { 与 } } 实际为 "{{ }}" 因为博客 jellky 的原因 他会解析"{{ }}" 并自动去掉，所以我在里面加了空格。
 # 请自行使用 sed 替换
 
 
