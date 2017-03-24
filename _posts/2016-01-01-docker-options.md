@@ -44,7 +44,7 @@ mkdir -p /etc/systemd/system/docker.service.d/
 
 # 增加 docker.service 文件
 
-cat > /etc/systemd/system/docker.service << EOF
+cat >> /etc/systemd/system/docker.service < EOF
 
 [Unit]
 Description=Docker Application Container Engine
@@ -79,7 +79,7 @@ EOF
 
 # 增加配置文件
 
-cat > /etc/systemd/system/docker.service.d/docker-options.conf << EOF
+cat >> /etc/systemd/system/docker.service.d/docker-options.conf < EOF
 [Service]
 Environment="DOCKER_OPTS=--graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io --iptables=false"
 EOF
