@@ -801,5 +801,19 @@ nginx-ingress   nginx.jicki.me             80        17s
 
 
 
+# 维护 FAQ
+
+```
+# 卸载
+
+cd kargo
+
+ansible-playbook -i inventory/inventory.cfg reset.yml -b -v --private-key=~/.ssh/id_rsa
+
+# 注意 卸载 会删除docker 的所有 images
+
+
+```
+
 
   [1]: http://jicki.me/images/posts/kagro/1.png
