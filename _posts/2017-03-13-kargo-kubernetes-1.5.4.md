@@ -815,7 +815,6 @@ cd kargo
 
 ansible-playbook -i inventory/inventory.cfg reset.yml -b -v --private-key=~/.ssh/id_rsa
 
-# 注意 卸载 会删除docker 的所有 images
 
 
 ```
