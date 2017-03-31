@@ -59,10 +59,15 @@ yum install -y python-pip python34 python-netaddr python34-pip ansible
 pip install --upgrade Jinja2
 
 
-# k8s 1.4.5镜像, 可提前下载，安装docker 以后导入
+# k8s 1.5.4镜像, 可提前下载，安装docker 以后导入
 # 百度网盘地址
 
 http://pan.baidu.com/s/1jH5105S
+
+
+# karogo 2.2.0  k8s 1.5.5镜像
+
+http://pan.baidu.com/s/1pKCdOoV
 
 ```
 
