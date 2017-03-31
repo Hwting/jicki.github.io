@@ -815,5 +815,13 @@ ansible-playbook -i inventory/inventory.cfg reset.yml -b -v --private-key=~/.ssh
 
 ```
 
+```
+# hostname 的问题
+# 部署 kargo 必须配置 hostname 否则 多 master 会出现 无法创建 api 等 pods
+# 如果 执行了 ansible-playbook 之前没改 hostname 必须删除 /tmp 下的 node[N]
+# 否则更改 /etc/hosts 失败
+
+
+```
 
   [1]: http://jicki.me/images/posts/kagro/1.png
