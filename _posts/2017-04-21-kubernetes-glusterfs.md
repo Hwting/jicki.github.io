@@ -445,3 +445,53 @@ kubectl exec -it nginx-dm-2784556780-pt8vf -- ls -lt /usr/share/nginx/html/index
 [root@gluster-4 ~] ls /opt/gfs_data/
 
 ```
+
+
+
+## FAQ 问题
+
+```
+# 在使用 pv 与 pvc 的过程中遇到问题
+
+# 第一次创建 pv 与 pvc 的时候 状态都是OK的
+
+# 当删除 pvc 以后，再创建 pvc 状态一直 pending 无论如何都不正常
+
+# 查看日志 报 no persistent volumes available for this claim and no storage class is set
+
+# 这里我们可以跳过 pv 与 pvc 只需要创建一个 ep 就可以
+
+# 挂载的时候我们直接在 yaml 目录下 写 ep 就行
+
+# 如下为 deployment 的 yaml 文件
+
+
+apiVersion: extensions/v1beta1 
+kind: Deployment 
+metadata: 
+  name: nginx-dm
+spec: 
+  replicas: 2
+  template: 
+    metadata: 
+      labels: 
+        name: nginx 
+    spec: 
+      containers: 
+        - name: nginx 
+          image: nginx:alpine 
+          imagePullPolicy: IfNotPresent
+          ports: 
+            - containerPort: 80
+          volumeMounts:
+            - name: gluster-efk-volume
+              mountPath: "/usr/share/nginx/html"
+      volumes:
+      - name: gluster-efk-volume
+        glusterfs:
+          endpoints: glusterfs-cluster
+          path: efk-volume
+          readOnly: False
+
+
+```
