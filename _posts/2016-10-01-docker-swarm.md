@@ -106,3 +106,27 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 
 b888bbbfe594        swarm               "/swarm join --addr=1"   6 minutes ago       Up 6 minutes        2375/tcp            localhost.localdomain/node_2
 ```
+
+
+
+# FAQ
+
+```
+# swarm 集群中，出现加入 network 的错误，于某个 node 中。
+
+Cannot start container: subnet sandbox join failed for "10.0.0.0/24": error creating vxlan interface: file exists
+
+network sandbox join failed: error creating vxlan interface: file exists
+
+# 参考解决方案
+
+umount /var/run/docker/netns/*
+rm -rf /var/run/docker/netns/*
+
+# 重启 docker
+systemctl restart docker
+
+#如果还是不行 重启 这台 node 服务器
+
+
+```
