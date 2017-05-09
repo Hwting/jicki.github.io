@@ -6,6 +6,8 @@ description: kubernetes Ceph RBD
 keywords: kubernetes
 ---
 
+> 使用 Ceph RBD 做为 Kubernetes 后端存储
+
 # Ceph 安装部署
 
 > 由于这里我们使用 RBD 所以我们使用到的组件为 Ceph.mon, Ceph.osd, 这两个组件就可以了。 Ceph.mds 为 cephfs 所需组件
