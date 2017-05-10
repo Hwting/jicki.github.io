@@ -544,6 +544,43 @@ total 16
 
 # FAQ and Error
 
+
+
+## FAQ 1
+
+
+```
+# ceph 挂载关于 namespace != default 的情况下
+
+
+1. 需要配置 secret = namespace
+
+kubectl get secret  可以看到只存在 default 的 认证
+
+
+2. 需要配置 pv = namespace ，虽然pv 是全局的，但是最好还是配置一下
+
+kubectl get pv --namespace=
+
+
+3. 需要配置 pvc = namespace 。
+
+kubectl get pvc --namespace=
+
+
+# 确认以上3点，否则在挂载namespace 的时候会报错
+
+ceph timeout expired waiting for volumes to attach/mount for pod
+
+
+
+
+```
+
+
+
+## Error 1
+
 ```
 # 删除 osd 如果创建出错，请删除 osd
 
@@ -576,6 +613,7 @@ ceph-disk zap /dev/sdb
 ```
 
 
+## Error 2
 
 ```
 # 如果暴力删除了 osd 然后重建了 osd
