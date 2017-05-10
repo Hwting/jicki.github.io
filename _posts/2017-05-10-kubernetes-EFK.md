@@ -130,9 +130,9 @@ http://node-ip:30601
 # 4. 选择 Dashboard 勾选 ELK 并点击 ELK，等待加载。
 
 
+```
 ![EFK Dashboard][1]
 
-```
 
   [1]: https://jicki.me/images/posts/efk/1.png
 
