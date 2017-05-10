@@ -28,3 +28,8 @@ permalink: /about/
 >
 > **Shell、Python**
 >
+
+<audio  autoplay="autoplay">
+  <source src="https://mritd.b0.upaiyun.com/markdown/music_see_you_again.mp3" type="audio/mpeg" />
+Your future depends on your dreams
+</audio>
