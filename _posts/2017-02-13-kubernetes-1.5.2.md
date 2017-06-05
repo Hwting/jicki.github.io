@@ -59,15 +59,14 @@ vi /etc/hosts
 ```
 # 使用我朋友的 yum 源，嘿嘿
 
-cat <<EOF> /etc/yum.repos.d/kubernetes.repo
+cat /etc/yum.repos.d/kubernetes.repo << EOF
 [mritdrepo]
 name=Mritd Repository
-baseurl=https://yum.mritd.me/centos/7/x86_64
+baseurl=https://yumrepo.b0.upaiyun.com/centos/7/x86_64
 enabled=1
 gpgcheck=1
-gpgkey=https://cdn.mritd.me/keys/rpm.public.key
+gpgkey=https://mritd.b0.upaiyun.com/keys/rpm.public.key
 EOF
-
 
 
 yum makecache
