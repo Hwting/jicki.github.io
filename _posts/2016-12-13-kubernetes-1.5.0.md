@@ -61,7 +61,7 @@ vi /etc/hosts
 ```
 # 使用我朋友的 yum 源，嘿嘿
 
-cat >> /etc/yum.repos.d/kubernetes.repo < EOF
+cat > /etc/yum.repos.d/kubernetes.repo << EOF
 [mritdrepo]
 name=Mritd Repository
 baseurl=https://yumrepo.b0.upaiyun.com/centos/7/x86_64
