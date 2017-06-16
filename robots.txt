@@ -1,4 +1,0 @@
-# robots.txt
-User-agent: *
-Disallow: 
-Sitemap: https://jicki.me/sitemap.xml
