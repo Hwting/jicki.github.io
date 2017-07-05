@@ -487,7 +487,7 @@ flannel.1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1450
 
 
 
-# 安装 kubernetes
+# 安装 kubectl 工具
 
 
 ## Master 端
@@ -611,7 +611,7 @@ scp /root/.kube/config 10.6.0.188:/root/.kube/
 
 
 
-# 部署 Master 节点
+# 部署 Kubernetes Master 节点
 
 > Master 需要部署 kube-apiserver , kube-scheduler , kube-controller-manager 这三个组件。
 
@@ -892,7 +892,7 @@ etcd-2               Healthy   {"health": "true"}
  
 
 
-# 部署 Node 节点
+# 部署 Kubernetes Node 节点
 
 ```
 
