@@ -6,7 +6,6 @@ description: kubernetes 1.7.0 + flannel 二进制部署
 keywords: docker
 ---
 
-
 # kubernetes 1.7.0 + flannel
 
 > 基于 二进制 文件部署
@@ -730,6 +729,8 @@ cp token.csv /etc/kubernetes/
 ## 创建 kube-apiserver.service 文件
 
 ```
+一、 开启了 RBAC 
+
 # 自定义 系统 service 文件一般存于 /etc/systemd/system/ 下
 
 vi /etc/systemd/system/kube-apiserver.service
@@ -764,7 +765,7 @@ ExecStart=/usr/local/bin/kube-apiserver \
   --runtime-config=rbac.authorization.k8s.io/v1alpha1 \
   --service-account-key-file=/etc/kubernetes/ssl/ca-key.pem \
   --service-cluster-ip-range=10.254.0.0/16 \
-  --service-node-port-range=8400-9000 \
+  --service-node-port-range=30000-32000 \
   --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   --experimental-bootstrap-token-auth \
@@ -779,6 +780,70 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 
 ```
+
+```
+二、 关闭了 RBAC 
+
+# 自定义 系统 service 文件一般存于 /etc/systemd/system/ 下
+
+vi /etc/systemd/system/kube-apiserver.service
+
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/kube-apiserver \
+  --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
+  --advertise-address=10.6.0.140 \
+  --allow-privileged=true \
+  --apiserver-count=3 \
+  --audit-log-maxage=30 \
+  --audit-log-maxbackup=3 \
+  --audit-log-maxsize=100 \
+  --audit-log-path=/var/lib/audit.log \
+  --bind-address=10.6.0.140 \
+  --client-ca-file=/etc/kubernetes/ssl/ca.pem \
+  --enable-swagger-ui=true \
+  --etcd-cafile=/etc/kubernetes/ssl/ca.pem \
+  --etcd-certfile=/etc/kubernetes/ssl/kubernetes.pem \
+  --etcd-keyfile=/etc/kubernetes/ssl/kubernetes-key.pem \
+  --etcd-servers=http://10.6.0.140:2379,http://10.6.0.187:2379,http://10.6.0.188:2379 \
+  --event-ttl=1h \
+  --kubelet-https=true \
+  --insecure-bind-address=10.6.0.140 \
+  --service-account-key-file=/etc/kubernetes/ssl/ca-key.pem \
+  --service-cluster-ip-range=10.254.0.0/16 \
+  --service-node-port-range=30000-32000 \
+  --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+  --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+  --experimental-bootstrap-token-auth \
+  --token-auth-file=/etc/kubernetes/token.csv \
+  --v=2
+Restart=on-failure
+RestartSec=5
+Type=notify
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+```
+
+```
+# 这里面要注意的是 --service-node-port-range=30000-32000
+# 这个地方是 映射外部端口时 的端口范围，随机映射也在这个范围内映射，指定映射端口必须也在这个范围内。
+```
+
+
+
+
+
  
 ## 启动 kube-apiserver
 
@@ -1523,11 +1588,11 @@ nginx-svc   10.254.79.137   <none>        80/TCP    29s
 apiVersion: v1
 kind: Pod
 metadata:
-  name: curl
+  name: alpine
 spec:
   containers:
-  - name: curl
-    image: radial/busyboxplus:curl
+  - name: alpine
+    image: alpine
     command:
     - sh
     - -c
@@ -1538,14 +1603,264 @@ spec:
 # 查看 pods
 [root@k8s-master-1 ~]# kubectl get pods
 NAME                        READY     STATUS    RESTARTS   AGE
-curl                        1/1       Running   0          1m
+alpine                      1/1       Running   0          1m
 nginx-dm-2214564181-4zjbh   1/1       Running   0          5m
 nginx-dm-2214564181-tpz8t   1/1       Running   0          5m
 
 
 
-# 测试 
+# 测试
+
+[root@k8s-master-1 ~]# kubectl exec -it alpine ping nginx-svc
+PING nginx-svc (10.254.207.143): 56 data bytes
+
+
+[root@k8s-master-1 ~]# kubectl exec -it alpine nslookup nginx-svc
+nslookup: can't resolve '(null)': Name does not resolve
+
+Name:      nginx-svc
+Address 1: 10.254.207.143 nginx-svc.default.svc.cluster.local
+
+```
+
+
+# 部署 Ingress 与 Dashboard
+
+
+
+## 部署 dashboard
+
+
+> 官方 dashboard 的github https://github.com/kubernetes/dashboard
+
+
+> 这里注意，以下部署的应用为 api-service 关闭了 RBAC 的， 在开启了 RBAC 的情况下，无论是 dashboard 与 nginx ingress 都需要修改，默认是有问题的。
+
+## 下载 dashboard 镜像
+
+```
+# 官方镜像
+gcr.io/google_containers/kubernetes-dashboard-amd64:v1.6.1
+
+# 国内镜像
+jicki/kubernetes-dashboard-amd64:v1.6.1
+```
+
+
+## 下载 yaml 文件
+
+```
+curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dashboard/dashboard-controller.yaml
+
+
+curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dashboard/dashboard-service.yaml
+
+```
+
+
+## 导入 yaml
+
+```
+[root@k8s-master-1 dashboard]# kubectl apply -f .
+deployment "kubernetes-dashboard" created
+service "kubernetes-dashboard" created
+
+
+# 查看 svc 与 pod
+
+[root@k8s-master-1 dashboard]# kubectl get svc -n kube-system kubernetes-dashboard
+NAME                   CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes-dashboard   10.254.167.28   <none>        80/TCP    31s
+
+```
+
+
+
+## 部署 Nginx Ingress
+
+> Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress； 什么是 Ingress ? Ingress 就是利用 Nginx Haproxy 等负载均衡工具来暴露 Kubernetes 服务。
+>
+>
+> 官方 Nginx Ingress github https://github.com/kubernetes/ingress/tree/master/examples/deployment/nginx
+
+
+```
+# 下载镜像
+
+# 官方镜像
+gcr.io/google_containers/defaultbackend:1.0
+gcr.io/google_containers/nginx-ingress-controller:0.9.0-beta.10
+
+# 国内镜像
+jicki/defaultbackend:1.0
+jicki/nginx-ingress-controller:0.9.0-beta.10
+
+```
+
+
+```
+# 部署 Nginx  backend , Nginx backend 用于统一转发 没有的域名 到指定页面。
+
+curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/deployment/nginx/default-backend.yaml
+
+
+# 直接导入既可, 这里不需要修改
+
+[root@k8s-master-1 ingress]# kubectl apply -f default-backend.yml 
+deployment "default-http-backend" created
+service "default-http-backend" created
+
+
+# 查看服务
+[root@k8s-master-1 ingress]# kubectl get deployment -n kube-system default-http-backend
+NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+default-http-backend   1         1         1            1           36s
+
+```
+
+
+```
+# 部署 Ingress Controller 组件
+
+# 下载 yaml 文件
+
+curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/daemonset/nginx/nginx-ingress-daemonset.yaml
+
+```
+
+```
+# 导入 yaml 文件
+
+[root@k8s-master-1 ingress]# kubectl apply -f nginx-ingress-daemonset.yaml 
+daemonset "nginx-ingress-lb" created
+
+
+# 查看服务
+[root@k8s-master-1 ingress]# kubectl get daemonset -n kube-system
+NAME               DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE-SELECTOR   AGE
+nginx-ingress-lb   2         2         2         2            2           <none>          11s
+
+
+```
+
+```
+# 创建一个 ingress
+
+# 查看我们原有的 svc
+
+[root@k8s-master-1 Ingress]# kubectl get svc nginx-svc
+NAME        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+nginx-svc   10.254.207.143   <none>        80/TCP    1d
+
+
+# 创建 yaml 文件
+
+vi nginx-ingress.yaml
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  rules:
+  - host: nginx.jicki.me
+    http:
+      paths:
+      - backend:
+          serviceName: nginx-svc
+          servicePort: 80
+
+
+
+# 导入 yaml
+
+[root@k8s-master-1 ingress]# kubectl apply -f nginx-ingress.yaml 
+ingress "nginx-ingress" created
+
+
+
+# 查看 ingress
+
+[root@k8s-master-1 Ingress]# kubectl get ingress
+NAME            HOSTS            ADDRESS            PORTS     AGE
+nginx-ingress   nginx.jicki.me   10.6.0.187,10...   80        24s
+
+
+
+# 测试访问
+
+[root@k8s-master-1 ingress]# curl -I nginx.jicki.me
+HTTP/1.1 200 OK
+Server: nginx/1.13.2
+Date: Thu, 06 Jul 2017 04:21:43 GMT
+Content-Type: text/html
+Content-Length: 612
+Connection: keep-alive
+Last-Modified: Wed, 28 Jun 2017 18:27:36 GMT
+ETag: "5953f518-264"
+Accept-Ranges: bytes
+
+```
 
 
 
 ```
+# 配置一个 Dashboard Ingress
+
+# 查看 dashboard 的 svc
+
+[root@k8s-master-1 ingress]# kubectl get svc -n kube-system kubernetes-dashboard
+NAME                   CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+kubernetes-dashboard   10.254.81.94   <none>        80/TCP    2h
+
+
+
+# 编辑一个 yaml 文件
+
+
+vi  dashboard-ingress.yaml
+
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  namespace: kube-system
+spec:
+  rules:
+  - host: dashboard.jicki.me
+    http:
+      paths:
+      - backend:
+          serviceName: kubernetes-dashboard
+          servicePort: 80
+
+
+
+
+
+# 查看 ingress
+
+[root@k8s-master-1 dashboard]# kubectl get ingress -n kube-system
+NAME                HOSTS                ADDRESS            PORTS     AGE
+dashboard-ingress   dashboard.jicki.me   10.6.0.187,10...   80        1m
+
+
+
+
+
+# 测试访问
+
+[root@k8s-master-1 dashboard]# curl -I dashboard.jicki.me
+HTTP/1.1 200 OK
+Server: nginx/1.13.2
+Date: Thu, 06 Jul 2017 06:32:00 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 848
+Connection: keep-alive
+Accept-Ranges: bytes
+Cache-Control: no-store
+Last-Modified: Tue, 16 May 2017 12:53:01 GMT
+
+```
+
