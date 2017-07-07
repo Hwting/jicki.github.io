@@ -658,3 +658,54 @@ yum -y install ceph ceph-radosgw
 mkdir -p /var/lib/ceph/osd/
 ```
 
+## 无法删除 rbd image 
+
+
+```
+# 删除报错
+
+[root@ceph-node-1 ~]# rbd rm test-image
+2017-07-07 11:41:39.733710 7f7a55898d80 -1 librbd: image has watchers - not removing
+Removing image: 0% complete...failed.
+rbd: error: image still has watchers
+This means the image is still open or the client using it crashed. Try again after closing/unmapping it or waiting 30s for the crashed client to timeout.
+
+
+# 查看 状态 与 客户端连接
+
+[root@ceph-node-1 ~]# rbd status test-image
+Watchers:
+        watcher=172.16.1.29:0/1324761697 client.14212 cookie=1
+        watcher=172.16.1.42:0/3859462470 client.14226 cookie=1
+
+
+# 登陆所在 服务器 29
+
+[root@k8s-node-29 ~]# rbd showmapped
+id pool image              snap device    
+0  rbd  test-image         -    /dev/rbd0 
+
+
+# 执行 rbd unmap
+
+[root@k8s-node-29 ~]# rbd unmap /dev/rbd0
+
+
+# 登陆所在 服务器 42
+
+[root@k8s-node-42 ~]# rbd showmapped
+id pool image              snap device    
+0  rbd  test-image         -    /dev/rbd0 
+
+
+# 执行 rbd unmap
+
+[root@k8s-node-42 ~]# rbd unmap /dev/rbd0 
+
+
+# 最后执行 rbd rm
+
+[root@ceph-node-1 ~]# rbd rm test-image
+Removing image: 100% complete...done.
+
+```
