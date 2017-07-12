@@ -976,7 +976,7 @@ wget https://dl.k8s.io/v1.7.0/kubernetes-client-linux-amd64.tar.gz
 
 tar -xzvf kubernetes-client-linux-amd64.tar.gz
 
-cp kubernetes/server/bin/* /usr/local/bin/
+cp kubernetes/client/bin/* /usr/local/bin/
 
 chmod a+x /usr/local/bin/kube*
 
