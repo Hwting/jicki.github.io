@@ -86,7 +86,7 @@ cd /opt/ssl
 
 
 ```
-# ca-config.json 文件
+# config.json 文件
 
 {
   "signing": {
