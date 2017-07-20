@@ -429,7 +429,7 @@ WantedBy=multi-user.target
 
 cat >> /usr/lib/systemd/system/docker.service.d/docker-options.conf << EOF
 [Service]
-Environment="DOCKER_OPTS=--insecure-registry=10.254.0.0/16 --graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io --iptables=false"
+Environment="DOCKER_OPTS=--insecure-registry=10.254.0.0/16 --graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io"
 EOF
 
 ```
