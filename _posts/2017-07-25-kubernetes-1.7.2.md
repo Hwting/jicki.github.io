@@ -2124,3 +2124,398 @@ Last-Modified: Tue, 16 May 2017 12:53:01 GMT
 ```
 
 
+# Master HA
+
+> 基于 Nginx 负载 API 做 Master HA
+
+```
+# master 之间除 api server 以外其他组件通过 etcd 选举，api server 默认不作处理；在每个 node 上启动一个 nginx，每个 nginx 反向代理所有 api server，node 上 kubelet、kube-proxy 连接本地的 nginx 代理端口，当 nginx 发现无法连接后端时会自动踢掉出问题的 api server，从而实现 api server 的 HA
+```
+
+## 部署 Master-2
+
+```
+# 下载 二进制 文件
+
+wget https://dl.k8s.io/v1.7.2/kubernetes-server-linux-amd64.tar.gz
+
+tar -xzvf kubernetes-server-linux-amd64.tar.gz
+
+cd kubernetes
+
+cp -r server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl,kube-proxy,kubelet} /usr/local/bin/
+
+```
+
+
+```
+# 拷贝 Matser-1 的密钥到  Master-2
+
+# 这里我为了方便偷懒，我把所有的密钥都拷贝过去了
+
+[root@k8s-master-1 ~]# cd /etc/kubernetes/ssl
+
+[root@k8s-master-1 ssl]# scp -r * 10.6.0.187:/etc/kubernetes/ssl/
+
+
+# 拷贝 token.csv 文件
+
+[root@k8s-master-1 ~]# cd /etc/kubernetes
+
+[root@k8s-master-1 ssl]# scp -r token.csv 10.6.0.187:/etc/kubernetes/
+
+```
+
+
+```
+# 配置 Master kube-apiserver
+
+
+vi /etc/systemd/system/kube-apiserver.service
+
+
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/kube-apiserver \
+  --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
+  --advertise-address=10.6.0.187 \
+  --allow-privileged=true \
+  --apiserver-count=3 \
+  --audit-log-maxage=30 \
+  --audit-log-maxbackup=3 \
+  --audit-log-maxsize=100 \
+  --audit-log-path=/var/lib/audit.log \
+  --authorization-mode=RBAC \
+  --bind-address=10.6.0.187 \
+  --client-ca-file=/etc/kubernetes/ssl/ca.pem \
+  --enable-swagger-ui=true \
+  --etcd-cafile=/etc/kubernetes/ssl/ca.pem \
+  --etcd-certfile=/etc/kubernetes/ssl/etcd.pem \
+  --etcd-keyfile=/etc/kubernetes/ssl/etcd-key.pem \
+  --etcd-servers=https://10.6.0.140:2379,https://10.6.0.187:2379,https://10.6.0.188:2379 \
+  --event-ttl=1h \
+  --kubelet-https=true \
+  --insecure-bind-address=10.6.0.187 \
+  --runtime-config=rbac.authorization.k8s.io/v1alpha1 \
+  --service-account-key-file=/etc/kubernetes/ssl/ca-key.pem \
+  --service-cluster-ip-range=10.254.0.0/16 \
+  --service-node-port-range=30000-32000 \
+  --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+  --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+  --experimental-bootstrap-token-auth \
+  --token-auth-file=/etc/kubernetes/token.csv \
+  --v=2
+Restart=on-failure
+RestartSec=5
+Type=notify
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+
+```
+# 启动 kube-apiserver
+
+systemctl daemon-reload
+systemctl enable kube-apiserver
+systemctl start kube-apiserver
+systemctl status kube-apiserver
+
+```
+
+
+
+
+```
+# 部署 kube-controller-manager
+
+
+vi /etc/systemd/system/kube-controller-manager.service
+
+
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+ExecStart=/usr/local/bin/kube-controller-manager \
+  --address=127.0.0.1 \
+  --master=http://10.6.0.187:8080 \
+  --allocate-node-cidrs=true \
+  --service-cluster-ip-range=10.254.0.0/16 \
+  --cluster-cidr=10.233.0.0/16 \
+  --cluster-name=kubernetes \
+  --cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem \
+  --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem \
+  --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem \
+  --root-ca-file=/etc/kubernetes/ssl/ca.pem \
+  --leader-elect=true \
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+
+```
+# 启动 kube-controller-manager
+
+systemctl daemon-reload
+systemctl enable kube-controller-manager
+systemctl start kube-controller-manager
+systemctl status kube-controller-manager
+
+```
+
+
+```
+# 部署 kube-scheduler
+
+vi /etc/systemd/system/kube-scheduler.service
+
+
+[Unit]
+Description=Kubernetes Scheduler
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+ExecStart=/usr/local/bin/kube-scheduler \
+  --address=127.0.0.1 \
+  --master=http://10.6.0.187:8080 \
+  --leader-elect=true \
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+```
+
+
+```
+# 启动 kube-scheduler
+
+systemctl daemon-reload
+systemctl enable kube-scheduler
+systemctl start kube-scheduler
+systemctl status kube-scheduler
+
+```
+
+
+```
+# Master-2 里验证
+
+[root@k8s-master-2 ~]# kubectl get componentstatuses
+NAME                 STATUS    MESSAGE              ERROR
+controller-manager   Healthy   ok                   
+scheduler            Healthy   ok                   
+etcd-0               Healthy   {"health": "true"}   
+etcd-2               Healthy   {"health": "true"}   
+etcd-1               Healthy   {"health": "true"}  
+
+```
+
+
+## 修改 node 配置
+
+```
+# kubelet
+
+# 首先 重新创建 kubelet kubeconfig 文件
+
+# 配置集群 (server 这里配置为node本机IP)
+
+kubectl config set-cluster kubernetes \
+  --certificate-authority=/etc/kubernetes/ssl/ca.pem \
+  --embed-certs=true \
+  --server=https://10.6.0.187:6443 \
+  --kubeconfig=bootstrap.kubeconfig
+
+
+# 配置客户端认证
+
+kubectl config set-credentials kubelet-bootstrap \
+  --token=11849e4f70904706ab3e631e70e6af0d \
+  --kubeconfig=bootstrap.kubeconfig
+
+
+# 配置关联
+
+kubectl config set-context default \
+  --cluster=kubernetes \
+  --user=kubelet-bootstrap \
+  --kubeconfig=bootstrap.kubeconfig
+  
+  
+# 配置默认关联
+kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
+
+# 拷贝生成的 bootstrap.kubeconfig 文件
+
+mv bootstrap.kubeconfig /etc/kubernetes/
+
+```
+
+
+```
+
+# 重新创建 kube-proxy kubeconfig 文件
+
+# 配置集群 (server 这里配置为node本机IP)
+
+kubectl config set-cluster kubernetes \
+  --certificate-authority=/etc/kubernetes/ssl/ca.pem \
+  --embed-certs=true \
+  --server=https://10.6.0.188:6443 \
+  --kubeconfig=kube-proxy.kubeconfig
+
+
+# 配置客户端认证
+
+kubectl config set-credentials kube-proxy \
+  --client-certificate=/etc/kubernetes/ssl/kube-proxy.pem \
+  --client-key=/etc/kubernetes/ssl/kube-proxy-key.pem \
+  --embed-certs=true \
+  --kubeconfig=kube-proxy.kubeconfig
+  
+  
+# 配置关联
+
+kubectl config set-context default \
+  --cluster=kubernetes \
+  --user=kube-proxy \
+  --kubeconfig=kube-proxy.kubeconfig
+
+
+
+# 配置默认关联
+kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
+
+# 拷贝到目录
+mv kube-proxy.kubeconfig /etc/kubernetes/
+```
+
+
+## 创建Nginx 代理
+
+> 在每个 node 都必须创建一个 Nginx 代理， 这里特别注意， 当 Master 也做为 Node 的时候 不需要配置 Nginx-proxy 
+
+```
+# 创建配置目录
+mkdir -p /etc/nginx
+
+# 写入代理配置
+
+cat << EOF >> /etc/nginx/nginx.conf
+error_log stderr notice;
+
+worker_processes auto;
+events {
+  multi_accept on;
+  use epoll;
+  worker_connections 1024;
+}
+
+stream {
+    upstream kube_apiserver {
+        least_conn;
+        server 10.6.0.140:6443;
+        server 10.6.0.187:6443;
+    }
+
+    server {
+        listen        0.0.0.0:6443;
+        proxy_pass    kube_apiserver;
+        proxy_timeout 10m;
+        proxy_connect_timeout 1s;
+    }
+}
+EOF
+
+```
+
+
+```
+# 配置 Nginx 基于 docker 进程，然后配置 systemd 来启动
+
+cat << EOF >> /etc/systemd/system/nginx-proxy.service
+
+[Unit]
+Description=kubernetes apiserver docker wrapper
+Wants=docker.socket
+After=docker.service
+
+[Service]
+User=root
+PermissionsStartOnly=true
+ExecStart=/usr/bin/docker run -p 6443:6443 \\
+                              -v /etc/nginx:/etc/nginx \\
+                              --name nginx-proxy \\
+                              --net=host \\
+                              --restart=on-failure:5 \\
+                              --memory=512M \\
+                              nginx:1.13.3-alpine
+ExecStartPre=-/usr/bin/docker rm -f nginx-proxy
+ExecStop=/usr/bin/docker stop nginx-proxy
+Restart=always
+RestartSec=15s
+TimeoutStartSec=30s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+```
+
+
+
+```
+# 启动 Nginx
+
+systemctl daemon-reload
+systemctl start nginx-proxy
+systemctl enable nginx-proxy
+
+
+# 重启 Node 的 kubelet 与 kube-proxy
+
+systemctl restart kubelet
+systemctl status kubelet
+
+systemctl restart kube-proxy
+systemctl status kube-proxy
+
+```
+
+## 最后测试一下
+
+```
+# 这里面 10.6.0.187 既是 Master 又是 node
+
+# Master-1
+[root@k8s-master-1 ~]# kubectl get nodes
+NAME         STATUS    AGE       VERSION
+10.6.0.187   Ready     1d        v1.7.2
+10.6.0.188   Ready     1d        v1.7.2
+
+# Master-2
+[root@k8s-master-2 ~]# kubectl get nodes
+NAME         STATUS    AGE       VERSION
+10.6.0.187   Ready     1d        v1.7.2
+10.6.0.188   Ready     1d        v1.7.2
+
+```
