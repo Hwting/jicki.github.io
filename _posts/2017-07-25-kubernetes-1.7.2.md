@@ -2518,4 +2518,40 @@ NAME         STATUS    AGE       VERSION
 10.6.0.187   Ready     1d        v1.7.2
 10.6.0.188   Ready     1d        v1.7.2
 
+
+# 最后分别在 Master-1 与 Master-2 都创建 pods deployment
+
+
 ```
+
+
+
+
+
+
+
+
+
+
+
+# 后续需要增加的东西......
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
