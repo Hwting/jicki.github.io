@@ -2537,7 +2537,27 @@ NAME         STATUS    AGE       VERSION
 # 后续需要增加的东西......
 
 
+```
+# yaml 中的一些 特殊 env
 
+
+    env:
+    - name: MY_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: MY_POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+
+
+```
 
 
 
