@@ -27,5 +27,9 @@ rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
 yum --enablerepo=elrepo-kernel install -y kernel-lt kernel-lt-devel 
 
 
+# 配置 内核优先
+
+grub2-set-default 0
+
 
 ```
