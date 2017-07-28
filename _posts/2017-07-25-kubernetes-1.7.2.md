@@ -2337,12 +2337,12 @@ etcd-1               Healthy   {"health": "true"}
 
 # 首先 重新创建 kubelet kubeconfig 文件
 
-# 配置集群 (server 这里配置为node本机IP)
+# 配置集群 (server 这里配置为127.0.0.1 既是 Master 又是 Node 的请配置为 Node IP)
 
 kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
-  --server=https://10.6.0.187:6443 \
+  --server=https://127.0.0.1:6443 \
   --kubeconfig=bootstrap.kubeconfig
 
 
@@ -2375,12 +2375,12 @@ mv bootstrap.kubeconfig /etc/kubernetes/
 
 # 重新创建 kube-proxy kubeconfig 文件
 
-# 配置集群 (server 这里配置为node本机IP)
+# 配置集群 (server 这里配置为 127.0.0.1 既是 Master 又是 Node 的请配置为 Node IP)
 
 kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
-  --server=https://10.6.0.188:6443 \
+  --server=https://127.0.0.1:6443 \
   --kubeconfig=kube-proxy.kubeconfig
 
 
