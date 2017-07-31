@@ -698,6 +698,7 @@ vi kubernetes-csr.json
   "hosts": [
     "127.0.0.1",
     "10.6.0.140",
+    "10.6.0.187",
     "10.254.0.1",
     "kubernetes",
     "kubernetes.default",
@@ -721,7 +722,7 @@ vi kubernetes-csr.json
 }
 
 
-## 这里 hosts 字段中 三个 IP 分别为 127.0.0.1 本机， 10.6.0.140 为 Master 的IP， 10.254.0.1 为 kubernetes SVC 的 IP， 一般是 部署网络的第一个IP , 如: 10.254.0.1 ， 在启动完成后，我们使用   kubectl get svc ， 就可以查看到
+## 这里 hosts 字段中 三个 IP 分别为 127.0.0.1 本机， 10.6.0.140, 10.6.0.187 为 Master 的IP， 10.254.0.1 为 kubernetes SVC 的 IP， 一般是 部署网络的第一个IP , 如: 10.254.0.1 ， 在启动完成后，我们使用   kubectl get svc ， 就可以查看到
 
 ```
 
