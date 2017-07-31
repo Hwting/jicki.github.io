@@ -1404,7 +1404,7 @@ vi calico.yaml
 
 
 # 这里面要写入 base64 的信息
-
+# 分别执行括号内的命令，填写到 etcd-key , etcd-cert, etcd-ca 中，不用括号。
 
 
 data:
