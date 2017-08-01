@@ -610,7 +610,7 @@ scp /root/.kube/config 10.6.0.188:/root/.kube/
 
 
 
-# 部署 Kubernetes Master 节点
+# 部署 kubernetes Master 节点
 
 > Master 需要部署 kube-apiserver , kube-scheduler , kube-controller-manager 这三个组件。
 
@@ -736,7 +736,7 @@ cp token.csv /etc/kubernetes/
 vi /etc/systemd/system/kube-apiserver.service
 
 [Unit]
-Description=Kubernetes API Server
+Description=kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 
@@ -789,7 +789,7 @@ WantedBy=multi-user.target
 vi /etc/systemd/system/kube-apiserver.service
 
 [Unit]
-Description=Kubernetes API Server
+Description=kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 
@@ -866,7 +866,7 @@ vi /etc/systemd/system/kube-controller-manager.service
 
 
 [Unit]
-Description=Kubernetes Controller Manager
+Description=kubernetes Controller Manager
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
@@ -914,7 +914,7 @@ vi /etc/systemd/system/kube-scheduler.service
 
 
 [Unit]
-Description=Kubernetes Scheduler
+Description=kubernetes Scheduler
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
@@ -957,7 +957,7 @@ etcd-2               Healthy   {"health": "true"}
  
 
 
-# 部署 Kubernetes Node 节点
+# 部署 kubernetes Node 节点
 
 ```
 
@@ -1065,7 +1065,7 @@ vi /etc/systemd/system/kubelet.service
 
 
 [Unit]
-Description=Kubernetes Kubelet
+Description=kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=docker.service
 Requires=docker.service
@@ -1279,7 +1279,7 @@ mkdir -p /var/lib/kube-proxy
 vi /etc/systemd/system/kube-proxy.service
 
 [Unit]
-Description=Kubernetes Kube-Proxy Server
+Description=kubernetes Kube-Proxy Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 
@@ -1678,7 +1678,7 @@ kubernetes-dashboard   10.254.167.28   <none>        80/TCP    31s
 
 ## 部署 Nginx Ingress
 
-> Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress； 什么是 Ingress ? Ingress 就是利用 Nginx Haproxy 等负载均衡工具来暴露 Kubernetes 服务。
+> kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress； 什么是 Ingress ? Ingress 就是利用 Nginx Haproxy 等负载均衡工具来暴露 kubernetes 服务。
 >
 >
 > 官方 Nginx Ingress github https://github.com/kubernetes/ingress/tree/master/examples/deployment/nginx

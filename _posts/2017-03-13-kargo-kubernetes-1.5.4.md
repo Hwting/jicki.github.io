@@ -100,7 +100,7 @@ etcd_data_dir: /var/lib/etcd
 # 二进制文件将要安装的位置
 bin_dir: /usr/local/bin
 
-# Kubernetes 配置文件存放目录以及命名空间
+# kubernetes 配置文件存放目录以及命名空间
 kube_config_dir: /etc/kubernetes
 kube_script_dir: "{ { bin_dir } }/kubernetes-scripts"
 kube_manifest_dir: "{ { kube_config_dir } }/manifests"
@@ -644,8 +644,8 @@ zookeeper-3          10.233.50.206   <none>        2181/TCP,2888/TCP,3888/TCP   
 
 ## 2.7、部署一个 Nginx Ingress
 
-> Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress；
-> 什么是 Ingress ?  Ingress 就是利用 nginx haproxy 等负载均衡工具来暴露 Kubernetes 服务。
+> kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress；
+> 什么是 Ingress ?  Ingress 就是利用 nginx haproxy 等负载均衡工具来暴露 kubernetes 服务。
 
 ```
 # 首先 部署一个 http-backend, 用于统一转发 没有的域名 到指定页面。

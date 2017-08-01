@@ -1,8 +1,8 @@
 ---
 layout: post
-title: docker Kubernetes 1.4 部署
+title: docker kubernetes 1.4 部署
 categories: docker
-description: docker Kubernetes 1.4 部署
+description: docker kubernetes 1.4 部署
 keywords: docker
 ---
 
@@ -159,7 +159,7 @@ kubenetes 1.4 利用 kubeadm 创建 集群
 <master/addons> created essential addon: kube-proxy
 <master/addons> created essential addon: kube-dns
 
-Kubernetes master initialised successfully!
+kubernetes master initialised successfully!
 
 You can now join any number of machines by running the following on each node:
 

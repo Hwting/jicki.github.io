@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Kubernetes 1.4.5
+title: kubernetes 1.4.5
 categories: kubernetes
-description: Kubernetes 1.4.5
+description: kubernetes 1.4.5
 keywords: kubernetes
 ---
 
@@ -121,7 +121,7 @@ kubeadm init --api-advertise-addresses=10.6.0.140 --use-kubernetes-version v1.4.
 
 ## 2.6 记录 token
 ```
-Kubernetes master initialised successfully!
+kubernetes master initialised successfully!
 
 You can now join any number of machines by running the following on each node:
 

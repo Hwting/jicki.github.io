@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Kubernetes Grafana2
-categories: Kubernetes
-description: Kubernetes Grafana2
-keywords: Kubernetes
+title: kubernetes Grafana2
+categories: kubernetes
+description: kubernetes Grafana2
+keywords: kubernetes
 ---
 
-> Kubernetes 基于 Grafana2 监控
+> kubernetes 基于 Grafana2 监控
 
 ## 下载 yaml 文件
 

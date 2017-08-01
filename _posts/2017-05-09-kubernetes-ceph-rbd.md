@@ -6,7 +6,7 @@ description: kubernetes Ceph RBD
 keywords: kubernetes
 ---
 
-> 使用 Ceph RBD 做为 Kubernetes 后端存储
+> 使用 Ceph RBD 做为 kubernetes 后端存储
 
 # Ceph 安装部署
 
@@ -270,7 +270,7 @@ systemctl start ceph-osd@id
 
 
 
-# Kubernetes Volume Ceph RBD
+# kubernetes Volume Ceph RBD
 
 > 官方 RDB 的文件 https://github.com/kubernetes/kubernetes/tree/master/examples/volumes/rbd
 

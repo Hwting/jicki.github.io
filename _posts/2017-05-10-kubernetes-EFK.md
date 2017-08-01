@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Kubernetes EFK
-categories: Kubernetes
-description: Kubernetes EFK
-keywords: Kubernetes
+title: kubernetes EFK
+categories: kubernetes
+description: kubernetes EFK
+keywords: kubernetes
 ---
 
-# Kubernetes EFK
+# kubernetes EFK
 
 ## 初始化环境
 

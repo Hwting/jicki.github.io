@@ -6,7 +6,7 @@ description: kubernetes 1.5.3
 keywords: docker
 ---
 
-> Kubernetes update 1.5.3
+> kubernetes update 1.5.3
 
 # 1 初始化环境
 
@@ -131,7 +131,7 @@ kubeadm init --api-advertise-addresses=10.6.0.140 \
 [kubeadm] WARNING: kubeadm is in alpha, please do not use it for production clusters.
 [preflight] Running pre-flight checks
 [preflight] Starting the kubelet service
-[init] Using Kubernetes version: v1.5.3
+[init] Using kubernetes version: v1.5.3
 [tokens] Generated token: "c53ef2.d257d49589d634f0"
 [certificates] Generated Certificate Authority key and certificate.
 [certificates] Generated API Server key and certificate
@@ -150,7 +150,7 @@ kubeadm init --api-advertise-addresses=10.6.0.140 \
 [addons] Created essential addon: kube-proxy
 [addons] Created essential addon: kube-dns
 
-Your Kubernetes master has initialized successfully!
+Your kubernetes master has initialized successfully!
 
 You should now deploy a pod network to the cluster.
 Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:

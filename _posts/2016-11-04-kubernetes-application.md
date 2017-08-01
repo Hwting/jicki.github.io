@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Kubernetes 实战应用部署
+title: kubernetes 实战应用部署
 categories: kubernetes
-description: Kubernetes 实战应用部署
+description: kubernetes 实战应用部署
 keywords: kubernetes
 ---
 
