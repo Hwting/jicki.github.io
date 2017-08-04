@@ -823,7 +823,7 @@ ExecStart=/usr/local/bin/kube-apiserver \
   --token-auth-file=/etc/kubernetes/token.csv \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 Type=notify
 LimitNOFILE=65536
 
@@ -883,7 +883,7 @@ ExecStart=/usr/local/bin/kube-controller-manager \
   --leader-elect=true \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
@@ -923,7 +923,7 @@ ExecStart=/usr/local/bin/kube-scheduler \
   --leader-elect=true \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
@@ -1091,7 +1091,7 @@ ExecStopPost=/sbin/iptables -A INPUT -s 172.16.0.0/12 -p tcp --dport 4194 -j ACC
 ExecStopPost=/sbin/iptables -A INPUT -s 192.168.0.0/16 -p tcp --dport 4194 -j ACCEPT
 ExecStopPost=/sbin/iptables -A INPUT -p tcp --dport 4194 -j DROP
 Restart=on-failure
-RestartSec=5
+RestartSec=50
 
 [Install]
 WantedBy=multi-user.target
@@ -1293,7 +1293,7 @@ ExecStart=/usr/local/bin/kube-proxy \
   --logtostderr=true \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=50
 LimitNOFILE=65536
 
 [Install]
@@ -2212,7 +2212,7 @@ ExecStart=/usr/local/bin/kube-apiserver \
   --token-auth-file=/etc/kubernetes/token.csv \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 Type=notify
 LimitNOFILE=65536
 
@@ -2261,7 +2261,7 @@ ExecStart=/usr/local/bin/kube-controller-manager \
   --leader-elect=true \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
@@ -2297,7 +2297,7 @@ ExecStart=/usr/local/bin/kube-scheduler \
   --leader-elect=true \
   --v=2
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
