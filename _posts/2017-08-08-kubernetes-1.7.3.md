@@ -2416,6 +2416,95 @@ Last-Modified: Tue, 16 May 2017 12:53:01 GMT
 ![ Dashboard][1]
 
 
+# 破坏性测试
+
+> 破坏性测试，手动重启服务器，查看各服务间的恢复以及问题
+
+
+```
+[root@k8s-master-1 ~]# kubectl get nodes
+NAME         STATUS    AGE       VERSION
+10.6.0.140   Ready     20h       v1.7.3
+10.6.0.187   Ready     20h       v1.7.3
+10.6.0.188   Ready     20h       v1.7.3
+
+
+
+[root@k8s-master-1 nginx]# etcdctl --endpoints=https://10.6.0.140:2379 \
+>         --cert-file=/etc/kubernetes/ssl/etcd.pem \
+>         --ca-file=/etc/kubernetes/ssl/ca.pem \
+>         --key-file=/etc/kubernetes/ssl/etcd-key.pem \
+>         member list
+2017-08-08 02:36:38.187672 I | warning: ignoring ServerName for user-provided CA for backwards compatibility is deprecated
+29262d49176888f5: name=etcd3 peerURLs=https://10.6.0.188:2380 clientURLs=https://10.6.0.188:2379 isLeader=false
+d4ba1a2871bfa2b0: name=etcd1 peerURLs=https://10.6.0.140:2380 clientURLs=https://10.6.0.140:2379 isLeader=true
+eca58ebdf44f63b6: name=etcd2 peerURLs=https://10.6.0.187:2380 clientURLs=https://10.6.0.187:2379 isLeader=false
+
+
+[root@k8s-master-1 ~]# reboot
+PolicyKit daemon disconnected from the bus.
+We are no longer a registered authentication agent.
+
+```
+
+
+
+```
+# 服务器重启
+
+[root@k8s-master-2 ~]# kubectl get nodes
+NAME         STATUS     AGE       VERSION
+10.6.0.140   NotReady   20h       v1.7.3
+10.6.0.187   Ready      20h       v1.7.3
+10.6.0.188   Ready      20h       v1.7.3
+
+
+
+[root@k8s-master-2 ~]# etcdctl --endpoints=https://10.6.0.187:2379 \
+>         --cert-file=/etc/kubernetes/ssl/etcd.pem \
+>         --ca-file=/etc/kubernetes/ssl/ca.pem \
+>         --key-file=/etc/kubernetes/ssl/etcd-key.pem \
+>         member list
+2017-08-08 02:34:00.132653 I | warning: ignoring ServerName for user-provided CA for backwards compatibility is deprecated
+29262d49176888f5: name=etcd3 peerURLs=https://10.6.0.188:2380 clientURLs=https://10.6.0.188:2379 isLeader=false
+d4ba1a2871bfa2b0: name=etcd1 peerURLs=https://10.6.0.140:2380 clientURLs=https://10.6.0.140:2379 isLeader=false
+eca58ebdf44f63b6: name=etcd2 peerURLs=https://10.6.0.187:2380 clientURLs=https://10.6.0.187:2379 isLeader=true
+
+
+
+# 等待服务器重启以后
+
+[root@k8s-master-2 ~]# kubectl get nodes
+NAME         STATUS    AGE       VERSION
+10.6.0.140   Ready     20h       v1.7.3
+10.6.0.187   Ready     20h       v1.7.3
+10.6.0.188   Ready     20h       v1.7.3
+
+
+[root@k8s-master-2 ~]# kubectl get pods -o wide
+NAME                        READY     STATUS    RESTARTS   AGE       IP              NODE
+alpine                      1/1       Running   1          4h        10.233.196.8    10.6.0.140
+nginx-dm-2214564181-0ctcx   1/1       Running   0          4h        10.233.168.4    10.6.0.188
+nginx-dm-2214564181-brz79   1/1       Running   1          4h        10.233.196.7    10.6.0.140
+nginx-dm-2214564181-z8whk   1/1       Running   0          4h        10.233.182.65   10.6.0.187
+
+
+[root@k8s-master-2 ~]# etcdctl --endpoints=https://10.6.0.140:2379 \
+>         --cert-file=/etc/kubernetes/ssl/etcd.pem \
+>         --ca-file=/etc/kubernetes/ssl/ca.pem \
+>         --key-file=/etc/kubernetes/ssl/etcd-key.pem \
+>         member list
+2017-08-08 02:39:52.830072 I | warning: ignoring ServerName for user-provided CA for backwards compatibility is deprecated
+29262d49176888f5: name=etcd3 peerURLs=https://10.6.0.188:2380 clientURLs=https://10.6.0.188:2379 isLeader=true
+d4ba1a2871bfa2b0: name=etcd1 peerURLs=https://10.6.0.140:2380 clientURLs=https://10.6.0.140:2379 isLeader=false
+eca58ebdf44f63b6: name=etcd2 peerURLs=https://10.6.0.187:2380 clientURLs=https://10.6.0.187:2379 isLeader=false
+
+```
+
+
+
   [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
+
+
 
 
