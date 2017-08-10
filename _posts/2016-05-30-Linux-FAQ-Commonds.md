@@ -242,6 +242,27 @@ svn switch --relocate svn://123.123.123.123/rl/api svn://192.168.0.74/rl/api
  
 
 
+## Git FAQ
+
+git pull / push 不输入密码
+
+```
+1.  首先执行一次 git pull 或者 git push 
+然后会在 ~/  目录下生成一个 .git-credentials 文件
+
+
+2. 在终端下执行  git config --global credential.helper store
+
+3. 可以看到~/.gitconfig文件，会多了一项：
+    [credential]
+        helper = store
+
+4. 最后测试一下 不用输入密码了
+
+```
+
+
+
 
 ## Mysql FAQ
 
