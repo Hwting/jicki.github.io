@@ -1239,6 +1239,11 @@ systemctl status kube-proxy
 # master 之间除 api server 以外其他组件通过 etcd 选举，api server 默认不作处理；在每个 node 上启动一个 nginx，每个 nginx 反向代理所有 api server，node 上 kubelet、kube-proxy 连接本地的 nginx 代理端口，当 nginx 发现无法连接后端时会自动踢掉出问题的 api server，从而实现 api server 的 HA
 ```
 
+
+![ HAMaster][2]
+
+
+
 ```
 cd /tmp
 
@@ -2504,7 +2509,7 @@ eca58ebdf44f63b6: name=etcd2 peerURLs=https://10.6.0.187:2380 clientURLs=https:/
 
 
   [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
-
+  [2]: https://jicki.me/images/posts/kubernetes/hamaster.jpg
 
 
 
