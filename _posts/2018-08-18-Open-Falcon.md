@@ -9,6 +9,7 @@ keywords: Linux
 
 # 环境准备
 
+> 官方文档 https://book.open-falcon.org/zh_0_2
 
 ## 安装 golang
 
