@@ -117,6 +117,11 @@ vi /etc/sysconfig/jenkins
 JENKINS_HOME="/opt/jenkins"
 
 
+# JVM 调优 (4G内存限制2G内存)
+
+JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Xms1024m -Xmx2048m -XX:PermSize=512m -XX:MaxPermSize=1024m"
+
+
 # 创建 目录 
 
 mkdir -p /opt/jenkins
