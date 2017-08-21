@@ -692,6 +692,55 @@ curl http://127.0.0.1:4000/sender/mail -d "tos=jicki@qq.com&subject=xx&content=y
 ```
 
 
+## 部署一个 微信网关
+
+
+> 微信网关 git  https://github.com/Yanjunhui/chat
+
+```
+cd /opt/local/open-falcon
+
+git clone https://github.com/Yanjunhui/chat
+
+cd chat/
+
+chmod +x control.sh
+
+# 需要修改 配置文件
+
+cat config.conf
+
+
+#http 服务端口
+[http]
+port = 4567
+
+#微信接口信息
+[weixin]
+CorpID = ww6424d33203e90e20
+AgentId = 1000002
+Secret = FoST_8RQSTjZwH_CN3aQW6UKksjCSI9mizFqD7HKhrw
+EncodingAESKey = K2M3WMhRHIOH4I1Ww5jxpllGrgY01nvBjUgTvcJEEHX
+
+
+# EncodingAESKey 是回调时用的，如果需要回调， chat 必须丢在外网
+如果不需要回调，只需要 发送 报警，这里可以丢在内网里。
+
+# 启动
+./control.sh start
+./control.sh status
+
+
+
+## 注意: 
+
+要收到 im 报警信息，必须要在 个人用户里面 填写 微信相关资料
+
+微信相关帐号是  登陆微信公众号 --> 通讯里， 里面用户的 帐号
+
+不是个人微信帐号，填写个人帐号，是收不到报警的。
+
+```
 
 
 ## 部署 Alarm 服务
@@ -729,7 +778,7 @@ vi cfg.json
         "userMailQueue": "/queue/user/mail"
     },
     "api": {
-        "im": "http://127.0.0.1:10086/wechat",
+        "im": "http://127.0.0.1:4567/send",
         "sms": "http://127.0.0.1:10086/sms",
         "mail": "http://127.0.0.1:4000/sender/mail",
         "dashboard": "http://127.0.0.1:8081",
