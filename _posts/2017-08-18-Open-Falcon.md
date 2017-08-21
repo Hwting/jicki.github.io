@@ -1257,7 +1257,7 @@ func BuildCommonSMSContent(event *model.Event) string {
 
 func BuildCommonIMContent(event *model.Event) string {
         return fmt.Sprintf(
-                "[报警级别: %d][报警状态: %s][报警Host: %s][报警内容: %s][报警次数: %d] [报警时间: %s]",
+                "[报警级别: %d][报警状态: %s][报警Host: %s][报警内容: %s][报警时间: %s]",
                 event.Priority(),
                 event.Status,
                 event.Endpoint,
@@ -1268,7 +1268,7 @@ func BuildCommonIMContent(event *model.Event) string {
                 //utils.ReadableFloat(event.LeftValue),
                 //event.Operator(),
                 //utils.ReadableFloat(event.RightValue()),
-                event.CurrentStep,
+                //event.CurrentStep,
                 event.FormattedTime(),
         )
 }
