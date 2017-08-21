@@ -1213,4 +1213,100 @@ Add 添加一个 系统指标模块
 ![sys.png-60.9kB][1]
 
 
+# FAQ 
+
+## 修改 报警模板
+
+```
+cd open-falcon/falcon-plus/modules/alarm/cron
+
+
+# 报警内容:
+
+cat builder.go
+
+
+
+package cron
+
+import (
+        "fmt"
+
+        "github.com/open-falcon/falcon-plus/common/model"
+        "github.com/open-falcon/falcon-plus/common/utils"
+        "github.com/open-falcon/falcon-plus/modules/alarm/g"
+)
+
+func BuildCommonSMSContent(event *model.Event) string {
+        return fmt.Sprintf(
+                "[P%d][%s][%s][][%s %s %s %s %s%s%s][O%d %s]",
+                event.Priority(),
+                event.Status,
+                event.Endpoint,
+                event.Note(),
+                event.Func(),
+                event.Metric(),
+                utils.SortedTags(event.PushedTags),
+                utils.ReadableFloat(event.LeftValue),
+                event.Operator(),
+                utils.ReadableFloat(event.RightValue()),
+                event.CurrentStep,
+                event.FormattedTime(),
+        )
+}
+
+func BuildCommonIMContent(event *model.Event) string {
+        return fmt.Sprintf(
+                "[报警级别: %d][报警状态: %s][报警Host: %s][报警内容: %s][报警次数: %d] [报警时间: %s]",
+                event.Priority(),
+                event.Status,
+                event.Endpoint,
+                event.Note(),
+                //event.Func(),
+                //event.Metric(),
+                //utils.SortedTags(event.PushedTags),
+                //utils.ReadableFloat(event.LeftValue),
+                //event.Operator(),
+                //utils.ReadableFloat(event.RightValue()),
+                event.CurrentStep,
+                event.FormattedTime(),
+        )
+}
+
+func BuildCommonMailContent(event *model.Event) string {
+        link := g.Link(event)
+        return fmt.Sprintf(
+                "报警状态: %s\r\n报警级别: %d\r\n报警Host: %s\r\n报警事件: %s\r\n事件标签: %s\r\n报警表达式: %s: %s%s%s\r\n报警内容: %s\r\n最大报警次数: %d   当前报警次数: %d\r\n报警时间: %s\r\n报警模板: %s\r\n",
+                event.Status,
+                event.Priority(),
+                event.Endpoint,
+                event.Metric(),
+                utils.SortedTags(event.PushedTags),
+                event.Func(),
+                utils.ReadableFloat(event.LeftValue),
+                event.Operator(),
+                utils.ReadableFloat(event.RightValue()),
+                event.Note(),
+                event.MaxStep(),
+                event.CurrentStep,
+                event.FormattedTime(),
+                link,
+        )
+}
+
+func GenerateSmsContent(event *model.Event) string {
+        return BuildCommonSMSContent(event)
+}
+
+func GenerateMailContent(event *model.Event) string {
+        return BuildCommonMailContent(event)
+}
+
+func GenerateIMContent(event *model.Event) string {
+        return BuildCommonIMContent(event)
+}
+
+
+```
+
   [1]: https://jicki.me/images/posts/openfalcon/sys.png
