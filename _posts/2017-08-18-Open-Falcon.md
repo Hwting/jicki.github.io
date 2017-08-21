@@ -723,9 +723,6 @@ Secret = FoST_8RQSTjZwH_CN3aQW6UKksjCSI9mizFqD7HKhrw
 EncodingAESKey = K2M3WMhRHIOH4I1Ww5jxpllGrgY01nvBjUgTvcJEEHX
 
 
-# EncodingAESKey 是回调时用的，如果需要回调， chat 必须丢在外网
-如果不需要回调，只需要 发送 报警，这里可以丢在内网里。
-
 # 启动
 ./control.sh start
 ./control.sh status
