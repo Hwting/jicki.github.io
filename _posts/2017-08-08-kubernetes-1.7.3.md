@@ -1230,6 +1230,86 @@ systemctl status kube-proxy
 
 ```
 
+# 安装 docker
+
+
+```
+# 导入 yum 源
+
+# 安装 yum-config-manager
+
+yum -y install yum-utils
+
+# 导入
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+
+# 更新 repo
+yum makecache
+
+# 安装
+
+yum install docker-ce -y
+
+```
+
+## 更改docker 配置
+
+```
+# 修改配置
+
+vi /usr/lib/systemd/system/docker.service
+
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network-online.target firewalld.service
+Wants=network-online.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/dockerd $DOCKER_NETWORK_OPTIONS $DOCKER_OPTS $DOCKER_DNS_OPTIONS
+ExecReload=/bin/kill -s HUP $MAINPID
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+TimeoutStartSec=0
+Delegate=yes
+KillMode=process
+Restart=on-failure
+StartLimitBurst=3
+StartLimitInterval=60s
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+```
+# 修改其他配置
+
+mkdir -p /usr/lib/systemd/system/docker.service.d/
+
+
+cat >> /usr/lib/systemd/system/docker.service.d/docker-options.conf << EOF
+[Service]
+Environment="DOCKER_OPTS=--insecure-registry=10.254.0.0/16 --graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io --iptables=false
+"
+EOF
+
+```
+
+
+```
+# 重新读取配置，启动 docker
+systemctl daemon-reload
+systemctl start docker
+systemctl enable docker
+```
+
+
 
 #  部署 Node 节点 
 
@@ -1450,92 +1530,6 @@ certificatesigningrequest "node-csr-cxXvnzvukInZrSXT1EJTFaDzERFsuwsR2hCcgWyYZ2o"
 [root@k8s-master-1 ~]# kubectl certificate approve node-csr-jcQdD_haTRkPMTXwcHeyjQZUt2lb1S4rDeTgKUeQwgM
 certificatesigningrequest "node-csr-jcQdD_haTRkPMTXwcHeyjQZUt2lb1S4rDeTgKUeQwgM" approved
 ```
-
-
-
-
-# 安装 docker
-
-
-```
-# 导入 yum 源
-
-# 安装 yum-config-manager
-
-yum -y install yum-utils
-
-# 导入
-yum-config-manager \
-    --add-repo \
-    https://download.docker.com/linux/centos/docker-ce.repo
-
-
-# 更新 repo
-yum makecache
-
-# 安装
-
-yum install docker-ce -y
-```
- 
-
-## 更改docker 配置
-
-```
-# 修改配置
-
-vi /usr/lib/systemd/system/docker.service
-
-[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network-online.target firewalld.service
-Wants=network-online.target
-
-[Service]
-Type=notify
-ExecStart=/usr/bin/dockerd $DOCKER_NETWORK_OPTIONS $DOCKER_OPTS $DOCKER_DNS_OPTIONS
-ExecReload=/bin/kill -s HUP $MAINPID
-LimitNOFILE=infinity
-LimitNPROC=infinity
-LimitCORE=infinity
-TimeoutStartSec=0
-Delegate=yes
-KillMode=process
-Restart=on-failure
-StartLimitBurst=3
-StartLimitInterval=60s
-
-[Install]
-WantedBy=multi-user.target
-
-```
-
-```
-# 修改其他配置
-
-mkdir -p /usr/lib/systemd/system/docker.service.d/
-
-
-cat >> /usr/lib/systemd/system/docker.service.d/docker-options.conf << EOF
-[Service]
-Environment="DOCKER_OPTS=--insecure-registry=10.254.0.0/16 --graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io --iptables=false"
-EOF
-
-```
-
-
-
-
-
-```
-# 重新读取配置，启动 docker 
-systemctl daemon-reload
-systemctl start docker
-systemctl enable docker
-```
-
-
 
 
 # Calico 网络
