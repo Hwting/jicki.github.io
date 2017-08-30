@@ -1347,11 +1347,6 @@ systemctl status kubelet.service
 ## 修改 Node  kube-proxy.service
 
 ```
-vi /etc/systemd/system/kube-proxy.service
-
-# 增加如下配置:
-    --masquerade-all \
-
 # 重新加载配置
 systemctl daemon-reload
 systemctl restart kube-proxy.service
