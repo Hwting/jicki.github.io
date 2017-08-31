@@ -1339,6 +1339,18 @@ cp -r server/bin/{kube-proxy,kubelet} /usr/local/bin/
 
 
 ```
+# ALL node
+
+mkdir -p /etc/kubernetes/ssl/
+
+scp ca.pem kube-proxy.pem kube-proxy-key.pem  node-*:/etc/kubernetes/ssl/
+
+
+```
+
+
+
+```
 # kubelet
 
 # 首先 创建 kubelet kubeconfig 文件
