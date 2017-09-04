@@ -2382,7 +2382,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: dashboard-ingress
-  namespaces: kube-system
+  namespace: kube-system
 spec:
   rules:
   - host: dashboard.jicki.me
