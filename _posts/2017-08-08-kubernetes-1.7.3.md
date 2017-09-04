@@ -2512,6 +2512,98 @@ eca58ebdf44f63b6: name=etcd2 peerURLs=https://10.6.0.187:2380 clientURLs=https:/
 ```
 
 
+# Update Version
+
+
+##Master Or Node Update 二进制文件
+
+```
+cd /tmp
+
+wget https://dl.k8s.io/v1.7.5/kubernetes-server-linux-amd64.tar.gz
+
+systemctl stop kube-apiserver
+
+systemctl stop kube-controller-manager
+
+systemctl stop kube-scheduler
+
+systemctl stop kubelet
+
+systemctl stop kube-proxy
+
+tar zxvf kubernetes-server-linux-amd64.tar.gz
+
+cd kubernetes
+
+cp -r server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl,kube-proxy,kubelet} /usr/local/bin/
+
+
+systemctl start kube-apiserver
+
+systemctl start kube-controller-manager
+
+systemctl start kube-scheduler
+
+systemctl start kubelet
+
+systemctl start kube-proxy
+
+systemctl status kube-apiserver
+
+systemctl status kube-controller-manager
+
+systemctl status kube-scheduler
+
+systemctl status kubelet
+
+systemctl status kube-proxy
+
+cd ..
+
+rm -rf kubernetes*
+
+```
+
+
+## Node Update 二进制文件
+
+```
+
+cd /tmp
+
+wget https://dl.k8s.io/v1.7.5/kubernetes-server-linux-amd64.tar.gz
+
+systemctl stop kubelet
+
+systemctl stop kube-proxy
+
+tar zxvf kubernetes-server-linux-amd64.tar.gz
+
+cd kubernetes
+
+
+cp -r server/bin/{kubectl,kube-proxy,kubelet} /usr/local/bin/
+
+
+systemctl start kubelet
+
+systemctl start kube-proxy
+
+
+systemctl status kubelet
+
+systemctl status kube-proxy
+
+cd ..
+
+rm -rf kubernetes*
+
+
+
+```
+
+
 
   [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
   [2]: https://jicki.me/images/posts/kubernetes/hamaster.jpg
