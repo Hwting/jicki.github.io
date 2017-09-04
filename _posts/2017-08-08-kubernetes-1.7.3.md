@@ -2515,7 +2515,7 @@ eca58ebdf44f63b6: name=etcd2 peerURLs=https://10.6.0.187:2380 clientURLs=https:/
 # Update Version
 
 
-##Master Or Node Update 二进制文件
+## Master Or Node Update 二进制文件
 
 ```
 cd /tmp
