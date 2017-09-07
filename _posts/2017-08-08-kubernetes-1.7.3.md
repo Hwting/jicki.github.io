@@ -667,7 +667,8 @@ kubectl config use-context kubernetes
 # 部署 Kubernetes Master 节点
 
 > Master 需要部署 kube-apiserver , kube-scheduler , kube-controller-manager 这三个组件。
-
+kube-scheduler 作用是调度pods分配到那个node里，简单来说就是资源调度。
+kube-controller-manager 作用是 对 deployment controller , replication controller, endpoints controller, namespace controller, and serviceaccounts controller等等的循环控制，与kube-apiserver交互。
 
 
 ## 安装 组件
