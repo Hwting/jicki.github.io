@@ -237,10 +237,13 @@ WantedBy=multi-user.target
 mkdir -p /usr/lib/systemd/system/docker.service.d/
 
 
-cat > /usr/lib/systemd/system/docker.service.d/docker-options.conf << EOF
+vi /usr/lib/systemd/system/docker.service.d/docker-options.conf
+
+# 添加如下 :   (注意 environment 必须在同一行，如果出现换行会无法加载)
+
+
 [Service]
 Environment="DOCKER_OPTS=--insecure-registry=10.254.0.0/16 --graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io --disable-legacy-registry --iptables=false"
-EOF
 
 ```
 
