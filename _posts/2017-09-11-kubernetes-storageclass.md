@@ -12,10 +12,12 @@ keywords: kubernetes
 > StorageClass 可以定义多个 StorageClass 对象，并可以分别指定存储插件、设置参数，用于提供不同的存储卷。这样的设计让集群管理员能够在同一个集群内，定义和提供不同类型的、不同参数的卷（相同或者不同的存储系统）。这样的设计还确保了最终用户在无需了解太多的情况下，有能力选择不同的存储选项。本质上是为底层存储提供者描绘了蓝图，以及各种参数。
 
 
-## Ceph RBD StorageClass
+# Ceph RBD StorageClass
 
 > Ceph RBD 集群部署 这里就略过了，可查看我之前的文章 https://jicki.me/2017/05/09/kubernetes-ceph-rbd
 
+
+## 创建 ceph pool
 
 
 ```
@@ -72,9 +74,11 @@ rbd image 'kubernetes-dynamic-pvc-fbd43f54-96a6-11e7-ac97-44a8420b9988':
         format: 1
 ```
 
+## 创建 secret 认证
+
 
 ```
-# 首先创建 ceph-secret （如果之前创建过 secret  , delete 掉）
+# 创建 ceph-secret （如果之前创建过 secret  , delete 掉）
 
 # 获取 client.admin 的值
 [root@ceph-node-1 ceph-cluster]# ceph auth get-key client.admin
@@ -94,6 +98,8 @@ ceph-secret                                kubernetes.io/rbd                    
 
 ```
 
+
+## 配置 storageclass
 
 ```
 # 创建一个 storageclass 文件
@@ -151,6 +157,9 @@ ceph-rbd-test   kubernetes.io/rbd
 
 ```
 
+
+## 创建 pvc
+
 ```
 # 创建基于 storageclass 的 pvc
 
@@ -187,6 +196,8 @@ storageclass-pvc   Bound     pvc-b1faef32-96a4-11e7-bf40-44a8420b9988   50Gi    
 
 ```
 
+
+## 创建测试 StatefulSet
 
 > storageclass 主要用于 有状态服务 statefulset 的volume 使用
 
