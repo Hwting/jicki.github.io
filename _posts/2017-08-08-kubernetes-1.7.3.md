@@ -1086,6 +1086,7 @@ ExecStart=/usr/local/bin/kubelet \
   --allow-privileged=true \
   --serialize-image-pulls=false \
   --logtostderr=true \
+  --max-pods=512 \
   --v=2
 ExecStopPost=/sbin/iptables -A INPUT -s 10.0.0.0/8 -p tcp --dport 4194 -j ACCEPT
 ExecStopPost=/sbin/iptables -A INPUT -s 172.16.0.0/12 -p tcp --dport 4194 -j ACCEPT
