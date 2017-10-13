@@ -2532,6 +2532,30 @@ rm -rf kubernetes*
 
 ```
 
+## 特殊 env
+
+
+```
+# yaml 中的一些 特殊 env
+
+
+    env:
+    - name: MY_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: MY_POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+
+
+```
 
 
   [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
