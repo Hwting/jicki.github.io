@@ -857,7 +857,7 @@ ExecStart=/usr/local/bin/kube-apiserver \
   --service-node-port-range=30000-32000 \
   --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
-  --experimental-bootstrap-token-auth \
+  --enable-bootstrap-token-auth \
   --token-auth-file=/etc/kubernetes/token.csv \
   --v=2
 Restart=on-failure
@@ -1904,23 +1904,12 @@ jicki/k8s-dns-dnsmasq-nanny-amd64:1.14.5
 
 
 ```
-curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-cm.yaml
-
-
-curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-sa.yaml
-
-
-curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-controller.yaml.base
-
-
-curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-svc.yaml.base
-
+curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kube-dns.yaml.base
 
 # 修改后缀
 
-mv kubedns-controller.yaml.base kubedns-controller.yaml
+mv kube-dns.yaml.base kube-dns.yaml
 
-mv kubedns-svc.yaml.base kubedns-svc.yaml
 
 ```
 
@@ -1955,48 +1944,18 @@ subjects:
   
 ```
 
-## 修改 kubedns-svc.yaml
+## 修改 kube-dns.yaml
 
 ```
-# kubedns-svc.yaml 中 clusterIP: __PILLAR__DNS__SERVER__ 修改为我们之前定义的 dns IP 10.254.0.2
+1. # clusterIP: __PILLAR__DNS__SERVER__ 修改为我们之前定义的 dns IP 10.254.0.2
 
-cat kubedns-svc.yaml
+2. # 修改 --domain=__PILLAR__DNS__DOMAIN__.   为 我们之前 预定的 domain 名称 --domain=cluster.local.
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: kube-dns
-  namespace: kube-system
-  labels:
-    k8s-app: kube-dns
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
-    kubernetes.io/name: "KubeDNS"
-spec:
-  selector:
-    k8s-app: kube-dns
-  clusterIP: 10.254.0.2
-  ports:
-  - name: dns
-    port: 53
-    protocol: UDP
-  - name: dns-tcp
-    port: 53
-    protocol: TCP
-    
-```
+3. # 修改 --server=/__PILLAR__DNS__DOMAIN__/127.0.0.1#10053  中 domain 为我们之前预定的 --server=/cluster.local./127.0.0.1#10053
 
+4. # 修改 --probe=kubedns,127.0.0.1:10053,kubernetes.default.svc.__PILLAR__DNS__DOMAIN__, 中的 domain 为我们之前预定的  --probe=kubedns,127.0.0.1:10053,kubernetes.default.svc.cluster.local.,
 
-## 修改 kubedns-controller.yaml
-
-```
-1. # 修改 --domain=__PILLAR__DNS__DOMAIN__.   为 我们之前 预定的 domain 名称 --domain=cluster.local.
-
-2. # 修改 --server=/__PILLAR__DNS__DOMAIN__/127.0.0.1#10053  中 domain 为我们之前预定的 --server=/cluster.local./127.0.0.1#10053
-
-3. # 修改 --probe=kubedns,127.0.0.1:10053,kubernetes.default.svc.__PILLAR__DNS__DOMAIN__, 中的 domain 为我们之前预定的  --probe=kubedns,127.0.0.1:10053,kubernetes.default.svc.cluster.local.,
-
-4. # 修改 --probe=dnsmasq,127.0.0.1:53,kubernetes.default.svc.__PILLAR__DNS__DOMAIN__,  中的 domain 为我们之前预定的  --probe=dnsmasq,127.0.0.1:53,kubernetes.default.svc.cluster.local.,
+5. # 修改 --probe=dnsmasq,127.0.0.1:53,kubernetes.default.svc.__PILLAR__DNS__DOMAIN__,  中的 domain 为我们之前预定的  --probe=dnsmasq,127.0.0.1:53,kubernetes.default.svc.cluster.local.,
 
 ```
 
@@ -2010,10 +1969,10 @@ sed -i 's/gcr\.io\/google_containers/jicki/g' *
 # 导入
 
 [root@k8s-master-25 kubedns]# kubectl create -f .
+service "kube-dns" created
+serviceaccount "kube-dns" created
 configmap "kube-dns" created
 deployment "kube-dns" created
-serviceaccount "kube-dns" created
-service "kube-dns" created
 
 ```
 
