@@ -2169,7 +2169,7 @@ kubernetes-dashboard   ClusterIP   10.254.119.100   <none>        80/TCP        
 > Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress； 什么是 Ingress ? Ingress 就是利用 Nginx Haproxy 等负载均衡工具来暴露 Kubernetes 服务。
 >
 >
-> 官方 Nginx Ingress github https://github.com/kubernetes/ingress/tree/master/examples/deployment/nginx
+> 官方 Nginx Ingress github https://github.com/kubernetes/ingress-nginx
 
 
 
@@ -2243,7 +2243,9 @@ jicki/nginx-ingress-controller:0.9.0-beta.13
 ```
 # 部署 Nginx  backend , Nginx backend 用于统一转发 没有的域名 到指定页面。
 
-curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/deployment/nginx/default-backend.yaml
+curl -O https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/namespace.yaml
+
+curl -O https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/default-backend.yaml
 
 
 # 替换所有的 images
@@ -2260,7 +2262,7 @@ service "default-http-backend" created
 
 
 # 查看服务
-[root@k8s-master-25 ingress]# kubectl get deployment -n kube-system default-http-backend
+[root@k8s-master-25 ingress]# kubectl get deployment -n nginx-ingress default-http-backend
 NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 default-http-backend   1         1         1            1           36s
 
@@ -2270,17 +2272,12 @@ default-http-backend   1         1         1            1           36s
 ```
 # 部署 Ingress RBAC 认证
 
-curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/rbac/nginx/nginx-ingress-controller-rbac.yml
-
-
-# 修改 namespace
-
-sed -i 's/namespace: nginx-ingress/namespace: kube-system/g' nginx-ingress-controller-rbac.yml
+curl -O https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/rbac.yaml
 
 
 # 导入 yaml 文件
 
-[root@k8s-master-25 ingress]# kubectl apply -f nginx-ingress-controller-rbac.yml 
+[root@k8s-master-25 ingress]# kubectl apply -f rbac.yml 
 namespace "nginx-ingress" created
 serviceaccount "nginx-ingress-serviceaccount" created
 clusterrole "nginx-ingress-clusterrole" created
@@ -2299,7 +2296,7 @@ clusterrolebinding "nginx-ingress-clusterrole-nisa-binding" created
 
 # 下载 yaml 文件
 
-curl -O https://raw.githubusercontent.com/kubernetes/ingress/master/examples/deployment/nginx/nginx-ingress-controller.yaml
+curl -O https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/with-rbac.yaml
 
 # 替换所有的 images
 
@@ -2325,12 +2322,12 @@ spec:
 ```
 # 导入 yaml 文件
 
-[root@k8s-master-25 ingress]# kubectl apply -f nginx-ingress-controller.yaml
+[root@k8s-master-25 ingress]# kubectl apply -f with-rbac.yaml
 deployment "nginx-ingress-controller" created
 
 
 # 查看服务，可以看到这两个 pods 被分别调度到 28 与 29 中
-[root@k8s-master-25 ingress]# kubectl get pods -n kube-system -o wide
+[root@k8s-master-25 ingress]# kubectl get pods -n nginx-ingress -o wide
 NAME                                       READY     STATUS    RESTARTS   AGE       IP             NODE
 nginx-ingress-controller-7cf778d688-2hgls   1/1       Running   0          1m        172.16.1.29      172.16.1.29
 nginx-ingress-controller-7cf778d688-qsk8n   1/1       Running   0          1m        172.16.1.28      172.16.1.28
@@ -2341,11 +2338,9 @@ nginx-ingress-controller-7cf778d688-qsk8n   1/1       Running   0          1m   
 ```
 # 查看我们原有的 svc
 
-[root@k8s-master-25 ingress]# kubectl get svc -n kube-system
+[root@k8s-master-25 ingress]# kubectl get svc -n nginx-ingress
 NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
 default-http-backend   ClusterIP   10.254.229.42    <none>        80/TCP          4m
-kube-dns               ClusterIP   10.254.0.2       <none>        53/UDP,53/TCP   18m
-kubernetes-dashboard   ClusterIP   10.254.119.100   <none>        80/TCP          9m
 
 
 # 创建 yaml 文件
