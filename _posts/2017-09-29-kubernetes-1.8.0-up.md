@@ -2262,7 +2262,7 @@ service "default-http-backend" created
 
 
 # 查看服务
-[root@k8s-master-25 ingress]# kubectl get deployment -n nginx-ingress default-http-backend
+[root@k8s-master-25 ingress]# kubectl get deployment -n ingress-nginx default-http-backend
 NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 default-http-backend   1         1         1            1           36s
 
@@ -2327,7 +2327,7 @@ deployment "nginx-ingress-controller" created
 
 
 # 查看服务，可以看到这两个 pods 被分别调度到 28 与 29 中
-[root@k8s-master-25 ingress]# kubectl get pods -n nginx-ingress -o wide
+[root@k8s-master-25 ingress]# kubectl get pods -n ingress-nginx -o wide
 NAME                                       READY     STATUS    RESTARTS   AGE       IP             NODE
 nginx-ingress-controller-7cf778d688-2hgls   1/1       Running   0          1m        172.16.1.29      172.16.1.29
 nginx-ingress-controller-7cf778d688-qsk8n   1/1       Running   0          1m        172.16.1.28      172.16.1.28
@@ -2338,7 +2338,7 @@ nginx-ingress-controller-7cf778d688-qsk8n   1/1       Running   0          1m   
 ```
 # 查看我们原有的 svc
 
-[root@k8s-master-25 ingress]# kubectl get svc -n nginx-ingress
+[root@k8s-master-25 ingress]# kubectl get svc -n ingress-nginx
 NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
 default-http-backend   ClusterIP   10.254.229.42    <none>        80/TCP          4m
 
