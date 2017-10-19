@@ -422,5 +422,48 @@ kubectl exec -it web-1 -- ls -lt /usr/share/nginx/html
 total 0
 -rw-r--r--    1 root     root             0 Oct 18 02:24 jicki.txt
 
+
 ```
 
+
+## 删除 pvc 测试
+
+
+```
+# 收缩 replicas = 1 
+
+kubectl scale statefulsets web --replicas=1
+
+# 查看 pvc
+
+ kubectl get pvc
+NAME         STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+html-web-0   Bound     pvc-bb0c0ada-b3aa-11e7-b194-80d4a5d413e2   2Gi        RWO            nfs-storage    22h
+html-web-1   Bound     pvc-bc3478ac-b3aa-11e7-b194-80d4a5d413e2   2Gi        RWO            nfs-storage    22h
+
+
+# 删除 pvc 
+
+kubectl delete pvc/html-web-1
+persistentvolumeclaim "html-web-1" deleted
+
+
+# nfs server (原目录更改为 archived 开头)
+
+archived-default-html-web-1-pvc-bc3478ac-b3aa-11e7-b194-80d4a5d413e2
+default-html-web-0-pvc-bb0c0ada-b3aa-11e7-b194-80d4a5d413e2
+
+
+# 重新扩容 replicas = 2
+
+kubectl scale statefulsets web --replicas=2
+statefulset "web" scaled
+
+
+# nfs server (生成新的目录)
+
+
+archived-default-html-web-1-pvc-bc3478ac-b3aa-11e7-b194-80d4a5d413e2  default-html-web-1-pvc-4a64a8dc-b469-11e7-b194-80d4a5d413e2
+default-html-web-0-pvc-bb0c0ada-b3aa-11e7-b194-80d4a5d413e2
+
+```
