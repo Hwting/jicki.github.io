@@ -1614,17 +1614,6 @@ systemctl status kubelet.service
 
 ```
 
-## 修改  kube-proxy.service
-
-```
-# 重新加载配置
-systemctl daemon-reload
-systemctl restart kube-proxy.service
-systemctl status kube-proxy.service
-
-```
-
-
 ## 安装 Calico 
 
 > 官网地址 http://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/hosted
