@@ -30,6 +30,7 @@ vi /etc/exports
 增加
 
 /opt/data/logs   172.16.1.0/24(rw,sync,no_root_squash)
+/opt/data/gogs   172.16.1.0/24(rw,sync,no_root_squash)
 
 ```
 
@@ -68,6 +69,48 @@ showmount -e 172.16.1.20
           server: 172.16.1.20
           path: /opt/data/logs
 
+
+
+```
+
+
+```
+# 完整挂载信息
+
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gogs
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: gogs
+    spec:
+      containers:
+        - name: gogs
+          image: gogs/gogs
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: web
+              containerPort: 3000
+            - name: ssh
+              containerPort: 22
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+          volumeMounts:
+            - name: data
+              mountPath:  /data
+              readOnly: false
+      volumes:
+        - name: data
+          nfs:
+            server: 172.16.1.20
+            path: /opt/data/gogs
 
 
 ```
