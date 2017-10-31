@@ -106,11 +106,17 @@ spec:
             - name: data
               mountPath:  /data
               readOnly: false
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
       volumes:
         - name: data
           nfs:
             server: 172.16.1.20
             path: /opt/data/gogs
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
 
 
 ```
