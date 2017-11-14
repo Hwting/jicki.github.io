@@ -261,6 +261,9 @@ mkdir -p /usr/lib/systemd/system/docker.service.d/
 vi /usr/lib/systemd/system/docker.service.d/docker-options.conf
 
 # 添加如下 :   (注意 environment 必须在同一行，如果出现换行会无法加载)
+# iptables=false 会使 docker run 的容器无法连网，false 是因为 calico 有一些高级的应用，需要限制容器互通。
+# 建议 一般情况 不添加 --iptables=false
+
 
 
 [Service]
