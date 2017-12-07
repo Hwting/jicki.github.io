@@ -273,6 +273,20 @@ vi /usr/lib/systemd/system/docker.service.d/docker-options.conf
 [Service]
 Environment="DOCKER_OPTS=--insecure-registry=10.254.0.0/16 --graph=/opt/docker --registry-mirror=http://b438f72b.m.daocloud.io --disable-legacy-registry"
 
+
+
+
+vi /usr/lib/systemd/system/docker.service.d/docker-dns.conf
+
+
+# 添加如下 : 
+
+[Service]
+Environment="DOCKER_DNS_OPTIONS=\
+    --dns 10.254.0.2 --dns 114.114.114.114  \
+    --dns-search default.svc.cluster.local --dns-search svc.cluster.local  \
+    --dns-opt ndots:2 --dns-opt timeout:2 --dns-opt attempts:2  \
+
 ```
 
 
