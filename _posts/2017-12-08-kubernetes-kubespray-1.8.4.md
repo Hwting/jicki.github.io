@@ -171,6 +171,16 @@ flannel_backend_type: "vxlan"
 flannel_backend_type: "host-gw"
 
 
+## 修改 证书过期时间  -days xxxx
+
+vi /opt/kubespray/roles/kubernetes/secrets/files/make-ssl.sh
+
+openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca" > /dev/null 2>&1
+
+
+openssl x509 -req -in ${name}.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out ${name}.pem -days 3650 -extensions v3_req -extfile ${CONFIG} > /dev/null 2>&1
+
+
 
 ## 修改所有 images 的地址为个人的仓库地址
 
