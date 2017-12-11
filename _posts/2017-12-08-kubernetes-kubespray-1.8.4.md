@@ -109,7 +109,7 @@ git clone https://github.com/kubernetes-incubator/kubespray
 
 ## 下载镜像
 
-> 老问题，国外镜像被墙, 我已经上传至 docker 官方的 hub 中, 这里需要自行安装 docker ， 或者先跑一次 初始化，卡在 pull 的时候再每个导入 也可以。
+> 老问题，国外镜像被墙, 我已经上传至 docker 官方的 hub 中, 这里需要自行安装 docker .
 
 ```
 jicki/hyperkube:v1.8.4_coreos.0
