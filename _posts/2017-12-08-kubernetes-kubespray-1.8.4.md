@@ -151,6 +151,10 @@ vi k8s-cluster.yml
 #  这里打开  kubelet_load_modules: true
 
 
+# API 负载均衡，否在默认都连接到第一台master (坑爹)
+loadbalancer_apiserver_localhost: true
+
+
 # 修改 api 密码
 
 vi roles/kubespray-defaults/defaults/main.yaml
@@ -766,15 +770,20 @@ ansible-playbook -i inventory/inventory.cfg reset.yml -b -v --private-key=~/.ssh
 rm -rf /etc/kubernetes/
 rm -rf /var/lib/kubelet
 rm -rf /var/lib/etcd
+rm -rf /var/lib/cni
 rm -rf /usr/local/bin/kubectl
+rm -rf /opt/cni
+rm -rf /var/log/containers/
 rm -rf /etc/systemd/system/calico-node.service
 rm -rf /etc/systemd/system/kubelet.service
+rm -rf /tmp/node*
+rm -rf /usr/libexec/kubernetes
 systemctl stop etcd.service
 systemctl disable etcd.service
 systemctl stop calico-node.service
 systemctl disable calico-node.service
-docker stop `docker ps -q`
-docker rm `docker ps -a -q`
-systemctl restart docker
+systemctl stop docker
+rm -rf /opt/docker
+systemctl start docker
 
 ```
