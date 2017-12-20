@@ -15,12 +15,13 @@ keywords: kubernetes
 
 ## 环境说明
 
-> 这里配置2个Master  1个node,   Master-64 只做 Master,  Master-65 既是 Master 也是 Node,  node-66 只做单纯 Node
+> 这里配置2个Master  1个node,   Master-64 只做 Master,  Master-65 既是 Master 也是 Node
+> master-66 只做单纯 Node
 
 ```
 k8s-master-64: 172.16.1.64
 k8s-master-65: 172.16.1.65
-k8s-node-66:   172.16.1.66
+k8s-master-66: 172.16.1.66
 ```
 
 
@@ -31,7 +32,7 @@ hostnamectl --static set-hostname hostname
 
 k8s-master-64: 172.16.1.64
 k8s-master-65: 172.16.1.65
-k8s-node-66:   172.16.1.66
+k8s-master-66: 172.16.1.66
 ```
 
 
@@ -43,7 +44,7 @@ vi /etc/hosts
 
 k8s-master-64: 172.16.1.64
 k8s-master-65: 172.16.1.65
-k8s-node-66:   172.16.1.66
+k8s-master-66: 172.16.1.66
 ```
 
 
@@ -1056,7 +1057,8 @@ etcd-1               Healthy   {"health": "true"}
 
 ### 配置 kubelet
 
-> kubelet 启动时向 kube-apiserver 发送 TLS bootstrapping 请求，需要先将 bootstrap token 文件中的 kubelet-bootstrap 用户赋予 system:node-bootstrapper 角色，然后 kubelet 才有权限创建认证请求(certificatesigningrequests)。
+> kubelet 启动时向 kube-apiserver 发送 TLS bootstrapping 请求，需要先将 bootstrap token 文件中的 
+> kubelet-bootstrap 用户赋予 system:node-bootstrapper 角色，然后 kubelet 才有权限创建认证请求(certificatesigningrequests)。
 
 ```
 
@@ -1315,8 +1317,12 @@ scp kube-proxy.kubeconfig 172.16.1.56:/etc/kubernetes/
 
 ### 创建 kube-proxy.service 文件
 
->  1.9  官方 ipvs 已经 beta , 尝试开启 ipvs 测试一下, 官方 --feature-gates=SupportIPVSProxyMode=false 默认是 false 的， 需要打开
---feature-gates=SupportIPVSProxyMode=true
+>  1.9  官方 ipvs 已经 beta , 尝试开启 ipvs 测试一下. 
+>
+> 官方 --feature-gates=SupportIPVSProxyMode=false 默认是 false
+>
+> 需要打开 --feature-gates=SupportIPVSProxyMode=true
+>
 > --masquerade-all 必须添加这项配置，否则 创建 svc 在 ipvs 不会添加规则
 
 > 打开 ipvs 需要安装 ipvsadm 软件， 在 node 中安装  
@@ -1404,11 +1410,11 @@ Node 节点 基于 Nginx 负载 API 做 Master HA
 
 
 ```
-# master 之间除 api server 以外其他组件通过 etcd 选举，api server 默认不作处理；在每个 node 上启动一个 nginx，每个 nginx 反向代理所有 api server，node 上 kubelet、kube-proxy 连接本地的 nginx 代理端口，当 nginx 发现无法连接后端时会自动踢掉出问题的 api server，从而实现 api server 的 HA
+# master 之间除 api server 以外其他组件通过 etcd 选举，api server 默认不作处理；
+# 在每个 node 上启动一个 nginx，每个 nginx 反向代理所有 api server，node 上 
+# kubelet、kube-proxy 连接本地的 nginx 代理端口，
+# 当 nginx 发现无法连接后端时会自动踢掉出问题的 api server，从而实现 api server 的 HA
 ```
-
-
-![ HAMaster][2]
 
 
 ### 发布证书
@@ -2077,7 +2083,7 @@ service "coredns" created
 
 ```
 
-## 查看 kubedns 服务
+## 查看 coredns 服务
 
 ```
 [root@k8s-master-64 coredns]# kubectl get pod,svc -n kube-system
@@ -2210,13 +2216,11 @@ service "kubernetes-dashboard" created
 
 [root@k8s-master-64 ~]# kubectl get pods,svc -n kube-system
 NAME                                       READY     STATUS    RESTARTS   AGE
-po/kube-dns-775fc4f649-p8dqm               3/3       Running   0          14m
-po/kube-dns-775fc4f649-wdtnq               3/3       Running   0          13m
-po/kube-dns-autoscaler-8549b5779f-n7pql    1/1       Running   0          14m
+po/coredns-6bd7d5dbb5-jh4fj                1/1       Running   0          19s
 po/kubernetes-dashboard-6685778fc9-nl8wt   1/1       Running   0          34s
 
 NAME                       TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)         AGE
-svc/kube-dns               ClusterIP   10.254.0.2     <none>        53/UDP,53/TCP   14m
+svc/coredns                ClusterIP   10.254.0.2     <none>        53/UDP,53/TCP   14m
 svc/kubernetes-dashboard   ClusterIP   10.254.56.83   <none>        443/TCP         34s
 
 ```
@@ -2233,7 +2237,9 @@ node 里访问 8443 端口
 
 ## 部署 Nginx Ingress
 
-> Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress； 什么是 Ingress ? Ingress 就是利用 Nginx Haproxy 等负载均衡工具来暴露 Kubernetes 服务。
+> Kubernetes 暴露服务的方式目前只有三种：LoadBlancer Service、NodePort Service、Ingress；
+>
+> 什么是 Ingress ? Ingress 就是利用 Nginx Haproxy 等负载均衡工具来暴露 Kubernetes 服务。
 >
 >
 > 官方 Nginx Ingress github:  https://github.com/kubernetes/ingress-nginx/
