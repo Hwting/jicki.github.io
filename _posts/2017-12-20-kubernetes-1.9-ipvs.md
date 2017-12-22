@@ -273,6 +273,19 @@ WantedBy=multi-user.target
 ```
 # 修改其他配置
 
+# 低版本内核， kernel 3.10.x  配置使用 overlay2
+
+
+vi /etc/docker/daemon.json
+
+{
+  "storage-driver": "overlay2",
+  "storage-opts": [
+    "overlay2.override_kernel_check=true"
+  ]
+}
+
+
 mkdir -p /etc/systemd/system/docker.service.d/
 
 
