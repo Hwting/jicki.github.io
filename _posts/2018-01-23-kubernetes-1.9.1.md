@@ -18,9 +18,9 @@ keywords: kubernetes
 > 这里配置2个Master  1个node,   Master-64 只做 Master,  Master-65 既是 Master 也是 Node,  node-66 只做单纯 Node
 
 ```
-kuberneres-64: 172.16.1.64
-kuberneres-65: 172.16.1.65
-kuberneres-66: 172.16.1.66
+kubernetes-64: 172.16.1.64
+kubernetes-65: 172.16.1.65
+kubernetes-66: 172.16.1.66
 ```
 
 
@@ -29,9 +29,9 @@ kuberneres-66: 172.16.1.66
 ```
 hostnamectl --static set-hostname hostname
 
-kuberneres-64: 172.16.1.64
-kuberneres-65: 172.16.1.65
-kuberneres-66: 172.16.1.66
+kubernetes-64: 172.16.1.64
+kubernetes-65: 172.16.1.65
+kubernetes-66: 172.16.1.66
 ```
 
 
@@ -41,9 +41,9 @@ kuberneres-66: 172.16.1.66
 
 vi /etc/hosts
 
-172.16.1.64  kuberneres-64
-172.16.1.65  kuberneres-65
-172.16.1.66  kuberneres-66
+172.16.1.64  kubernetes-64
+172.16.1.65  kubernetes-65
+172.16.1.66  kubernetes-66
 ```
 
 
@@ -145,7 +145,7 @@ cd /opt/ssl/
 /opt/local/cfssl/cfssl gencert -initca csr.json | /opt/local/cfssl/cfssljson -bare ca
 
 
-[root@kuberneres-64 ssl]# ls -lt
+[root@kubernetes-64 ssl]# ls -lt
 总用量 20
 -rw-r--r-- 1 root root 1005 7月   3 17:26 ca.csr
 -rw------- 1 root root 1675 7月   3 17:26 ca-key.pem
@@ -410,7 +410,7 @@ vi etcd-csr.json
 ```
 # 查看生成
 
-[root@kuberneres-64 ssl]# ls etcd*
+[root@kubernetes-64 ssl]# ls etcd*
 etcd.csr  etcd-csr.json  etcd-key.pem  etcd.pem
 
 
@@ -719,7 +719,7 @@ cd /opt/ssl/
 
 # 查看生成
 
-[root@kuberneres-64 ssl]# ls admin*
+[root@kubernetes-64 ssl]# ls admin*
 admin.csr  admin-csr.json  admin-key.pem  admin.pem
 
 cp admin*.pem /etc/kubernetes/ssl/
@@ -817,7 +817,7 @@ vi kubernetes-csr.json
 
 # 查看生成
 
-[root@kuberneres-64 ssl]# ls -lt kubernetes*
+[root@kubernetes-64 ssl]# ls -lt kubernetes*
 -rw-r--r-- 1 root root 1261 11月 16 15:12 kubernetes.csr
 -rw------- 1 root root 1679 11月 16 15:12 kubernetes-key.pem
 -rw-r--r-- 1 root root 1635 11月 16 15:12 kubernetes.pem
@@ -839,7 +839,7 @@ scp kubernetes*.pem 172.16.1.65:/etc/kubernetes/ssl/
 ```
 # 生成 token
 
-[root@kuberneres-64 ssl]# head -c 16 /dev/urandom | od -An -t x | tr -d ' '
+[root@kubernetes-64 ssl]# head -c 16 /dev/urandom | od -An -t x | tr -d ' '
 df3b158fbdc425ae2ac70bbef0688921
 
 
@@ -1053,7 +1053,7 @@ systemctl status kube-scheduler
 ### 验证 Master 节点
 
 ```
-[root@kuberneres-64 ~]# kubectl get componentstatuses
+[root@kubernetes-64 ~]# kubectl get componentstatuses
 NAME                 STATUS    MESSAGE              ERROR
 controller-manager   Healthy   ok                   
 scheduler            Healthy   ok                   
@@ -1063,7 +1063,7 @@ etcd-1               Healthy   {"health": "true"}
 
 
 
-[root@kuberneres-65 ~]# kubectl get componentstatuses
+[root@kubernetes-65 ~]# kubectl get componentstatuses
 NAME                 STATUS    MESSAGE              ERROR
 controller-manager   Healthy   ok                   
 scheduler            Healthy   ok                   
@@ -1172,7 +1172,7 @@ WantedBy=multi-user.target
 
 ```
 # 如上配置:
-kuberneres-64    本机hostname
+kubernetes-64    本机hostname
 10.254.0.2       预分配的 dns 地址
 cluster.local.   为 kubernetes 集群的 domain
 jicki/pause-amd64:3.0  这个是 pod 的基础镜像，既 gcr 的 gcr.io/google_containers/pause-amd64:3.0 镜像， 下载下来修改为自己的仓库中的比较快。
@@ -1201,7 +1201,7 @@ journalctl -f -t kubelet  和 journalctl -u kubelet 来定位问题
 ```
 # 查看 csr 的名称
 
-[root@kuberneres-64 ~]# kubectl get csr
+[root@kubernetes-64 ~]# kubectl get csr
 NAME                                                   AGE       REQUESTOR           CONDITION
 node-csr-Pu4QYp3NAwlC6o8AG8iwdCl52CiqhjiSyrso3335JTs   1m        kubelet-bootstrap   Pending
 node-csr-poycCHd7B8YPxc12EBgI3Rwe0wnDJah5uIGvQHzghVY   2m        kubelet-bootstrap   Pending
@@ -1218,7 +1218,7 @@ kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate ap
 ### 验证 nodes
 
 ```
-[root@kuberneres-64 ~]# kubectl get nodes
+[root@kubernetes-64 ~]# kubectl get nodes
 NAME            STATUS    ROLES     AGE       VERSION
 kubernetes-64   Ready     <none>    12s       v1.9.1
 kubernetes   Ready     <none>    17s       v1.9.1
@@ -1250,7 +1250,7 @@ ls /etc/kubernetes/ssl/kubelet*
 # 证书方面由于我们node端没有装 cfssl
 # 我们回到 master 端 机器 去配置证书，然后拷贝过来
 
-[root@kuberneres-64 ~]# cd /opt/ssl
+[root@kubernetes-64 ~]# cd /opt/ssl
 
 
 vi kube-proxy-csr.json
@@ -1364,7 +1364,7 @@ After=network.target
 WorkingDirectory=/var/lib/kube-proxy
 ExecStart=/usr/local/bin/kube-proxy \
   --bind-address=172.16.1.65 \
-  --hostname-override=kuberneres-65 \
+  --hostname-override=kubernetes-65 \
   --cluster-cidr=10.254.64.0/18 \
   --masquerade-all \
   --feature-gates=SupportIPVSProxyMode=true \
@@ -1399,7 +1399,7 @@ systemctl status kube-proxy
 ```
 # 检查  ipvs
 
-[root@kuberneres-65 ~]# ipvsadm -L -n
+[root@kubernetes-65 ~]# ipvsadm -L -n
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
   -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
@@ -1641,7 +1641,7 @@ systemctl status kube-proxy
 ```
 # 查看 csr 的名称
 
-[root@kuberneres-64 ~]# kubectl get csr
+[root@kubernetes-64 ~]# kubectl get csr
 NAME                                                   AGE       REQUESTOR           CONDITION
 node-csr-Fla2k7UdFJrN9d8Jjlw588zu0ESUycXHcir1f7bAh5U   14s       kubelet-bootstrap   Pending
 node-csr-Pu4QYp3NAwlC6o8AG8iwdCl52CiqhjiSyrso3335JTs   19m       kubelet-bootstrap   Approved,Issued
@@ -1651,12 +1651,12 @@ node-csr-poycCHd7B8YPxc12EBgI3Rwe0wnDJah5uIGvQHzghVY   20m       kubelet-bootstr
 
 # 增加 认证
 
-[root@kuberneres-64 ~]# kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate approve
+[root@kubernetes-64 ~]# kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate approve
 
 ```
 
 ```
-[root@kuberneres-64 ~]# kubectl get nodes
+[root@kubernetes-64 ~]# kubectl get nodes
 NAME            STATUS    ROLES     AGE       VERSION
 kubernetes-64   Ready     <none>    17m       v1.9.1
 kubernetes   Ready     <none>    18m       v1.9.1
@@ -1670,11 +1670,11 @@ kubernetes-66   Ready     <none>    26s       v1.9.1
 > 由于 master-64 只做 master 不做 pod 调度，所以禁止调度到 master-64中,  Pod 的调度是通过 kubelet 服务来启动的，但是不启动 kubelet 的话，节点在 node 里是不可见的。
 
 ```
-[root@kuberneres-64 ~]# kubectl cordon  kuberneres-64
-node "kuberneres-64" cordoned
+[root@kubernetes-64 ~]# kubectl cordon  kubernetes-64
+node "kubernetes-64" cordoned
 
 
-[root@kuberneres-64 ~]# kubectl get nodes            
+[root@kubernetes-64 ~]# kubectl get nodes            
 NAME            STATUS                     ROLES     AGE       VERSION
 kubernetes-64   Ready,SchedulingDisabled   <none>    19m       v1.9.1
 kubernetes   Ready                      <none>    19m       v1.9.1
@@ -1830,14 +1830,14 @@ spec:
 ```
 
 ```
-[root@kuberneres-64 ~]# kubectl get pods -o wide
+[root@kubernetes-64 ~]# kubectl get pods -o wide
 NAME                        READY     STATUS    RESTARTS   AGE       IP            NODE
-nginx-dm-84f8f49555-dzpm9   1/1       Running   0          6s        10.254.90.2   kuberneres-65
+nginx-dm-84f8f49555-dzpm9   1/1       Running   0          6s        10.254.90.2   kubernetes-65
 nginx-dm-84f8f49555-qbnvv   1/1       Running   0          6s        10.254.66.2   k8s-master-66
 
 
 
-[root@kuberneres-64 ~]# kubectl get svc -o wide    
+[root@kubernetes-64 ~]# kubectl get svc -o wide    
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE       SELECTOR
 kubernetes   ClusterIP   10.254.0.1      <none>        443/TCP   2h        <none>
 nginx-svc    ClusterIP   10.254.41.39   <none>        80/TCP    1m
@@ -1849,7 +1849,7 @@ nginx-svc    ClusterIP   10.254.41.39   <none>        80/TCP    1m
 ```
 # 在 安装了 Flannel 网络的节点 里 curl
 
-[root@kuberneres-64 ~]# curl 10.254.51.137
+[root@kubernetes-64 ~]# curl 10.254.51.137
 <!DOCTYPE html>
 <html>
 <head>
@@ -1882,7 +1882,7 @@ Commercial support is available at
 ```
 # 查看 ipvs 规则
 
-[root@kuberneres-65 ~]# ipvsadm -L -n
+[root@kubernetes-65 ~]# ipvsadm -L -n
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
   -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
@@ -1974,7 +1974,7 @@ clusterIP: 10.254.0.2
 ```
 # 导入
 
-[root@kuberneres-64 coredns]# kubectl apply -f coredns.yaml 
+[root@kubernetes-64 coredns]# kubectl apply -f coredns.yaml 
 serviceaccount "coredns" created
 clusterrole "system:coredns" created
 clusterrolebinding "system:coredns" created
@@ -1987,7 +1987,7 @@ service "coredns" created
 ## 查看 kubedns 服务
 
 ```
-[root@kuberneres-64 coredns]# kubectl get pod,svc -n kube-system
+[root@kubernetes-64 coredns]# kubectl get pod,svc -n kube-system
 NAME                          READY     STATUS    RESTARTS   AGE
 po/coredns-6bd7d5dbb5-jh4fj   1/1       Running   0          19s
 
@@ -1998,7 +1998,7 @@ svc/coredns   ClusterIP   10.254.0.2   <none>        53/UDP,53/TCP   19s
 ## 检查日志
 
 ```
-[root@kuberneres-64 coredns]# kubectl logs -n kube-system coredns-6bd7d5dbb5-jh4fj
+[root@kubernetes-64 coredns]# kubectl logs -n kube-system coredns-6bd7d5dbb5-jh4fj
 
 .:53
 CoreDNS-1.0.1
@@ -2035,7 +2035,7 @@ spec:
 
 # 查看 创建的服务
 
-[root@kuberneres-64 yaml]# kubectl get pods,svc 
+[root@kubernetes-64 yaml]# kubectl get pods,svc 
 NAME                           READY     STATUS    RESTARTS   AGE
 po/alpine                      1/1       Running   0          19s
 po/nginx-dm-84f8f49555-tmqzm   1/1       Running   0          23s
@@ -2049,14 +2049,14 @@ svc/nginx-svc    ClusterIP   10.254.40.179   <none>        80/TCP    23s
 
 # 测试
 
-[root@kuberneres-64 ~]# kubectl exec -it alpine nslookup nginx-svc
+[root@kubernetes-64 ~]# kubectl exec -it alpine nslookup nginx-svc
 nslookup: can't resolve '(null)': Name does not resolve
 
 Name:      nginx-svc
 Address 1: 10.254.40.179 nginx-svc.default.svc.cluster.local
 
 
-[root@kuberneres-64 yaml]# kubectl exec -it alpine nslookup kubernetes
+[root@kubernetes-64 yaml]# kubectl exec -it alpine nslookup kubernetes
 nslookup: can't resolve '(null)': Name does not resolve
 
 Name:      kubernetes
@@ -2104,7 +2104,7 @@ sed -i 's/k8s\.gcr\.io/jicki/g' *
 
 # 导入文件
 
-[root@kuberneres-64 dashboard]# kubectl apply -f kubernetes-dashboard.yaml 
+[root@kubernetes-64 dashboard]# kubectl apply -f kubernetes-dashboard.yaml 
 secret "kubernetes-dashboard-certs" created
 serviceaccount "kubernetes-dashboard" created
 role "kubernetes-dashboard-minimal" created
@@ -2115,7 +2115,7 @@ service "kubernetes-dashboard" created
 
 
 
-[root@kuberneres-64 ~]# kubectl get pods,svc -n kube-system
+[root@kubernetes-64 ~]# kubectl get pods,svc -n kube-system
 NAME                                       READY     STATUS    RESTARTS   AGE
 po/coredns-5984fb8cbb-77dl4                1/1       Running   0          3h
 po/coredns-5984fb8cbb-9hdwt                1/1       Running   0          3h
@@ -2149,7 +2149,7 @@ svc/kubernetes-dashboard   ClusterIP   10.254.18.143   <none>        443/TCP    
 
 
 # 默认如下:
-[root@kuberneres-64 ingress]# kubectl get nodes
+[root@kubernetes-64 ingress]# kubectl get nodes
 NAME            STATUS                     ROLES     AGE       VERSION
 kubernetes-64   Ready,SchedulingDisabled   <none>    10d       v1.9.1
 kubernetes-65   Ready                      <none>    10d       v1.9.1
@@ -2158,15 +2158,15 @@ kubernetes-66   Ready                      <none>    10d       v1.9.1
 
 # 对 65 与 66 打上 label
 
-[root@kuberneres-64 ingress]# kubectl label nodes kubernetes-65 ingress=proxy
-node "kuberneres-65" labeled
-[root@kuberneres-64 ingress]# kubectl label nodes kubernetes-66 ingress=proxy
+[root@kubernetes-64 ingress]# kubectl label nodes kubernetes-65 ingress=proxy
+node "kubernetes-65" labeled
+[root@kubernetes-64 ingress]# kubectl label nodes kubernetes-66 ingress=proxy
 node "kubernetes-66" labeled
 
 
 # 打完标签以后
 
-[root@kuberneres-64 ingress]# kubectl get nodes --show-labels
+[root@kubernetes-64 ingress]# kubectl get nodes --show-labels
 NAME            STATUS                     ROLES     AGE       VERSION   LABELS
 kubernetes-64   Ready,SchedulingDisabled   <none>    10d       v1.9.1    beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=kubernetes-64
 kubernetes-65   Ready                      <none>    10d       v1.9.1    beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,ingress=proxy,kubernetes.io/hostname=kubernetes-65
@@ -2286,11 +2286,11 @@ spec:
 ```
 # 导入 yaml 文件
 
-[root@kuberneres-64 ingress]# kubectl apply -f namespace.yaml 
+[root@kubernetes-64 ingress]# kubectl apply -f namespace.yaml 
 namespace "ingress-nginx" created
 
 
-[root@kuberneres-64 nginx-ingress]# kubectl apply -f .
+[root@kubernetes-64 nginx-ingress]# kubectl apply -f .
 configmap "nginx-configuration" created
 deployment "default-http-backend" created
 service "default-http-backend" created
@@ -2307,7 +2307,7 @@ deployment "nginx-ingress-controller" created
 
 
 # 查看服务，可以看到这两个 pods 被分别调度到 65 与 29 中
-[root@kuberneres-64 ingress]# kubectl get pods -n ingress-nginx -o wide
+[root@kubernetes-64 ingress]# kubectl get pods -n ingress-nginx -o wide
 NAME                                        READY     STATUS    RESTARTS   AGE       IP             NODE
 default-http-backend-76f7d74455-kxbr2       1/1       Running   0          5m        10.254.126.4   kubernetes-65
 nginx-ingress-controller-8476958f94-8fh5h   1/1       Running   0          5m        172.16.1.66    kubernetes-66
@@ -2318,7 +2318,7 @@ nginx-ingress-controller-8476958f94-qfhhp   1/1       Running   0          5m   
 ```
 # 查看我们原有的 svc
 
-[root@kuberneres-64 ingress]# kubectl get pods
+[root@kubernetes-64 ingress]# kubectl get pods
 NAME                        READY     STATUS    RESTARTS   AGE
 alpine                      1/1       Running   0          24m
 nginx-dm-84f8f49555-tmqzm   1/1       Running   0          24m
@@ -2351,7 +2351,7 @@ spec:
 
 # 查看服务
 
-[root@kuberneres-64 ingress]# kubectl get ingress
+[root@kubernetes-64 ingress]# kubectl get ingress
 NAME            HOSTS            ADDRESS   PORTS     AGE
 nginx-ingress   nginx.jicki.me             80        6s
 ```
@@ -2359,7 +2359,7 @@ nginx-ingress   nginx.jicki.me             80        6s
 ```
 # 测试访问
 
-[root@kuberneres-64 ingress]# curl nginx.jicki.me
+[root@kubernetes-64 ingress]# curl nginx.jicki.me
 <!DOCTYPE html>
 <html>
 <head>
@@ -2399,7 +2399,7 @@ Commercial support is available at
 
 # 查看 dashboard svc
 
-[root@kuberneres-64 dashboard]# kubectl get svc -n kube-system
+[root@kubernetes-64 dashboard]# kubectl get svc -n kube-system
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)         AGE
 kube-dns               ClusterIP   10.254.0.2      <none>        53/UDP,53/TCP   4h
 kubernetes-dashboard   ClusterIP   10.254.18.143   <none>        443/TCP         57m
@@ -2423,19 +2423,19 @@ data:
 
 # 导入文件
 
-[root@kuberneres-64 dashboard]# kubectl apply -f tcp-services-configmap.yaml 
+[root@kubernetes-64 dashboard]# kubectl apply -f tcp-services-configmap.yaml 
 configmap "tcp-services" created
 
 
 # 查看服务
 
-[root@kuberneres-64 dashboard]# kubectl get configmap/tcp-services -n ingress-nginx
+[root@kubernetes-64 dashboard]# kubectl get configmap/tcp-services -n ingress-nginx
 NAME           DATA      AGE
 tcp-services   1         11m
 
 
 
-[root@kuberneres-64 dashboard]# kubectl describe configmap/tcp-services -n ingress-nginx
+[root@kubernetes-64 dashboard]# kubectl describe configmap/tcp-services -n ingress-nginx
 Name:         tcp-services
 Namespace:    ingress-nginx
 Labels:       <none>
@@ -2453,7 +2453,7 @@ Events:  <none>
 
 # 测试访问
 
-[root@kuberneres-64 dashboard]# curl -I -k https://dashboard.jicki.me:8888
+[root@kubernetes-64 dashboard]# curl -I -k https://dashboard.jicki.me:8888
 
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
@@ -2500,7 +2500,7 @@ subjects:
 
 # 导入文件
 
-[root@kuberneres-64 dashboard]# kubectl apply -f dashboard-admin-rbac.yaml 
+[root@kubernetes-64 dashboard]# kubectl apply -f dashboard-admin-rbac.yaml 
 serviceaccount "kubernetes-dashboard-admin" created
 clusterrolebinding "kubernetes-dashboard-admin" created
 
@@ -2508,13 +2508,13 @@ clusterrolebinding "kubernetes-dashboard-admin" created
 
 # 查看超级用户的 token 名称
 
-[root@kuberneres-64 dashboard]# kubectl -n kube-system get secret | grep kubernetes-dashboard-admin
+[root@kubernetes-64 dashboard]# kubectl -n kube-system get secret | grep kubernetes-dashboard-admin
 kubernetes-dashboard-admin-token-mnhdz   kubernetes.io/service-account-token   3         1m
 
 
 # 查看 token 部分
 
-[root@kuberneres-64 dashboard]# kubectl describe -n kube-system secret/kubernetes-dashboard-admin-token-mnhdz
+[root@kubernetes-64 dashboard]# kubectl describe -n kube-system secret/kubernetes-dashboard-admin-token-mnhdz
 Name:         kubernetes-dashboard-admin-token-mnhdz
 Namespace:    kube-system
 Labels:       <none>
