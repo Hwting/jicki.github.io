@@ -2306,7 +2306,7 @@ deployment "nginx-ingress-controller" created
 
 
 
-# 查看服务，可以看到这两个 pods 被分别调度到 65 与 29 中
+# 查看服务，可以看到这两个 pods 被分别调度到 65 与 66 中
 [root@kubernetes-64 ingress]# kubectl get pods -n ingress-nginx -o wide
 NAME                                        READY     STATUS    RESTARTS   AGE       IP             NODE
 default-http-backend-76f7d74455-kxbr2       1/1       Running   0          5m        10.254.126.4   kubernetes-65
