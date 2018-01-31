@@ -11,6 +11,7 @@ keywords: Harbor
 
 ## 说明
 
+```
 Harbor 是 Vmware 公司开源的 企业级的 Docker Registry 管理项目
 
 它主要 提供 Dcoker Registry 管理UI，可基于角色访问控制, AD/LDAP 集成，日志审核等功能，完全的支持中文。
@@ -20,6 +21,7 @@ Harbor 的所有组件都在 Dcoker 中部署，所以 Harbor 可使用 Docker C
 
 注： 由于 Harbor 是基于 Docker Registry V2 版本，所以 docker 版本必须 > = 1.10.0 docker-compose >= 1.6.0
 
+```
 
 [harbor 项目地址][1]
 
