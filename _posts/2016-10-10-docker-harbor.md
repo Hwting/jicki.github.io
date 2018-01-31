@@ -366,6 +366,30 @@ docker-compose up --build -d
 
  
 
+## FAQ 删除镜像，回收容量
+
+```
+
+# 首先确认 并打印是否有正在上传与下载的镜像
+
+$ docker-compose stop
+
+$ docker run -it --name gc --rm --volumes-from registry vmware/registry:2.6.2-photon garbage-collect --dry-run /etc/registry/config.yml
+
+
+# 执行如下命令 GC 删除镜像
+
+$ docker run -it --name gc --rm --volumes-from registry vmware/registry:2.6.2-photon garbage-collect  /etc/registry/config.yml
+
+
+# 删除 重新启动
+
+$ docker-compose start
+
+
+
+```
+
 
   [1]: https://github.com/vmware/harbor
   [2]: http://jicki.me/images/posts/harbor/1.png
