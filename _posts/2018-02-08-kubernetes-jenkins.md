@@ -7,12 +7,12 @@ keywords: kubernetes
 ---
 
 
-# 基于 Kubernetes Jenkins slave 动态资源
+# 基于 Kubernetes Jenkins slave 动态资源伸缩 pod
 
 
 ## 环境说明
 
-> 请自动配置 kubernetes 集群, kubernetes 版本为 1.9.1
+> 请自行配置 kubernetes 集群, kubernetes 版本为 1.9.1
 
 ```
 172.16.1.64 - kubernetes master
