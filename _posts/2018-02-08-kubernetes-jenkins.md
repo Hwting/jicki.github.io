@@ -360,7 +360,168 @@ Finished: SUCCESS
 
 > 官方默认的 jenkins-slave 里面不存在任何的工具，依赖，项目环境等，我们需要制作一个属于自己项目的 jenkins-slave 镜像。
 
-> 官方 jenkins-slave dockerfile 地址 https://github.com/jenkinsci/docker-jnlp-slave 
+> 官方 jenkins-slave dockerfile 地址 https://github.com/jenkinsci/docker-jnlp-slave
+> 官方 slave  https://github.com/jenkinsci/docker-slave
+
+
+
+
+
+```
+# 个人的 oracle-jdk-8 镜像 java -version = 1.8.0_161
+
+docker pull jicki/oracle-jdk:8
+
+# 个人的 gradle 镜像 
+
+docker pull jicki/gradle:4.5
+
+```
+
+
+
+```
+# 基于 jicki/gradle:4.5 的一个 jenkins slave
+
+
+docker pull jicki/slave:3.16
+
+```
+
+
+
+```
+
+# 获取官方的git，主要是 jenkins-slave 脚本文件
+
+git clone https://github.com/jenkinsci/docker-jnlp-slave
+
+
+
+# 重新编辑 dockerfile 官方默认使用 openjdk-1.8
+
+vi  dockerfile
+
+FROM jicki/slave:3.16
+
+COPY jenkins-slave /usr/local/bin/jenkins-slave
+
+USER root
+RUN chmod +x /usr/local/bin/jenkins-slave
+
+USER jenkins
+ENTRYPOINT ["jenkins-slave"]
+    
+```
+
+```
+docker build -t="jicki/jenkins-jnlp" .
+
+```
+
+
+
+
+```
+# 测试自己的镜像
+
+
+podTemplate(label: 'jicki-jenkins', cloud: 'Jenkins-Cloud', containers: [
+    containerTemplate(
+        name: 'jnlp', 
+        image: 'jicki/jenkins-jnlp', 
+        alwaysPullImage: true, 
+        args: '${computer.jnlpmac} ${computer.name}'),
+
+  ],
+  volumes: [
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+],) 
+{
+    node('jicki-jenkins') {
+        stage('Task-1') {
+            stage('show java version') {
+                sh 'java -version'
+            }
+        }
+    }
+    node('jicki-jenkins') {
+        stage('Task-2') {
+            stage('show gradle version') {
+                sh 'gradle -version'
+            }
+        }
+    }
+}
+
+```
+
+
+```
+
+Started by user 小炒肉
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+Still waiting to schedule task
+Waiting for next available executor on jenkins-slave-9v0g5-73tng
+Running on jenkins-slave-9v0g5-73tng in /home/jenkins/workspace/test-2
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Task-1)
+[Pipeline] stage
+[Pipeline] { (show java version)
+[Pipeline] sh
+[test-2] Running shell script
++ java -version
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] node
+Still waiting to schedule task
+jenkins-slave-9v0g5-nxdf8 is offline
+Running on jenkins-slave-9v0g5-nxdf8 in /home/jenkins/workspace/test-2
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Task-2)
+[Pipeline] stage
+[Pipeline] { (show gradle version)
+[Pipeline] sh
+[test-2] Running shell script
++ gradle -version
+
+------------------------------------------------------------
+Gradle 4.5
+------------------------------------------------------------
+
+Build time:   2018-01-24 17:04:52 UTC
+Revision:     77d0ec90636f43669dc794ca17ef80dd65457bec
+
+Groovy:       2.4.12
+Ant:          Apache Ant(TM) version 1.9.9 compiled on February 2 2017
+JVM:          1.8.0_161 (Oracle Corporation 25.161-b12)
+OS:           Linux 4.4.111-1.el7.elrepo.x86_64 amd64
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+
+
+```
 
 
   [1]: http://jicki.me/images/posts/jenkins/jenkins1.png
