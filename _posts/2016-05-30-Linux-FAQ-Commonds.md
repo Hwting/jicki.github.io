@@ -352,3 +352,22 @@ db.killOP(2920488)
 ```
 db.getLastError()db.getLastError()
 ```
+
+
+## Python FAQ
+
+
+```
+# 模块版本不兼容
+
+packages/requests/__init__.py:80: RequestsDependencyWarning: urllib3 (1.21.1) or chardet (2.2.1) doesn‘t match a supported version!
+
+# 依次执行如下命令 (一条一条执行)
+
+pip uninstall urllib3
+pip uninstall requests
+pip uninstall  chardet
+
+
+pip install requests
+```
