@@ -87,5 +87,14 @@ tools/android update sdk --no-ui --filter build-tools-25.0.2,android-25,extra-an
 ```
 
 
+### 添加360 加固
 
+```
+# 这里保存官方文档 以防忘记
+
+http://bbs.360.cn/forum.php?mod=viewthread&tid=6294457
+
+# 获取 jiagu.jar 在jenkins 构建完以后，执行加固生成
+
+```
 
