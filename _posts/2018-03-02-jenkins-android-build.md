@@ -94,7 +94,10 @@ tools/android update sdk --no-ui --filter build-tools-25.0.2,android-25,extra-an
 
 http://bbs.360.cn/forum.php?mod=viewthread&tid=6294457
 
-# 获取 jiagu.jar 在jenkins 构建完以后，执行加固生成
+
+# 下载 Linux 版本的加固
+
+链接：http://pan.baidu.com/s/1jI7OyME （提取码：y3k1）
 
 ```
 
