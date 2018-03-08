@@ -310,6 +310,8 @@ http://jenkins.jicki.me
 
 
 
+### 基于 pipeline 模式
+
 ```
 # 创建一个基于 pipeline 的配置  cloud 字段配置为 kubernetes 云的 name .
 
@@ -354,6 +356,34 @@ hello world
 Finished: SUCCESS
 
 ```
+
+### 基于 自由风格模式
+
+
+```
+
+# 点击【系统管理】-【系统设置】-【新增一个云】-【Kubernetes】- 【 Kubernetes Pod Template 】
+  - 【 Container Template 】
+
+具体参数 如下：
+
+```
+
+![jenkins6][6]
+![jenkins7][7]
+
+
+
+```
+# 添加一个 自动风格的 pj
+
+```
+
+![jenkins8][8]
+![jenkins9][9]
+![jenkins10][10]
+![jenkins11][11]
+![jenkins12][12]
 
 
 ## 制作 slave 镜像
@@ -529,3 +559,10 @@ Finished: SUCCESS
   [3]: http://jicki.me/images/posts/jenkins/jenkins3.png
   [4]: http://jicki.me/images/posts/jenkins/jenkins4.png
   [5]: http://jicki.me/images/posts/jenkins/jenkins5.png
+  [6]: http://jicki.me/images/posts/jenkins/jenkins6.png
+  [7]: http://jicki.me/images/posts/jenkins/jenkins7.png
+  [8]: http://jicki.me/images/posts/jenkins/jenkins8.png
+  [9]: http://jicki.me/images/posts/jenkins/jenkins9.png
+  [10]: http://jicki.me/images/posts/jenkins/jenkins10.png
+  [11]: http://jicki.me/images/posts/jenkins/jenkins11.png
+  [12]: http://jicki.me/images/posts/jenkins/jenkins12.png
