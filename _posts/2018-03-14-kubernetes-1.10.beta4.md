@@ -6,7 +6,7 @@ description: kubernetes 1.10.beta4
 keywords: kubernetes
 ---
 
-# kubernetes 1.10.beta3
+# kubernetes 1.10.beta4
 
 > 基于 二进制 文件部署
 > 本地化 kube-apiserver, kube-controller-manager , kube-scheduler
@@ -2131,10 +2131,10 @@ Address 1: 10.254.0.1 kubernetes.default.svc.cluster.local
 
 ```
 # 官方镜像
-k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.2
+k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3
 
 # 国内镜像
-jicki/kubernetes-dashboard-amd64:v1.8.2
+jicki/kubernetes-dashboard-amd64:v1.8.3
 ```
 
 
@@ -2661,7 +2661,5 @@ kubectl uncordon [nodeid]
   [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
   [2]: https://jicki.me/images/posts/kubernetes/hamaster.jpg
   [3]: https://jicki.me/images/posts/kubernetes/dashboard-new.jpeg
-
-
 
 
