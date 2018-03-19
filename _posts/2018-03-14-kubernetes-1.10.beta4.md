@@ -1123,6 +1123,11 @@ kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 
 mv bootstrap.kubeconfig /etc/kubernetes/
 
+
+# 拷贝到所有的机器里
+
+scp bootstrap.kubeconfig 172.16.1.65:/etc/kubernetes/
+scp bootstrap.kubeconfig 172.16.1.66:/etc/kubernetes/
 ```
 
 
