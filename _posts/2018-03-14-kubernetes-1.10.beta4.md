@@ -2239,11 +2239,11 @@ kubernetes-66   Ready                      <none>    13m       v1.10.0-beta.4   
 
 # 官方镜像
 gcr.io/google_containers/defaultbackend:1.4
-quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.10.0
+quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.12.0
 
 # 国内镜像
 jicki/defaultbackend:1.4
-jicki/nginx-ingress-controller:0.10.0
+jicki/nginx-ingress-controller:0.12.0
 
 ```
 
