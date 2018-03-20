@@ -126,11 +126,6 @@ jenkins-admin   1         1m
 
 
 
-
-
-> 这里需要注意 nfs 目录的权限, 官方镜像提示 jenkins user - uid 1000 ，我们需要在 nfs 源目录授权 1000 这个uid的权限，否则创建失败
-
-
 ```
 vi jenkins-deployment.yaml
 
@@ -152,6 +147,8 @@ spec:
       labels:  
         app: jenkins  
     spec:
+      securityContext:
+        fsGroup: 1000
       serviceAccount: "jenkins-admin"
       containers:  
       - name: jenkins
