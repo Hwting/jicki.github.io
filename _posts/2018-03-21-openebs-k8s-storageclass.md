@@ -209,11 +209,6 @@ metadata:
   name: jenkins
 spec:  
   replicas: 1  
-  strategy:  
-    type: RollingUpdate  
-    rollingUpdate:  
-      maxSurge: 2  
-      maxUnavailable: 0  
   template:  
     metadata:  
       labels:  
