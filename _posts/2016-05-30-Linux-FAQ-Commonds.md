@@ -23,6 +23,20 @@ hostnamectl --static set-hostname <host-name>
 find -type f -size 0c | xargs rm -f
 ```
  
+## 查看系统启动时间
+
+```
+date -d "$(awk -F. '{print $1}' /proc/uptime) second ago" +"%Y-%m-%d %H:%M:%S" 
+
+```
+
+## 查看系统运行时间
+
+```
+cat /proc/uptime| awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600;run_minute=($1 % 3600)/60;run_second=$1 % 60; printf("系统已运行：%d天%d时%d分%d秒",run_days,run_hour,run_minute,run_second)}' 
+
+
+```
 
 
 ## 截取 N - M 的日志
