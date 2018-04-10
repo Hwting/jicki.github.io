@@ -1567,9 +1567,6 @@ systemctl status nginx-proxy
 
 
 ```
-# 创建目录
-
-mkdir /opt/kubelet
 
 vi /etc/systemd/system/kubelet.service
 
@@ -1581,7 +1578,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-WorkingDirectory=/opt/kubelet
+WorkingDirectory=/var/lib/kubelet
 ExecStart=/usr/local/bin/kubelet \
   --cgroup-driver=cgroupfs \
   --hostname-override=kubernetes-66 \
@@ -1619,10 +1616,6 @@ systemctl status kubelet
 
 
 ```
-# 创建 kube-proxy 目录
-
-mkdir -p /opt/kube-proxy
-
 
 vi /etc/systemd/system/kube-proxy.service
 
@@ -1632,7 +1625,7 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 
 [Service]
-WorkingDirectory=/opt/kube-proxy
+WorkingDirectory=/var/lib/kube-proxy
 ExecStart=/usr/local/bin/kube-proxy \
   --bind-address=172.16.1.66 \
   --hostname-override=kubernetes-66 \
