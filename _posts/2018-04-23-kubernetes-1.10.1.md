@@ -3,8 +3,8 @@ layout: post
 title: kubernetes 1.10.1
 categories: kubernetes
 description: kubernetes 1.10.1
-feature-img: "assets/img/thumbnails/kubernetes.jpeg"
-thumbnail: "assets/img/thumbnails/kubernetes.jpeg"
+feature-img: "assets/img/thumbnails/kubernetes-1.jpeg"
+thumbnail: "assets/img/thumbnails/kubernetes-1.jpeg"
 keywords: kubernetes
 ---
 
