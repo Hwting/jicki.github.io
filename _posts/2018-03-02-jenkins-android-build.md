@@ -5,6 +5,7 @@ categories: jenkins
 description: jenkins build android
 keywords: jenkins
 feature-img: "assets/img/pexels/desk-top.jpeg"
+thumbnail: "assets/img/thumbnails/jenkins.png"
 ---
 
 # 环境配置
