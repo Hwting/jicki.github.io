@@ -3,6 +3,8 @@ layout: post
 title: OpenEBS to Kubernetes StorageClass
 categories: kubernetes
 description: OpenEBS to Kubernetes StorageClass
+thumbnail: "assets/img/thumbnails/openebs-logo.svg"
+feature-img: "assets/img/thumbnails/openebs-logo.svg"
 keywords: kubernetes
 ---
 
