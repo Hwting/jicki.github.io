@@ -5,6 +5,7 @@ categories: kubernetes
 description: kubernetes jenkins
 keywords: kubernetes
 feature-img: "assets/img/pexels/desk-top.jpeg"
+thumbnail: "assets/img/thumbnails/jenkins.png"
 ---
 
 
