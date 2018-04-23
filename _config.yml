@@ -19,7 +19,7 @@ theme_settings:
      <p> Your future depends on your dreams </p>
   header_text_feature_image: assets/img/pexels/triangular.jpeg
   footer_text: >
-   Powered by <a href="https://jekyllrb.com/">Jekyll</a> with <a href="https://github.com/sylhare/Type-on-Strap">Type on Strap</a>
+   Powered by <a href="https://jicki.me/">jicki</a> with <a href="https://github.com/jicki">Github</a>
 
   # Icons
   rss: true  # Make sure you created a feed.xml with feed.xml layout
@@ -30,7 +30,7 @@ theme_settings:
   facebook:
   flickr:
   gitlab:
-  github: "sylhare"
+  github: "jicki"
   google_plus:
   instagram:
   keybase:
@@ -47,8 +47,8 @@ theme_settings:
   youtube:
 
   # Scripts / Features 
-  google_analytics: # Tracking ID, e.g. "UA-000000-01"
-  disqus_shortname:
+  google_analytics: UA-85602329-1 # Tracking ID, e.g. "UA-000000-01"
+  disqus_shortname: jicki
   katex: true # Enable if using math markup
   portfolio: true
   search: true
