@@ -1,12 +1,12 @@
 ---
 layout: post
-title: kubernetes 1.10
+title: kubernetes 1.10.1
 categories: kubernetes
-description: kubernetes 1.10
+description: kubernetes 1.10.1
 keywords: kubernetes
 ---
 
-# kubernetes 1.10
+# kubernetes 1.10.1
 
 > 基于 二进制 文件部署
 > 本地化 kube-apiserver, kube-controller-manager , kube-scheduler
@@ -169,11 +169,9 @@ cp ca.csr /etc/kubernetes/ssl
 
 # 这里要将文件拷贝到所有的k8s 机器上
 
-scp *.pem 172.16.1.65:/etc/kubernetes/ssl/
-scp *.csr 172.16.1.65:/etc/kubernetes/ssl/
+scp *.pem *.csr 172.16.1.65:/etc/kubernetes/ssl/
 
-scp *.pem 172.16.1.66:/etc/kubernetes/ssl/
-scp *.csr 172.16.1.66:/etc/kubernetes/ssl/
+scp *.pem *.csr 172.16.1.66:/etc/kubernetes/ssl/
 
 ```
 
@@ -663,7 +661,7 @@ kube-controller-manager 作用是 对 deployment controller , replication contro
 
 cd /tmp
 
-wget https://dl.k8s.io/v1.10.0/kubernetes-server-linux-amd64.tar.gz
+wget https://dl.k8s.io/v1.10.1/kubernetes-server-linux-amd64.tar.gz
 
 tar -xzvf kubernetes-server-linux-amd64.tar.gz
 
@@ -732,6 +730,42 @@ cp admin*.pem /etc/kubernetes/ssl/
 scp admin*.pem 172.16.1.65:/etc/kubernetes/ssl/
 
 ```
+
+
+
+### 生成 kubernetes 配置文件
+
+
+>  生成证书相关的配置文件存储与 /root/.kube 目录中
+
+```
+# 配置 kubernetes 集群
+
+kubectl config set-cluster kubernetes \
+  --certificate-authority=/etc/kubernetes/ssl/ca.pem \
+  --embed-certs=true \
+  --server=https://127.0.0.1:6443
+
+
+# 配置 客户端认证
+
+kubectl config set-credentials admin \
+  --client-certificate=/etc/kubernetes/ssl/admin.pem \
+  --embed-certs=true \
+  --client-key=/etc/kubernetes/ssl/admin-key.pem
+  
+
+
+kubectl config set-context kubernetes \
+  --cluster=kubernetes \
+  --user=admin
+
+
+kubectl config use-context kubernetes
+
+```
+
+
 
 
 ### 创建 kubernetes 证书
@@ -810,7 +844,7 @@ scp kubernetes*.pem 172.16.1.65:/etc/kubernetes/ssl/
 # 生成 token
 
 [root@kubernetes-64 ssl]# head -c 16 /dev/urandom | od -An -t x | tr -d ' '
-dc6cf19c763d434d8e4bf0b27683723f
+a2ae287d4417361144a67ac192e75016
 
 
 # 创建 token.csv 文件
@@ -819,7 +853,7 @@ cd /opt/ssl
 
 vi token.csv
 
-dc6cf19c763d434d8e4bf0b27683723f,kubelet-bootstrap,10001,"system:kubelet-bootstrap"
+a2ae287d4417361144a67ac192e75016,kubelet-bootstrap,10001,"system:bootstrappers"
 
 
 # 拷贝
@@ -937,7 +971,10 @@ systemctl status kube-apiserver
 
 ### 配置 kube-controller-manager
 
-> --cluster-signing-cert-file 与 --cluster-signing-key-file 标签将被删除。
+>  新增几个配置，用于自动 续期证书
+>  --feature-gates=RotateKubeletServerCertificate=true
+>  --experimental-cluster-signing-duration=86700h0m0s
+
 
 ```
 # 创建 kube-controller-manager.service 文件
@@ -956,11 +993,18 @@ ExecStart=/usr/local/bin/kube-controller-manager \
   --allocate-node-cidrs=true \
   --service-cluster-ip-range=10.254.0.0/18 \
   --cluster-cidr=10.254.64.0/18 \
+  --cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem \
+  --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem \
+  --feature-gates=RotateKubeletServerCertificate=true \
+  --experimental-cluster-signing-duration=86700h0m0s \
   --cluster-name=kubernetes \
   --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem \
   --root-ca-file=/etc/kubernetes/ssl/ca.pem \
   --leader-elect=true \
-  --v=1
+  --node-monitor-grace-period=40s \
+  --node-monitor-period=5s \
+  --pod-eviction-timeout=5m0s \
+  --v=2
 Restart=on-failure
 RestartSec=5
 
@@ -1056,7 +1100,7 @@ etcd-1               Healthy   {"health": "true"}
 # 只需创建一次就可以
 
 kubectl create clusterrolebinding kubelet-bootstrap --clusterrole=system:node-bootstrapper --user=kubelet-bootstrap
-
+  
 ```
 
 
@@ -1075,7 +1119,7 @@ kubectl config set-cluster kubernetes \
 # 配置客户端认证
 
 kubectl config set-credentials kubelet-bootstrap \
-  --token=dc6cf19c763d434d8e4bf0b27683723f \
+  --token=a2ae287d4417361144a67ac192e75016 \
   --kubeconfig=bootstrap.kubeconfig
 
 
@@ -1094,49 +1138,76 @@ kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 
 mv bootstrap.kubeconfig /etc/kubernetes/
 
+
+# 拷贝到其他
+
+scp bootstrap.kubeconfig 172.16.1.65:/etc/kubernetes/
+
+scp bootstrap.kubeconfig 172.16.1.66:/etc/kubernetes/
+
+```
+
+### 创建自动批准相关 CSR 请求的 ClusterRole
+
+```
+vi /etc/kubernetes/tls-instructs-csr.yaml
+
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: system:certificates.k8s.io:certificatesigningrequests:selfnodeserver
+rules:
+- apiGroups: ["certificates.k8s.io"]
+  resources: ["certificatesigningrequests/selfnodeserver"]
+  verbs: ["create"]
+
+
+
+# 导入 yaml 文件
+
+[root@kubernetes-64 opt]# kubectl apply -f /etc/kubernetes/tls-instructs-csr.yaml
+clusterrole.rbac.authorization.k8s.io "system:certificates.k8s.io:certificatesigningrequests:selfnodeserver" created
+
+
+
+# 查看
+
+[root@kubernetes-64 opt]# kubectl describe ClusterRole/system:certificates.k8s.io:certificatesigningrequests:selfnodeserver
+Name:         system:certificates.k8s.io:certificatesigningrequests:selfnodeserver
+Labels:       <none>
+Annotations:  kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"rbac.authorization.k8s.io/v1","kind":"ClusterRole","metadata":{"annotations":{},"name":"system:certificates.k8s.io:certificatesigningreq...
+PolicyRule:
+  Resources                                                      Non-Resource URLs  Resource Names  Verbs
+  ---------                                                      -----------------  --------------  -----
+  certificatesigningrequests.certificates.k8s.io/selfnodeserver  []                 []              [create]
+
+
 ```
 
 
-### 配置 kubectl kubeconfig 文件
+```
+#  将 ClusterRole 绑定到适当的用户组
 
 
->  生成证书相关的配置文件存储与 /root/.kube 目录中
+# 自动批准 system:bootstrappers 组用户 TLS bootstrapping 首次申请证书的 CSR 请求
+
+kubectl create clusterrolebinding node-client-auto-approve-csr --clusterrole=system:certificates.k8s.io:certificatesigningrequests:nodeclient --group=system:bootstrappers
+
+
+# 自动批准 system:nodes 组用户更新 kubelet 自身与 apiserver 通讯证书的 CSR 请求
+
+kubectl create clusterrolebinding node-client-auto-renew-crt --clusterrole=system:certificates.k8s.io:certificatesigningrequests:selfnodeclient --group=system:nodes
+
+
+# 自动批准 system:nodes 组用户更新 kubelet 10250 api 端口证书的 CSR 请求
+
+kubectl create clusterrolebinding node-server-auto-renew-crt --clusterrole=system:certificates.k8s.io:certificatesigningrequests:selfnodeserver --group=system:nodes
+
 
 ```
-# 配置 kubernetes 集群
-
-kubectl config set-cluster kubernetes \
-  --certificate-authority=/etc/kubernetes/ssl/ca.pem \
-  --embed-certs=true \
-  --server=https://127.0.0.1:6443
 
 
-# 配置 客户端认证
-
-kubectl config set-credentials admin \
-  --client-certificate=/etc/kubernetes/ssl/admin.pem \
-  --embed-certs=true \
-  --client-key=/etc/kubernetes/ssl/admin-key.pem
-  
-
-
-kubectl config set-context kubernetes \
-  --cluster=kubernetes \
-  --user=admin
-
-
-kubectl config use-context kubernetes
-
-
-# 拷贝文件
-
-cp /root/.kube/config /etc/kubernetes/kubelet.kubeconfig
-
-scp /etc/kubernetes/kubelet.kubeconfig 172.16.1.65:/etc/kubernetes/
-
-scp /etc/kubernetes/kubelet.kubeconfig 172.16.1.66:/etc/kubernetes/
-
-```
 
 
 
@@ -1164,6 +1235,7 @@ ExecStart=/usr/local/bin/kubelet \
   --hostname-override=kubernetes-64 \
   --pod-infra-container-image=jicki/pause-amd64:3.0 \
   --experimental-bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
+  --feature-gates=RotateKubeletClientCertificate=true,RotateKubeletServerCertificate=true \
   --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
   --cert-dir=/etc/kubernetes/ssl \
   --cluster_dns=10.254.0.2 \
@@ -1174,7 +1246,7 @@ ExecStart=/usr/local/bin/kubelet \
   --serialize-image-pulls=false \
   --logtostderr=true \
   --max-pods=512 \
-  --v=1
+  --v=2
 
 [Install]
 WantedBy=multi-user.target
@@ -1193,7 +1265,6 @@ jicki/pause-amd64:3.0  这个是 pod 的基础镜像，既 gcr 的 gcr.io/google
 ### 启动 kubelet
 
 ```
-
 systemctl daemon-reload
 systemctl enable kubelet
 systemctl start kubelet
@@ -1208,20 +1279,19 @@ journalctl -f -t kubelet  和 journalctl -u kubelet 来定位问题
 ```
 
 
-### 配置 TLS 认证
+### 查看 TLS 认证
 
 ```
-# 查看 csr 的名称
+# 查看 csr 因为上面配置了 自签, 所以不需要手动 approved
 
 [root@kubernetes-64 ~]# kubectl get csr
-NAME                                                   AGE       REQUESTOR           CONDITION
-node-csr-Pu4QYp3NAwlC6o8AG8iwdCl52CiqhjiSyrso3335JTs   1m        kubelet-bootstrap   Pending
-node-csr-poycCHd7B8YPxc12EBgI3Rwe0wnDJah5uIGvQHzghVY   2m        kubelet-bootstrap   Pending
+NAME                                                   AGE       REQUESTOR                   CONDITION
+csr-mz2hc                                              1m        system:node:kubernetes-64   Approved,Issued
+node-csr-rhFVOW9po4i1VXjveDp4zzwPrkKeThdvW0JIVa7T0dk   1m        kubelet-bootstrap           Approved,Issued
 
 
-# 增加 认证
-
-kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate approve
+# 手动 增加 认证
+# kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate approve
 
 ```
 
@@ -1232,47 +1302,24 @@ kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate ap
 ```
 [root@kubernetes-64 ~]# kubectl get nodes
 NAME            STATUS    ROLES     AGE       VERSION
-kubernetes-64   Ready     <none>    34m       v1.10.0
-kubernetes-65   Ready     <none>    34m       v1.10.0
+kubernetes-64   Ready     <none>    1m        v1.10.1
 
 ```
 
 
-### 一个错误问题
+### 查看 kubelet 生成文件
 
 ```
-# 密钥文件  这里注意如果 csr 被删除了，请删除如下文件，并重启 kubelet 服务
-
-ls /etc/kubernetes/ssl/kubelet*
-/etc/kubernetes/ssl/kubelet-client.crt  /etc/kubernetes/ssl/kubelet.crt
-/etc/kubernetes/ssl/kubelet-client.key  /etc/kubernetes/ssl/kubelet.key
-
-
-
-# 查看 csr
-
-[root@kubernetes-64 kubernetes]# kubectl get csr
-NAME                                                   AGE       REQUESTOR           CONDITION
-node-csr-4LAZ8jocB-XXRikzDKgKDLcBd0yy-yKyuMWM0WIobTI   3m        kubelet-bootstrap   Approved
+[root@kubernetes-64 ~]# ls -lt /etc/kubernetes/ssl/kubelet-*
+-rw------- 1 root root 1374 4月  23 11:55 /etc/kubernetes/ssl/kubelet-server-2018-04-23-11-55-38.pem
+lrwxrwxrwx 1 root root   58 4月  23 11:55 /etc/kubernetes/ssl/kubelet-server-current.pem -> /etc/kubernetes/ssl/kubelet-server-2018-04-23-11-55-38.pem
+-rw-r--r-- 1 root root 1050 4月  23 11:55 /etc/kubernetes/ssl/kubelet-client.crt
+-rw------- 1 root root  227 4月  23 11:55 /etc/kubernetes/ssl/kubelet-client.key
 
 
-# 删除 csr
-
-[root@kubernetes-64 kubernetes]# kubectl delete csr/node-csr-4LAZ8jocB-XXRikzDKgKDLcBd0yy-yKyuMWM0WIobTI
-certificatesigningrequest.certificates.k8s.io "node-csr-4LAZ8jocB-XXRikzDKgKDLcBd0yy-yKyuMWM0WIobTI" deleted
-
-
-# 删除文件
-
-rm -rf /etc/kubernetes/ssl/kubelet*
-
-
-
-# 重启 kubelet
-
-systemctl restart kubelet
 
 ```
+
 
 
 ## 配置 kube-proxy
@@ -1322,8 +1369,6 @@ ls kube-proxy*
 kube-proxy.csr  kube-proxy-csr.json  kube-proxy-key.pem  kube-proxy.pem
 
 # 拷贝到目录
-
-cp kube-proxy* /etc/kubernetes/ssl/
 
 scp kube-proxy* 172.16.1.65:/etc/kubernetes/ssl/
 
@@ -1658,35 +1703,6 @@ systemctl status kube-proxy
 
 
 
-### Master 配置 TLS 认证
-
-```
-# 查看 csr 的名称
-
-[root@kubernetes-64 ~]# kubectl get csr
-NAME                                                   AGE       REQUESTOR           CONDITION
-node-csr-Fla2k7UdFJrN9d8Jjlw588zu0ESUycXHcir1f7bAh5U   14s       kubelet-bootstrap   Pending
-node-csr-Pu4QYp3NAwlC6o8AG8iwdCl52CiqhjiSyrso3335JTs   19m       kubelet-bootstrap   Approved,Issued
-node-csr-poycCHd7B8YPxc12EBgI3Rwe0wnDJah5uIGvQHzghVY   20m       kubelet-bootstrap   Approved,Issued
-
-
-
-# 增加 认证
-
-[root@kubernetes-64 ~]# kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate approve
-
-```
-
-```
-[root@kubernetes-64 ~]# kubectl get nodes
-NAME            STATUS                     ROLES     AGE       VERSION
-kubernetes-64   Ready,SchedulingDisabled   <none>    17m       v1.10.0
-kubernetes-65   Ready                      <none>    2m        v1.10.0
-kubernetes-66   Ready                      <none>    15s       v1.10.0
-
-```
-
-
 ### 限制 POD 的调度
 
 > 由于 master-64 只做 master 不做 pod 调度，所以禁止调度到 master-64中,  Pod 的调度是通过 kubelet 服务来启动的，但是不启动 kubelet 的话，节点在 node 里是不可见的。
@@ -1696,11 +1712,11 @@ kubernetes-66   Ready                      <none>    15s       v1.10.0
 node "kubernetes-64" cordoned
 
 
-[root@kubernetes-64 ~]# kubectl get nodes
+[root@kubernetes-64 ~]# kubectl get nodes            
 NAME            STATUS                     ROLES     AGE       VERSION
-kubernetes-64   Ready,SchedulingDisabled   <none>    17m       v1.10.0
-kubernetes-65   Ready                      <none>    2m        v1.10.0
-kubernetes-66   Ready                      <none>    15s       v1.10.0
+kubernetes-64   Ready,SchedulingDisabled   <none>    29m       v1.10.1
+kubernetes-65   Ready                      <none>    14m       v1.10.1
+kubernetes-66   Ready                      <none>    34s       v1.10.1
 
 ```
 
@@ -2011,10 +2027,10 @@ svc/coredns   ClusterIP   10.254.0.2   <none>        53/UDP,53/TCP   19s
 [root@kubernetes-64 coredns]# kubectl logs -n kube-system coredns-6bd7d5dbb5-jh4fj
 
 .:53
-CoreDNS-1.1.0
-linux/amd64, go1.10, c8d91500
-2018/03/14 09:58:53 [INFO] CoreDNS-1.1.0
-2018/03/14 09:58:53 [INFO] linux/amd64, go1.10, c8d91500
+CoreDNS-1.1.1
+linux/amd64, go1.10, 231c2c0e
+2018/04/23 04:26:47 [INFO] CoreDNS-1.1.1
+2018/04/23 04:26:47 [INFO] linux/amd64, go1.10, 231c2c0e
 ```
 
 
@@ -2161,9 +2177,9 @@ svc/kubernetes-dashboard   ClusterIP   10.254.18.143   <none>        443/TCP    
 # 默认如下:
 [root@kubernetes-64 ingress]# kubectl get nodes
 NAME            STATUS                     ROLES     AGE       VERSION
-kubernetes-64   Ready,SchedulingDisabled   <none>    20m       v1.10.0
-kubernetes-65   Ready                      <none>    4m        v1.10.0
-kubernetes-66   Ready                      <none>    2m        v1.10.0
+kubernetes-64   Ready,SchedulingDisabled   <none>    32m       v1.10.1
+kubernetes-65   Ready                      <none>    17m       v1.10.1
+kubernetes-66   Ready                      <none>    3m        v1.10.1
 
 
 # 对 65 与 66 打上 label
@@ -2177,10 +2193,10 @@ node "kubernetes-66" labeled
 # 打完标签以后
 
 [root@kubernetes-64 ingress]# kubectl get nodes --show-labels
-NAME            STATUS                     ROLES     AGE       VERSION          LABELS
-kubernetes-64   Ready,SchedulingDisabled   <none>    48m       v1.10.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=kubernetes-64
-kubernetes-65   Ready                      <none>    48m       v1.10.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,ingress=proxy,kubernetes.io/hostname=kubernetes-65
-kubernetes-66   Ready                      <none>    13m       v1.10.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,ingress=proxy,kubernetes.io/hostname=kubernetes-66
+NAME            STATUS                     ROLES     AGE       VERSION   LABELS
+kubernetes-64   Ready,SchedulingDisabled   <none>    32m       v1.10.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=kubernetes-64
+kubernetes-65   Ready                      <none>    17m       v1.10.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,ingress=proxy,kubernetes.io/hostname=kubernetes-65
+kubernetes-66   Ready                      <none>    4m        v1.10.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,ingress=proxy,kubernetes.io/hostname=kubernetes-66
 
 ```
 
@@ -2619,6 +2635,5 @@ kubectl uncordon [nodeid]
   [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
   [2]: https://jicki.me/images/posts/kubernetes/hamaster.jpg
   [3]: https://jicki.me/images/posts/kubernetes/dashboard-new.jpeg
-
 
 
