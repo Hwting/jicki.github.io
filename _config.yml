@@ -1,123 +1,96 @@
-# ---------------- #
-#   Main Configs   #
-# ---------------- #
+# SITE CONFIGURATION
 baseurl:
-url: https://jicki.me
-date_format: "ordinal"
-title: 小炒肉
+url: "https://jicki.me"
+title: 小炒肉 # site's title
 subtitle: "Your future depends on your dreams"
-description: "梦想"
-keywords: 小炒肉
-favicon: /favicon.ico
-timezone: Asia/Shanghai
-encoding: "utf-8"
-source_code: https://github.com/jicki/jicki.github.io
-side_bar_repo_limit: 5
+description: "Your future depends on your dreams" # used by search engines
 
-# ---------------- #
-#      Author      #
-# ---------------- #
-author: 小炒肉
-organization: Moxian, Inc.
-organization_url: https://www.Moxian.com
-location: ShenZhen, China
-email: jicki520@gmail.com
 
-# ---------------- #
-#    Navigation    #
-# ---------------- #
-navs:
-  -
-    href: /
-    label: 首页
+# THEME-SPECIFIC CONFIGURATION
+theme_settings:
+  # Meta
+  title: 小炒肉 # blog's title
+  avatar: assets/img/triangle.svg
+  favicon: assets/favicon.ico
+  gravatar: # Email MD5 hash
 
-  -
-    href: /categories/
-    label: 分类
+  # Header and footer text
+  header_text: > #two or three lines to describe your site
+     <p>Change header text in <code>_config.yml</code> <br> to update this feature.</p>
+  header_text_feature_image: assets/img/pexels/triangular.jpeg
+  footer_text: >
+   Powered by <a href="https://jekyllrb.com/">Jekyll</a> with <a href="https://github.com/sylhare/Type-on-Strap">Type on Strap</a>
 
-  -
-    href: /wiki/
-    label: 维基
+  # Icons
+  rss: true  # Make sure you created a feed.xml with feed.xml layout
+  email_address: # Full email address, e.g. "sam@example.com"
+  behance:
+  bitbucket:
+  dribbble:
+  facebook:
+  flickr:
+  gitlab:
+  github: "sylhare"
+  google_plus:
+  instagram:
+  keybase:
+  linkedin:  # Full URL
+  pinterest:
+  reddit:
+  soundcloud:
+  stack_exchange:  # Full URL
+  steam:
+  tumblr:
+  twitter: # "twitter username"
+  vimeo:
+  wordpress:
+  youtube:
 
-  -
-    href: /open-source/
-    label: 开源
+  # Scripts / Features 
+  google_analytics: # Tracking ID, e.g. "UA-000000-01"
+  disqus_shortname:
+  katex: true # Enable if using math markup
+  portfolio: true
+  search: true
+  tags: true
+  
+  # Localization strings
+  str_follow_on: "Follow on"
+  str_rss_follow: "Follow RSS feed"
+  str_email: "Email"
+  str_next_post: "Next post"
+  str_previous_post: "Previous post"
+  str_next_page: "Next"
+  str_previous_page: "Prev"
+  str_continue_reading: "Continue reading"
+  str_javascript_required_disqus: "Please enable JavaScript to view comments."
 
-  -
-    href: /links/
-    label: 链接
+  # Colours, typography and padding
+  # Open the "_sass > base" folder, and open "_variables.scss"
+  google_fonts: "Source+Sans+Pro:400,700,700italic,400italic"
 
-  -
-    href: /about/
-    label: 关于
+  # Post navigation
+  post_navigation: true
+  
 
-# ---------------- #
-#       RSS        #
-# ---------------- #
-subscribe_rss: /feed.xml
+# PAGINATION
+paginate: 5
+paginate_path: "blog/page:num"
 
-# ---------------- #
-#      Jekyll      #
-# ---------------- #
-markdown: kramdown
-kramdown:
-    input: GFM
-highlighter: rouge
-paginate: 8
-lsi: false
-quiet: false
-excerpt_separator: "\n\n"
-permalink: /:year/:month/:day/:title/
-gems:
-    - rouge
-#    - jekyll-html-pipeline
-    - jekyll-paginate
-    - jekyll-feed
-    - jemoji
-#     - jekyll-mentions
-    - jekyll-github-metadata
+
+# PORTFOLIO
 collections:
-    wiki:
-        output: true
-        permalink: /wiki/:path/
+  portfolio:
+    output: true
+    permalink: /:collection/:name
 
-# ---------------- #
-#      Socials     #
-# ---------------- #
-github_username: jicki
-#douban_username: jicki
-facebook_username: jicki
-#weibo_username: jicki234
-zhihu_username: jicki
-twitter_username: jicki
 
-# ---------------- #
-#      Comments    #
-# ---------------- #
-# support provider: disqus, duoshuo
-comments_provider: disqus
-# !!!重要!!! 请修改下面两个用户名为你自己申请的
-# !!!Important!!! Please modify usernames below to yours
-duoshuo_username: jicki
-disqus_username: jicki
-# 在使用 disqus 的时候可点击显示多说评论框
-lazy_load_duoshuo: true
-
-# ---------------- #
-#    Analytics     #
-# ---------------- #
-google:
-    analytics_id: UA-85602329-1
-
-# ---------------- #
-#      Datas       #
-# ---------------- #
-skill_software_keywords: [Linux, shell, Docker,Python]
-skill_mobile_app_keywords: [Linux]
-#skill_windows_keywords: []
-
-# ---------------- #
-# Github metadata  #
-# ---------------- #
-repository: jicki/jicki.github.io
-
+# BUILD SETTINGS
+markdown: kramdown
+highlighter: rouge
+sass:
+  sass_dir: _sass
+  style: :compressed
+plugins: [jekyll-paginate, jekyll-seo-tag]
+#theme: type-on-strap # Uncomment if using the theme as a jekyll theme gem
+exclude: ["Gemfile", "Gemfile.lock", "type-on-strap.gemspec", "*.gem", "LICENSE", "README.md", "screenshot.png"]

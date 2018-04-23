@@ -1,38 +1,23 @@
 ---
 layout: default
 ---
-<section class="collection-head small geopattern" data-pattern-id="{{ page.title | truncate: 15}}">
-    <div class="container">
-        <div class="collection-title">
-            <h1 class="collection-header">{{ page.title }}</h1>
-            {% if page.subtitle %}
-                <div class="collection-info">
-                    <span class="meta-info">
-                        {{ page.subtitle}}
-                    </span>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-</section>
-<!-- / .banner -->
- <section class="container content">
-        <div class="columns">
-            <div class="column two-thirds" >
-                <article class="article-content markdown-body">
-                    {{ content }}
-                </article>
-                <div class="share">
-                    {% include sns-share.html %}
-                </div>
-                <div class="comment">
-                    {% include comments.html %}
-                </div>
-            </div>
-            <div class="column one-third">
-                {% include sidebar-search.html %}
-                {% include sidebar-popular-repo.html %}
-            </div>
-        </div>
-    </section>
-    <!-- /section.content -->
+
+<article {% if page.feature-img %}class="feature-image"{% endif %}>
+  <header id="main" style="background-image: url('{{ site.baseurl }}/{{ page.feature-img }}')">
+    <h1 id="{{ page.title | default: "" | cgi_escape }}" class="title">
+        {{ page.title }}
+    </h1>
+    
+    {% if page.subtitle %}
+    <h2 class="subtitle">{{ page.subtitle }}</h2>
+    {% endif %}
+      
+  </header>
+  <section class="post-content">{{ content }}</section>
+    
+    
+  <!-- Tag list for portfolio -->
+  {% capture tag_list %}{{ page.tags | join: "|"}}{% endcapture %}
+  {% include tags_list.html tags=tag_list %}
+    
+</article>
