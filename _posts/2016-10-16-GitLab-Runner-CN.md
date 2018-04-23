@@ -4,6 +4,7 @@ title: GitLab + Runner
 categories: [git]
 description: GitLab + Runner
 keywords: git
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # GitLab

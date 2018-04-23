@@ -4,6 +4,7 @@ title: Redis twemproxy 集群
 categories: redis
 description: Redis twemproxy 集群
 keywords: redis
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 #Redis twemproxy 集群

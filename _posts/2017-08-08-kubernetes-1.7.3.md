@@ -4,6 +4,7 @@ title: kubernetes 1.7.3 + calico 多 Master
 categories: kubernetes
 description: kubernetes 1.7.3 + calico 多 Master
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes 1.7.3 

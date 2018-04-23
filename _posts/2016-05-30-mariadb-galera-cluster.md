@@ -4,6 +4,7 @@ title: Mariadb galera 群集
 categories: mariadb galera
 description: Mariadb galera 群集
 keywords: mariadb, mysql
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

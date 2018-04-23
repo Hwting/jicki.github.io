@@ -4,6 +4,7 @@ title: Kubernetes Storage Class
 categories: kubernetes
 description: Kubernetes Storage Class
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

@@ -4,6 +4,7 @@ title: centos update kernel
 categories: [kernel, centos]
 description: centos update kernel
 keywords: kernel, centos
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # Update Kernel

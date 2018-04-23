@@ -4,6 +4,7 @@ title: redis sentinel 集群监控
 categories: redis
 description: redis sentinel 集群监控
 keywords: redis
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

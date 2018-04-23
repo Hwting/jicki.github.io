@@ -4,6 +4,7 @@ title: kubernetes Ceph RBD
 categories: kubernetes
 description: kubernetes Ceph RBD
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > 使用 Ceph RBD 做为 kubernetes 后端存储

@@ -4,6 +4,7 @@ title: kubernetes 1.5.1
 categories: docker
 description: kubernetes 1.5.1
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

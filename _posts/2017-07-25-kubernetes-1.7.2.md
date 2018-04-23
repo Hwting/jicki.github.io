@@ -4,6 +4,7 @@ title: kubernetes 1.7.2 + calico 二进制部署
 categories: docker
 description: kubernetes 1.7.2 + calico 二进制部署
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes 1.7.2 + Calico

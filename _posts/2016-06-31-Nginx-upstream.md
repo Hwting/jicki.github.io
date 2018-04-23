@@ -4,6 +4,7 @@ title: Nginx 负载均衡模式
 categories: Nginx
 description: Nginx 负载均衡支持的5种方式的分配
 keywords: Nginx, upstream
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 目前nginx负载均衡支持的5种方式的分配

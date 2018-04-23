@@ -4,6 +4,7 @@ title: Linux FAQ 以及 命令
 categories: linux
 description: Linux FAQ 以及 命令
 keywords: linux
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

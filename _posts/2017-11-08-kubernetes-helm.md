@@ -4,6 +4,7 @@ title: Kubernetes Helm Charts
 categories: kubernetes
 description: Kubernetes Helm Charts
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # Kubernetes Helm Charts

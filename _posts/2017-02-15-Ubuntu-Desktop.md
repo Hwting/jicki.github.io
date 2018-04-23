@@ -4,6 +4,7 @@ title: Ubuntu Desktop
 categories: Linux
 description: Ubuntu Desktop
 keywords: Linux
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > Ubuntu 桌面版本折腾

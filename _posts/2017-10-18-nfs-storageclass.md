@@ -4,6 +4,7 @@ title: NFS - StorageClass
 categories: kubernetes
 description: NFS - StorageClass
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 #  基于 StorageClass 的 NFS 动态卷

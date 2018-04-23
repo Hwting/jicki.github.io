@@ -4,6 +4,7 @@ title: Traefik ingress rbac
 categories: kubernetes
 description: Traefik ingress rbac
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # Traefik Ingress

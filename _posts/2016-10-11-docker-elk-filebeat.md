@@ -4,6 +4,7 @@ title: docker 容器日志集中 ELK + filebeat
 categories: docker
 description: docker 容器日志集中 ELK + filebeat
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

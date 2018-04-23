@@ -4,6 +4,7 @@ title: docker swarm 集群
 categories: docker
 description: docker swarm 集群
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # Docker Swarm 集群

@@ -4,6 +4,7 @@ title: mysql 命令
 categories: mysql
 description: mysql 命令 
 keywords: mysql
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # mysql 命令

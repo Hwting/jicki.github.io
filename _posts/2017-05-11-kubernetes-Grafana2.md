@@ -4,6 +4,7 @@ title: kubernetes Grafana2
 categories: kubernetes
 description: kubernetes Grafana2
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > kubernetes 基于 Grafana2 监控

@@ -4,6 +4,7 @@ title: kubernetes nfs
 categories: [kubernetess]
 description: kubernetes nfs
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 ## 安装 NFS 服务

@@ -4,6 +4,7 @@ title: docker 1.12 swarm 集群
 categories: docker
 description: docker 1.12 swarm 集群
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # docker 1.12 swarm

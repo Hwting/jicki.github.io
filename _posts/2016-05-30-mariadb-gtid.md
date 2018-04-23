@@ -4,6 +4,7 @@ title: MariaDB GTID 复制同步
 categories: mariadb
 description: MariaDB GTID 复制同步 
 keywords: mariadb
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # MariaDB GTID 复制同步

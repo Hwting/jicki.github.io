@@ -4,6 +4,7 @@ title: kargo kubernetes 1.5.4
 categories: docker
 description: kargo kubernetes 1.5.4
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > 基于Kargo 快速部署多master 的 kubernetes 集群

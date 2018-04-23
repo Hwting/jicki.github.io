@@ -4,6 +4,7 @@ description: kubernetes 1.8.4 to kubespray
 categories: kubernetes
 title: kubernetes 1.8.4 to kubespray
 layout: post
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes 1.8.4 to kubespray

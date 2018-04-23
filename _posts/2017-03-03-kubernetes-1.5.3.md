@@ -4,6 +4,7 @@ title: kubernetes 1.5.3
 categories: docker
 description: kubernetes 1.5.3
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > kubernetes update 1.5.3

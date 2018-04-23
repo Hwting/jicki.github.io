@@ -4,6 +4,7 @@ title: docker kubernetes 1.4 部署
 categories: docker
 description: docker kubernetes 1.4 部署
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # k8s 1.4

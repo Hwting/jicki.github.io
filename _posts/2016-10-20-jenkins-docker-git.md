@@ -4,6 +4,7 @@ title: jenkins + docker + git 持续集成
 categories: [jenkins, docker]
 description: jenkins + docker + git 持续集成
 keywords: jenkins, docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > git push 以后， jenkins 自动触发 代码打包，生成docker image , docker push 到 仓库，发布到环境里。

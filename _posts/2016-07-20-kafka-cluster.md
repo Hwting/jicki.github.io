@@ -4,6 +4,7 @@ title: kafka 集群 多broker模式
 categories: kafka
 description: kafka 集群 多broker模式
 keywords: kafka
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kafka 集群

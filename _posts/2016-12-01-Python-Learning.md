@@ -4,6 +4,7 @@ title: Python 学习之路
 categories: python
 description: Python 学习之路
 keywords: python
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > Python 学习之路，Python 学习笔记

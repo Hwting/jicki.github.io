@@ -4,6 +4,7 @@ title: docker k8s 1.3.8 + flannel
 categories: docker
 description: docker k8s 1.3.8 + flannel
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

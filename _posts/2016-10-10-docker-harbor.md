@@ -4,6 +4,7 @@ title: docker 镜像仓库 Harbor 部署
 categories: Harbor
 description: docker 镜像仓库 Harbor 部署
 keywords: Harbor
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

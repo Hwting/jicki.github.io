@@ -4,6 +4,7 @@ title: kubernetes 1.9.0 ipvs coreDNS
 categories: kubernetes
 description: kubernetes 1.9.0 ipvs coreDNS
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes 1.9.0

@@ -4,6 +4,7 @@ title: kubernetes 1.5.2
 categories: docker
 description: kubernetes 1.5.2
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > kubernetes update 1.5.2 and docker 1.13.1 update default driver the overlay2

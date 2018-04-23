@@ -4,6 +4,7 @@ title: kubernetes 实战应用部署
 categories: kubernetes
 description: kubernetes 实战应用部署
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > kubernetes 一些应用的部署， yaml 文件编写

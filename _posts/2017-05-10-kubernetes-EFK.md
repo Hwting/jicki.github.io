@@ -4,6 +4,7 @@ title: kubernetes EFK
 categories: kubernetes
 description: kubernetes EFK
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes EFK

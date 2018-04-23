@@ -3,6 +3,7 @@ layout: post
 title: kubernetes 1.10.beta4
 categories: kubernetes
 description: kubernetes 1.10.beta4
+feature-img: "assets/img/pexels/desk-top.jpeg"
 keywords: kubernetes
 ---
 

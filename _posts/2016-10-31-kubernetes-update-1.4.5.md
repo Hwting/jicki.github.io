@@ -4,6 +4,7 @@ title: kubernetes 1.4.5
 categories: kubernetes
 description: kubernetes 1.4.5
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > 更新 kubernetes 1.4.5 , 配置文档 

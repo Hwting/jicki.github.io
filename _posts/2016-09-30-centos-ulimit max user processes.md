@@ -4,6 +4,7 @@ title: Ulimit max user processes
 categories: centos
 description: Ulimit max user processes
 keywords: centos
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # centos Ulimit max user processes

@@ -4,6 +4,7 @@ title: Shell Scrpit
 categories: Linux
 description: Shell Scrpit
 keywords: Linux
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > 一些自己折腾过的Shell脚本

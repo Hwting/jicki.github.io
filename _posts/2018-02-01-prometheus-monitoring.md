@@ -4,6 +4,7 @@ title: prometheus monitoring
 categories: kubernetes
 description: prometheus monitoring
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

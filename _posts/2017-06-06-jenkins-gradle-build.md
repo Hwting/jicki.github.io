@@ -4,6 +4,7 @@ title: jenkins gradle docker 持续集成
 categories: jenkins
 description: jenkins gradle docker 持续集成
 keywords: jenkins
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

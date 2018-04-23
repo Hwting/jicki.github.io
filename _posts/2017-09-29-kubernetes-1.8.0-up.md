@@ -4,6 +4,7 @@ title: kubernetes 1.8.0
 categories: kubernetes
 description: kubernetes 1.8.0 
 keywords: kubernetes
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes 1.8.0

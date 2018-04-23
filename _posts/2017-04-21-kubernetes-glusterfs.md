@@ -4,6 +4,7 @@ title: kubernetes glusterfs
 categories: docker
 description: kubernetes glusterfs
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # kubernetes glusterfs

@@ -4,6 +4,7 @@ title: docker swarm name service 通信错误
 categories: docker
 description: docker swarm name service 通信错误
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 > docker swarm 之间使用 name service 通信，容器重启后IP变动导致的通信故障

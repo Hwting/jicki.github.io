@@ -4,6 +4,7 @@ title: docker 基础设置
 categories: docker
 description: docker 基础设置
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # docker 基础

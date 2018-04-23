@@ -4,6 +4,7 @@ title: Ceph RBD CephFS
 categories: ceph
 description: Ceph RBD CephFS
 keywords: ceph
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # Ceph RBD  CephFS

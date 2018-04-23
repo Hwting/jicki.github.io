@@ -4,6 +4,7 @@ title: rancher docker 集群管理于编排
 categories: docker
 description: rancher docker 集群管理于编排
 keywords: docker
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 rancher docker 集群管理于编排

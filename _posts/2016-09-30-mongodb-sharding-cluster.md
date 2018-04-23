@@ -4,6 +4,7 @@ title: mongodb sharding cluster
 categories: mongodb
 description: mongodb sharding cluster
 keywords: mongodb
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

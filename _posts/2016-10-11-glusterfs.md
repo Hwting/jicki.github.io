@@ -4,6 +4,7 @@ title: CentOS 7 安装 GlusterFS
 categories: glusterfs
 description: CentOS 7 安装 GlusterFS
 keywords: glusterfs
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 

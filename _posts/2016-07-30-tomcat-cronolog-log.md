@@ -4,6 +4,7 @@ title: tomcat 利用 cronolog 进行日志切割
 categories: tomcat
 description: tomcat 利用 cronolog 进行日志切割
 keywords: tomcat
+feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
 # tomcat 利用 cronolog 切割日志
