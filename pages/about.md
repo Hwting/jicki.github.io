@@ -1,7 +1,8 @@
 ---
 layout: page
-title: 关于
+title: About
 description: Your future depends on your dreams
+subtitle: "Your future depends on your dreams"
 permalink: /about/
 feature-img: "assets/img/pexels/circuit.jpeg"
 tags: [About]
