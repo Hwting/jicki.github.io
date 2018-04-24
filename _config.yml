@@ -90,11 +90,6 @@ markdown: kramdown
 kramdown:
     input: GFM
 highlighter: rouge
-paginate: 8
-lsi: false
-quiet: false
-excerpt_separator: "\n\n"
-permalink: /:year/:month/:day/:title/
 sass:
   sass_dir: _sass
   style: :compressed
