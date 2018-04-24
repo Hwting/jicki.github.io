@@ -6,6 +6,7 @@ description: kubernetes 1.10.1
 feature-img: "assets/img/pexels/desk-top.jpeg"
 thumbnail: "assets/img/thumbnails/kubernetes-2.png"
 keywords: kubernetes
+tags: [kubernetes]
 ---
 
 # kubernetes 1.10.1

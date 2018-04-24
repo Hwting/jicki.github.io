@@ -6,6 +6,7 @@ description: OpenEBS to Kubernetes StorageClass
 thumbnail: "assets/img/thumbnails/openebs-logo.svg"
 feature-img: "assets/img/pexels/desk-top.jpeg"
 keywords: kubernetes
+tags: [kubernetes,openebs]
 ---
 
 # OpenEBS to Kubernetes StorageClass
