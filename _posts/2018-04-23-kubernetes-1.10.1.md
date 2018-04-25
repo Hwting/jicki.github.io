@@ -2638,9 +2638,9 @@ kubectl uncordon [nodeid]
 ```
 
 
-  [1]: https://jicki.me/images/posts/kubernetes/dashboard.png
-  [2]: https://jicki.me/images/posts/kubernetes/hamaster.jpg
-  [3]: https://jicki.me/images/posts/kubernetes/dashboard-new.jpeg
+  [1]: https://jicki.me/assets/images/posts/kubernetes/dashboard.png
+  [2]: https://jicki.me/assets/images/posts/kubernetes/hamaster.jpg
+  [3]: https://jicki.me/assets/images/posts/kubernetes/dashboard-new.jpeg
 
 
 <!-- post to toc end -->
