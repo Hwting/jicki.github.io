@@ -99,9 +99,9 @@
 })(jQuery);
 
 $(document).ready(function(){
-  $('.post-directory').toc();
+  $('.post-nav-post').toc();
 
-  var fixmeTop = $('#post-directory-module').offset().top;
+  var fixmeTop = $('#previous-post').offset().top;
   var tocSections = $('.clickable-header');
   var tocSectionOffsets = [];
 
@@ -141,25 +141,25 @@ $(document).ready(function(){
   var updateTocHeight = function() {
       var height = document.documentElement.clientHeight;
       height = height || 'auto';
-      $('.post-directory').css('max-height', height);
+      $('.post-nav-post').css('max-height', height);
   }
 
   $(window).scroll(function() {
     var currentScroll = $(window).scrollTop();
     if (currentScroll >= fixmeTop) {
-      $('#post-directory-module').css({
+      $('#previous-post').css({
         top: '0',
         position: 'fixed',
         width: 'inherit'
       });
-      $('.post-directory').css('overflow', 'auto');
+      $('.post-nav-post').css('overflow', 'auto');
     } else {
-      $('#post-directory-module').css({
+      $('#previous-post').css({
         position: 'inherit',
         width: 'inherit'
       });
-      $('.post-directory').css('overflow', 'hidden');
-      $('.post-directory').scrollTop(0);
+      $('.post-nav-post').css('overflow', 'hidden');
+      $('.post-nav-post').scrollTop(0);
     }
 
     highlightTocSection();
