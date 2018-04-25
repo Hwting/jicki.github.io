@@ -9,6 +9,9 @@ keywords: kubernetes
 tags: [kubernetes]
 ---
 
+<!-- To be placed at the beginning of the post, it is where the table of content will be generated -->
+<div id="toc"></div>
+
 # kubernetes 1.10.1
 
 > 基于 二进制 文件部署
@@ -2639,3 +2642,9 @@ kubectl uncordon [nodeid]
   [2]: https://jicki.me/assets/images/posts/kubernetes/hamaster.jpg
   [3]: https://jicki.me/assets/images/posts/kubernetes/dashboard-new.jpeg
 
+<!-- To be copied at the end of the post to render the table of content -->
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#toc').toc();
+});
+</script>
