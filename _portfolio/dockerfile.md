@@ -1,11 +1,13 @@
 ---
 layout: post
-title: Ninja
+title: Dockerfile
 img: "assets/img/portfolio/ninja.png"
-date: April, 08 2014
-tags: [Lorem]
+date: April, 08 2018
+tags: [Docker]
 ---
 
 ![image]({{ site.baseurl }}/{{ page.img }})
 
-# Ninja
+# Dockerfile
+
+
