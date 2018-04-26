@@ -4,10 +4,14 @@ title: kubernetes 1.10.1
 categories: kubernetes
 description: kubernetes 1.10.1
 feature-img: "assets/img/pexels/desk-top.jpeg"
-thumbnail: "assets/img/thumbnails/kubernetes-2.png"
 keywords: kubernetes
 tags: [kubernetes]
 ---
+
+> 更新版本到 1.10.1 ，修复了之前 beta.4 文章中 kubelet.kubeconfig 无法生成的问题。
+> 更新了kubelet 自动续签证书，以及 自动注册 csr   
+
+
 
 # kubernetes 1.10.1
 

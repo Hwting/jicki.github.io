@@ -4,10 +4,13 @@ title: jenkins build android
 categories: jenkins
 description: jenkins build android
 feature-img: "assets/img/pexels/desk-top.jpeg"
-thumbnail: "assets/img/thumbnails/jenkins.png"
 keywords: jenkins
 tags: [jenkins]
 ---
+
+
+> 利用jenkins 对 android 做自动化build  apk, 并使用 360 进行加固。
+
 
 # 环境配置
 

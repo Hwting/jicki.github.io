@@ -5,9 +5,10 @@ categories: kubernetes
 description: kubernetes jenkins
 keywords: kubernetes
 feature-img: "assets/img/pexels/desk-top.jpeg"
-thumbnail: "assets/img/thumbnails/jenkins.png"
 ---
 
+> jenkins 所有的资源全部在 kubernetes 中进行，并配置 kubernetes 云
+> 针对 jenkins slave 做动态资源伸缩，构建时申请 pod, 操作完毕后自动删除 pod
 
 # 基于 Kubernetes Jenkins slave 动态资源伸缩 pod
 

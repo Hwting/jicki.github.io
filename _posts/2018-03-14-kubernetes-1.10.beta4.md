@@ -4,10 +4,12 @@ title: kubernetes 1.10.beta4
 categories: kubernetes
 description: kubernetes 1.10.beta4
 feature-img: "assets/img/pexels/desk-top.jpeg"
-thumbnail: "assets/img/thumbnails/kubernetes-2.png"
 keywords: kubernetes
 tags: [kubernetes]
 ---
+
+> 更新1.10.beta4 测试版本，测试一些新功能，其次官方更新 ipvs 为 beta
+
 
 # kubernetes 1.10.beta4
 

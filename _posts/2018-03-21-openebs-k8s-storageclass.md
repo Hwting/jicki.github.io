@@ -3,24 +3,19 @@ layout: post
 title: OpenEBS to Kubernetes StorageClass
 categories: kubernetes
 description: OpenEBS to Kubernetes StorageClass
-thumbnail: "assets/img/thumbnails/openebs-logo.svg"
 feature-img: "assets/img/pexels/desk-top.jpeg"
 keywords: kubernetes
 tags: [kubernetes,openebs]
 ---
 
-# OpenEBS to Kubernetes StorageClass
-
 
 > OpenEBS是一个开源存储平台，为DevOps和容器环境提供持久和集装箱 块存储。
-
 > 块存储一般用于 Mysql data, redis data, jenkins data, RabbitMQ data, 等数据类的存储
-
 > 官方 github https://github.com/openebs/openebs
 
 
 
-
+# OpenEBS to Kubernetes StorageClass
 
 
 ## 部署 OpenEBS
