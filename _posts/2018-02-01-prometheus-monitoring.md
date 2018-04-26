@@ -1789,8 +1789,8 @@ prometheus-operator-9bf5574-s7k76     1/1       Running   0          2h
 ![5][5]
 
 
-  [1]: https://jicki.me/images/posts/grafana/grafana1.png
-  [2]: https://jicki.me/images/posts/grafana/grafana2.png
-  [3]: https://jicki.me/images/posts/grafana/grafana3.png
-  [4]: https://jicki.me/images/posts/grafana/grafana4.png
-  [5]: https://jicki.me/images/posts/grafana/grafana5.png
+  [1]: https://jicki.me/assets/images/posts/grafana/grafana1.png
+  [2]: https://jicki.me/assets/images/posts/grafana/grafana2.png
+  [3]: https://jicki.me/assets/images/posts/grafana/grafana3.png
+  [4]: https://jicki.me/assets/images/posts/grafana/grafana4.png
+  [5]: https://jicki.me/assets/images/posts/grafana/grafana5.png
