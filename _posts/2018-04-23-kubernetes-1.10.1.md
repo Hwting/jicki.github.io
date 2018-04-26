@@ -11,9 +11,6 @@ tags: [kubernetes]
 > 更新版本到 1.10.1 ，修复了之前 beta.4 文章中 kubelet.kubeconfig 无法生成的问题。
 > 更新了kubelet 自动续签证书，以及 自动注册 csr   
 
-* TOC
-{:toc}
-
 # kubernetes 1.10.1
 
 > 基于 二进制 文件部署
