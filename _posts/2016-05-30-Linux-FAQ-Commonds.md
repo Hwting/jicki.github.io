@@ -1,10 +1,11 @@
 ---
 layout: post
-title: Linux FAQ 以及 命令
+title: linux FAQ 以及 命令
 categories: linux
-description: Linux FAQ 以及 命令
+description: linux FAQ 以及 命令
 keywords: linux
 feature-img: "assets/img/pexels/desk-top.jpeg"
+tags: [linux]
 ---
 
 
