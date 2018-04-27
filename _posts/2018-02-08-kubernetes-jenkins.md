@@ -554,15 +554,15 @@ Finished: SUCCESS
 ```
 
 
-  [1]: http://jicki.me/images/posts/jenkins/jenkins1.png
-  [2]: http://jicki.me/images/posts/jenkins/jenkins2.png
-  [3]: http://jicki.me/images/posts/jenkins/jenkins3.png
-  [4]: http://jicki.me/images/posts/jenkins/jenkins4.png
-  [5]: http://jicki.me/images/posts/jenkins/jenkins5.png
-  [6]: http://jicki.me/images/posts/jenkins/jenkins6.png
-  [7]: http://jicki.me/images/posts/jenkins/jenkins7.png
-  [8]: http://jicki.me/images/posts/jenkins/jenkins8.png
-  [9]: http://jicki.me/images/posts/jenkins/jenkins9.png
-  [10]: http://jicki.me/images/posts/jenkins/jenkins10.png
-  [11]: http://jicki.me/images/posts/jenkins/jenkins11.png
-  [12]: http://jicki.me/images/posts/jenkins/jenkins12.png
+  [1]: http://jicki.me/assets/images/posts/jenkins/jenkins1.png
+  [2]: http://jicki.me/assets/images/posts/jenkins/jenkins2.png
+  [3]: http://jicki.me/assets/images/posts/jenkins/jenkins3.png
+  [4]: http://jicki.me/assets/images/posts/jenkins/jenkins4.png
+  [5]: http://jicki.me/assets/images/posts/jenkins/jenkins5.png
+  [6]: http://jicki.me/assets/images/posts/jenkins/jenkins6.png
+  [7]: http://jicki.me/assets/images/posts/jenkins/jenkins7.png
+  [8]: http://jicki.me/assets/images/posts/jenkins/jenkins8.png
+  [9]: http://jicki.me/assets/images/posts/jenkins/jenkins9.png
+  [10]: http://jicki.me/assets/images/posts/jenkins/jenkins10.png
+  [11]: http://jicki.me/assets/images/posts/jenkins/jenkins11.png
+  [12]: http://jicki.me/assets/images/posts/jenkins/jenkins12.png
