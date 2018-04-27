@@ -40,3 +40,11 @@ This is text for page two
 ### Sub title 2.a
 Some more text
 ```
+
+
+### Example
+
+![ toc ][1]
+
+
+  [1]: https://jicki.me/assets/images/posts/test/toc.png
