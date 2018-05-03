@@ -1,34 +1,14 @@
 ---
 layout: page
 title: About
-description: Your future depends on your dreams
-subtitle: "Your future depends on your dreams"
 permalink: /about/
 feature-img: "assets/img/pexels/circuit.jpeg"
-tags: [About]
+tags: [About, Test]
 ---
 
+Type on Strap is based on Type Theme, a free and open-source theme for [Jekyll](http://jekyllrb.com/), licensed under the MIT License.
+
+Head over to the [theme's documentation](https://github.io/sylhare/Type-on-Strap) for much more information about Type on Strap or to install this theme on your own Jekyll site.
+
+This file is an example of a page in Jekyll, that automatically shows up in the header navigation, you can delete or modify this file freely.
  
-### 一、 序
-
-> **Your future depends on your dreams**
->
-> **不要活在别人的眼里，不要活在别人的嘴里，要活在自己的心里，生活过的洒脱一点，不要为别人去活**
->
-
-### 二、 工作状况
-
-> **运维工程师**
->
-> **热爱 Devops，对新技术充满好奇心**
-
-### 三、 职业技能
-
-> **Linux、Docker、Kubernetes、Swarm、docker-compose**
->
-> **Mysql、Mariadb、Redis、Mongodb**
->
-> **Nginx、Tomcat、LVS、Keepalived、Haproxy**
->
-> **Shell、Pythoni、Golang**
->
