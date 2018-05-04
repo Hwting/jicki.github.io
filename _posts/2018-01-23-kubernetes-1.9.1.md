@@ -968,7 +968,6 @@ systemctl status kube-apiserver
 
 ### 配置 kube-controller-manager
 
-> --cluster-signing-cert-file 与 --cluster-signing-key-file 标签将被删除。
 
 ```
 # 创建 kube-controller-manager.service 文件
@@ -990,6 +989,8 @@ ExecStart=/usr/local/bin/kube-controller-manager \
   --cluster-name=kubernetes \
   --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem \
   --root-ca-file=/etc/kubernetes/ssl/ca.pem \
+  --cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem \
+  --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem \
   --leader-elect=true \
   --v=1
 Restart=on-failure
