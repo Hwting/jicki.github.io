@@ -1238,7 +1238,7 @@ WorkingDirectory=/var/lib/kubelet
 ExecStart=/usr/local/bin/kubelet \
   --cgroup-driver=cgroupfs \
   --hostname-override=kubernetes-64 \
-  --pod-infra-container-image=jicki/pause-amd64:3.0 \
+  --pod-infra-container-image=jicki/pause-amd64:3.1 \
   --experimental-bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
   --feature-gates=RotateKubeletClientCertificate=true,RotateKubeletServerCertificate=true \
   --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
@@ -1264,7 +1264,7 @@ WantedBy=multi-user.target
 kubernetes-64    本机hostname
 10.254.0.2       预分配的 dns 地址
 cluster.local.   为 kubernetes 集群的 domain
-jicki/pause-amd64:3.0  这个是 pod 的基础镜像，既 gcr 的 gcr.io/google_containers/pause-amd64:3.0 镜像， 下载下来修改为自己的仓库中的比较快。
+jicki/pause-amd64:3.1  这个是 pod 的基础镜像，既 gcr 的 gcr.io/google_containers/pause-amd64:3.1 镜像， 下载下来修改为自己的仓库中的比较快。
 ```
 
 ### 启动 kubelet
@@ -1632,7 +1632,7 @@ WorkingDirectory=/var/lib/kubelet
 ExecStart=/usr/local/bin/kubelet \
   --cgroup-driver=cgroupfs \
   --hostname-override=kubernetes-66 \
-  --pod-infra-container-image=jicki/pause-amd64:3.0 \
+  --pod-infra-container-image=jicki/pause-amd64:3.1 \
   --experimental-bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
   --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
   --cert-dir=/etc/kubernetes/ssl \
