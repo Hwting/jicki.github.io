@@ -387,3 +387,15 @@ pip uninstall  chardet
 
 pip install requests
 ```
+
+## Docker FAQ
+
+```
+# 红帽系统安装 docker-ce
+
+# 安装pigz
+yum -y install http://mirror.centos.org/centos/7/extras/x86_64/Packages/pigz-2.3.3-1.el7.centos.x86_64.rpm
+
+# 安装 container-selinux
+yum -y install http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.55-1.el7.noarch.rpm
+```
