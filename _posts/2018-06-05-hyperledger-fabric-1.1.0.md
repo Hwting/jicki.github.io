@@ -7,6 +7,8 @@ keywords: fabric
 feature-img: "assets/img/pexels/desk-top.jpeg"
 ---
 
+> 单机版 fabric v1.1.0  实例为1.0 版本的
+
 
 # 部署 hyperledger-fabric v1.1.0
 
