@@ -30,5 +30,5 @@
 
 > **Nginx、Tomcat、LVS、Keepalived、Haproxy**
 
-> **Shell、Pythoni、Golang**
+> **Shell、Python、Golang**
 
