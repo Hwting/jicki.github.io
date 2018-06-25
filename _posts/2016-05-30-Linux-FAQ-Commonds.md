@@ -399,3 +399,15 @@ yum -y install http://mirror.centos.org/centos/7/extras/x86_64/Packages/pigz-2.3
 # 安装 container-selinux
 yum -y install http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.55-1.el7.noarch.rpm
 ```
+
+## AliYun FAQ
+
+```
+# 阿里云盾屏蔽iP, AliYunDunUpdat 占用80端口, 导致无法访问
+
+关闭 AliYunDun
+
+service aegis stop
+
+
+```
